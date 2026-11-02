@@ -34,6 +34,7 @@ import socialLinkRoutes from './server/routes/socialLinkRoutes.js';
 import resourceRoutes from './server/routes/resourceRoutes.js';
 import practiceLabRoutes from './server/routes/practiceLabRoutes.js';
 import assignmentRoutes from './server/routes/assignmentRoutes.js';
+import ecosystemRoutes from './server/routes/ecosystemRoutes.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -111,6 +112,7 @@ app.use('/api/social-links', socialLinkRoutes);
 app.use('/api/resources', resourceRoutes);
 app.use('/api/practice-labs', practiceLabRoutes);
 app.use('/api/assignments', assignmentRoutes);
+app.use('/api/ecosystems', ecosystemRoutes);
 
 // Backwards Compatibility Aliases
 app.put('/api/projects-reorder', (req, res, next) => {

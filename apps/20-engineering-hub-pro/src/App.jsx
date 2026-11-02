@@ -41,6 +41,8 @@ import AdminDomains from './pages/admin/AdminDomains.jsx';
 import AdminSiteContent from './pages/admin/AdminSiteContent.jsx';
 import AdminSocialLinks from './pages/admin/AdminSocialLinks.jsx';
 import SuperAdminCenter from './pages/admin/SuperAdminCenter.jsx';
+import AdminEcosystems from './pages/admin/AdminEcosystems.jsx';
+import AdminEcosystemDetail from './pages/admin/AdminEcosystemDetail.jsx';
 import { AdminResources } from './pages/admin/AdminResources.jsx';
 import { AuthProvider } from './context/AuthContext.jsx';
 
@@ -274,6 +276,26 @@ export default function App() {
           <AdminGate currentUser={currentUser} loadingUser={loadingUser}>
             <Layout currentUser={currentUser} profile={profile}>
               <AdminOverview currentUser={currentUser} />
+            </Layout>
+          </AdminGate>
+        }
+      />
+      <Route
+        path="/admin/ecosystems"
+        element={
+          <AdminGate currentUser={currentUser} loadingUser={loadingUser}>
+            <Layout currentUser={currentUser} profile={profile}>
+              <AdminEcosystems />
+            </Layout>
+          </AdminGate>
+        }
+      />
+      <Route
+        path="/admin/ecosystems/:slug"
+        element={
+          <AdminGate currentUser={currentUser} loadingUser={loadingUser}>
+            <Layout currentUser={currentUser} profile={profile}>
+              <AdminEcosystemDetail />
             </Layout>
           </AdminGate>
         }

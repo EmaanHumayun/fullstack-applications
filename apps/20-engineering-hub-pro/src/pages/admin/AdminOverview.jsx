@@ -79,6 +79,7 @@ export default function AdminOverview({ currentUser }) {
   const [data, setData] = useState(null);
   const [domainList, setDomainList] = useState([]);
   const [projectList, setProjectList] = useState([]);
+  const [nextAction, setNextAction] = useState(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [toast, setToast] = useState('');
@@ -101,15 +102,17 @@ export default function AdminOverview({ currentUser }) {
       if (selectedSubdomain !== 'all') params.set('subdomain', selectedSubdomain);
       if (selectedProjectId !== 'all') params.set('projectId', selectedProjectId);
 
-      const [ccRes, domRes, projRes] = await Promise.all([
+      const [ccRes, domRes, projRes, nextRes] = await Promise.all([
         api(`/analytics/command-center?${params.toString()}`),
         api('/domains').catch(() => []),
-        api('/projects?all=true').catch(() => [])
+        api('/projects?all=true').catch(() => []),
+        api('/ecosystems/next-action').catch(() => null)
       ]);
 
       setData(ccRes);
       setDomainList(domRes || []);
       setProjectList(projRes || []);
+      setNextAction(nextRes || null);
     } catch (err) {
       console.error('Failed to load command center:', err);
       setToast(err.message || 'Failed to update telemetry');
@@ -655,6 +658,54 @@ export default function AdminOverview({ currentUser }) {
       {/* ------------------------------------------------------------------- */}
       {activeTab === 'dashboard' && (
         <div className="space-y-6">
+          {/* Recommended Next Action & Learning Focus Banner */}
+          {nextAction?.primaryRecommendation && (
+            <div className="bg-gradient-to-r from-amber-50 to-stone-50 border border-amber-200 rounded-xl p-5 shadow-xs">
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div className="space-y-1.5">
+                  <div className="flex items-center gap-2">
+                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-amber-700 text-white">
+                      <Zap size={11} /> Recommended Next Action
+                    </span>
+                    <span className="text-xs font-semibold text-stone-700">
+                      {nextAction.primaryRecommendation.ecosystem}
+                    </span>
+                    <span className="text-[10px] px-2 py-0.5 rounded bg-stone-200 text-stone-700 font-mono">
+                      {nextAction.primaryRecommendation.project.level}
+                    </span>
+                  </div>
+                  <h3 className="text-base font-bold text-stone-900">
+                    {nextAction.primaryRecommendation.project.title}
+                  </h3>
+                  <p className="text-xs text-stone-700 leading-relaxed max-w-2xl">
+                    {nextAction.primaryRecommendation.reason}
+                  </p>
+                </div>
+
+                <div className="flex items-center gap-2 shrink-0">
+                  {nextAction.primaryRecommendation.project.githubUrl && (
+                    <a
+                      href={nextAction.primaryRecommendation.project.githubUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-stone-900 text-white hover:bg-stone-800 transition"
+                    >
+                      <ExternalLink size={13} />
+                      <span>GitHub Directory</span>
+                    </a>
+                  )}
+                  <Link
+                    to="/admin/ecosystems"
+                    className="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-semibold rounded-lg border border-stone-300 hover:bg-stone-100 text-stone-800 transition"
+                  >
+                    <span>All Ecosystems</span>
+                    <ChevronRight size={13} />
+                  </Link>
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* Row 1: Time Series Trend & Domain Split */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Left 2 Cols: Activity Time Series Chart */}

@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
   Command,
   LayoutDashboard,
+  Boxes,
   Code2,
   Folder,
   Sparkles,
@@ -88,9 +89,10 @@ export function Layout({ children, currentUser, profile }) {
         <div className="side-label">WORKSPACE</div>
         <nav className="nav-list">
           <NavItem to="/admin" icon={LayoutDashboard}>Overview</NavItem>
+          <NavItem to="/admin/ecosystems" icon={Boxes}>Learning Ecosystems</NavItem>
           <NavItem to="/admin/domains" icon={Layers}>Domains & Fields</NavItem>
           <NavItem to="/admin/projects" icon={Code2}>Projects</NavItem>
-          <NavItem to="/admin/folders" icon={Folder}>Hierarchy</NavItem>
+          <NavItem to="/admin/folders" icon={Folder}>Repositories & Tree</NavItem>
           <NavItem to="/admin/skills" icon={Sparkles}>Skills</NavItem>
           <NavItem to="/admin/roadmaps" icon={Workflow}>Roadmaps</NavItem>
           <NavItem to="/admin/practice-labs" icon={FlaskConical}>Practice Labs</NavItem>

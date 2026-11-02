@@ -109,8 +109,10 @@ const skillSchema = new mongoose.Schema({
     type: String,
     enum: [
       'Planned',
+      'Not Started',
       'Learning',
       'Practising',
+      'Applied in Project',
       'Demonstrated',
       'Needs revision',
       'On hold',
@@ -168,6 +170,14 @@ const skillSchema = new mongoose.Schema({
   relatedGoals: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Goal'
+  }],
+  prerequisiteSkills: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Skill'
+  }],
+  dependentSkills: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Skill'
   }],
   relatedRoadmaps: [{
     type: mongoose.Schema.Types.ObjectId,

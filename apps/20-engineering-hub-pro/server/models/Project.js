@@ -152,6 +152,59 @@ const projectSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Roadmap'
   }],
+  ecosystem: {
+    type: String,
+    default: '',
+    index: true
+  },
+  level: {
+    type: String,
+    enum: ['Beginner', 'Intermediate', 'Advanced', 'Professional', 'Flagship', 'Specialized', 'Foundation', ''],
+    default: ''
+  },
+  projectNumber: {
+    type: Number,
+    default: null
+  },
+  realWorldUseCase: {
+    type: String,
+    default: ''
+  },
+  learningObjectives: {
+    type: [String],
+    default: []
+  },
+  relatedConcepts: {
+    type: [String],
+    default: []
+  },
+  evaluationCriteria: {
+    type: [String],
+    default: []
+  },
+  portfolioStatus: {
+    type: String,
+    enum: ['private', 'workspace_only', 'portfolio_candidate', 'public_portfolio'],
+    default: 'workspace_only',
+    index: true
+  },
+  githubVerified: {
+    type: Boolean,
+    default: false
+  },
+  localPath: {
+    type: String,
+    default: ''
+  },
+  testingRequirements: {
+    type: String,
+    default: ''
+  },
+  repoType: {
+    type: String,
+    enum: ['main_hub', 'level_repo', 'project_submodule', 'standalone_repo', 'monorepo', ''],
+    default: ''
+  },
   coverImage: { type: String, default: '' },
   screenshots: {
     type: [String],

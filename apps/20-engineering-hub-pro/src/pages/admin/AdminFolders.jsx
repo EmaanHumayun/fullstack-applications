@@ -210,9 +210,26 @@ export default function AdminFolders() {
                 <span className="font-semibold text-sm text-stone-800 truncate">
                   {node.title || node.name}
                 </span>
+                {node.level && (
+                  <span className="text-[10px] px-1.5 py-0.5 rounded font-mono font-bold bg-blue-50 text-blue-700">
+                    {node.level}
+                  </span>
+                )}
                 <span className="text-[10px] px-1.5 py-0.5 rounded uppercase font-bold tracking-wider bg-stone-100 text-stone-600">
-                  {node.type || 'folder'}
+                  {node.repoType || node.type || 'item'}
                 </span>
+                {node.githubUrl && (
+                  <a
+                    href={node.githubUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={e => e.stopPropagation()}
+                    className="text-stone-400 hover:text-stone-800 p-0.5"
+                    title="Open on GitHub"
+                  >
+                    <ExternalLink size={12} />
+                  </a>
+                )}
                 {!node.published && (
                   <span className="text-[10px] px-1.5 py-0.5 rounded bg-amber-100 text-amber-800 font-medium">
                     Draft
