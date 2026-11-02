@@ -47,6 +47,17 @@ This repository serves as a permanent, growing engineering portfolio of real-wor
 
 ---
 
+
+---
+
+## Featured Flagship Application: Engineering Hub Pro (v2.0)
+
+Located at [`apps/20-engineering-hub-pro`](./apps/20-engineering-hub-pro):
+
+- **Architecture**: Decoupled React 18 single-page application with Express 4 backend and MongoDB Atlas persistence.
+- **Key Modules**: Super Admin Control Center, RBAC authorization, Hierarchical Project DAG engine with cycle prevention, Headless CMS for site copy, Dynamic theme engine with CSS variable injection, XSS-safe native Markdown AST parser (`SafeMarkdown`), and multi-tier file storage.
+- **Documentation**: Includes comprehensive [Architecture Guide](./apps/20-engineering-hub-pro/ARCHITECTURE.md), [Deployment Guide](./apps/20-engineering-hub-pro/DEPLOYMENT.md), [Implementation Status](./apps/20-engineering-hub-pro/IMPLEMENTATION-STATUS.md), [Security Policy](./apps/20-engineering-hub-pro/SECURITY.md), and [Testing Runbook](./apps/20-engineering-hub-pro/TESTING.md).
+
 ## Application Portfolio Matrix
 
 | App ID | Application Name | Primary Focus | Database | Status |

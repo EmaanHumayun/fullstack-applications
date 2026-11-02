@@ -48,7 +48,7 @@ Master catalog of all full-stack applications in this repository. Applications p
 
 | Project | Category | Stack | Status | Documentation |
 | :--- | :--- | :--- | :--- | :--- |
-| **20. Personal Engineering Workspace** | Developer Platform | React 18, Express, Tailwind, SQLite | `Active Architecture` | [Workspace Spec](./apps/10-personal-engineering-workspace/) |
+| **20. Engineering Hub Pro** | Developer Platform & Headless CMS | React 18, Vite, Express, MongoDB, Tailwind, RBAC | `Completed & Verified` | [Application Source](./apps/20-engineering-hub-pro/) |
 | **21. API Management Dashboard** | API Gateway UI | React, Express, Redis, Rate Limiter | `Planned` | Spec Awaiting Development |
 | **22. Developer Documentation Platform** | Static & Dynamic Docs | React, Markdown Parser, Express | `Planned` | Spec Awaiting Development |
 | **23. Deployment Management Dashboard** | DevOps Tooling | React, Express, Docker Engine API | `Planned` | Spec Awaiting Development |
