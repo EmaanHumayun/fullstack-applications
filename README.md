@@ -55,13 +55,15 @@ This repository serves as a permanent, growing engineering portfolio of real-wor
 Located at [`apps/20-engineering-hub-pro`](./apps/20-engineering-hub-pro):
 
 - **Architecture**: Decoupled React 18 single-page application with Express 4 backend and MongoDB Atlas persistence.
-- **Key Modules**: Super Admin Control Center, RBAC authorization, Hierarchical Project DAG engine with cycle prevention, Headless CMS for site copy, Dynamic theme engine with CSS variable injection, XSS-safe native Markdown AST parser (`SafeMarkdown`), and multi-tier file storage.
+- **Key Modules**: Engineering Learning Ecosystems (5 tracks, 60 progressive projects, 8 DevOps practice labs, 3 architecture challenges), Super Admin Control Center, RBAC authorization, Hierarchical Project DAG engine with cycle prevention, Headless CMS for site copy, Dynamic theme engine with CSS variable injection, XSS-safe native Markdown AST parser (`SafeMarkdown`), and multi-tier file storage.
+- **GitHub Ecosystem Linking**: 100% verified URLs linking every project, practice lab module, and challenge directly to their exact subdirectories on GitHub without 404s.
 - **Documentation**: Includes comprehensive [Architecture Guide](./apps/20-engineering-hub-pro/ARCHITECTURE.md), [Deployment Guide](./apps/20-engineering-hub-pro/DEPLOYMENT.md), [Implementation Status](./apps/20-engineering-hub-pro/IMPLEMENTATION-STATUS.md), [Security Policy](./apps/20-engineering-hub-pro/SECURITY.md), and [Testing Runbook](./apps/20-engineering-hub-pro/TESTING.md).
 
 ## Application Portfolio Matrix
 
 | App ID | Application Name | Primary Focus | Database | Status |
 | :---: | :--- | :--- | :--- | :--- |
+| **20** | [**Engineering Hub Pro (v2.0)**](./apps/20-engineering-hub-pro/) | Developer Platform, Learning Management, Headless CMS & GitHub Ecosystems | MongoDB Atlas | `Active Flagship` |
 | **01** | [**Task Management System**](./apps/01-task-management-system/) | Task tracking, priority queues, status workflows | SQLite / PostgreSQL | `Active` |
 | **02** | **Student Management System** | Student enrollment, courses, grade tracking | PostgreSQL | `Planned` |
 | **03** | **Inventory Management System** | Stock levels, supplier orders, audit logs | PostgreSQL | `Planned` |
@@ -85,12 +87,19 @@ fullstack-applications/
 ├── CHANGELOG.md                        # Application release notes and schema updates
 │
 ├── apps/                               # Decoupled application suites
-│   └── 01-task-management-system/      # [Active] Production Task Manager App
-│       ├── client/                     # Frontend client (HTML5/React UI)
-│       ├── server/                     # Express REST API backend
-│       ├── docs/                       # API specs and architecture
-│       ├── docker-compose.yml          # Containerized orchestration
-│       └── README.md                   # App-specific run instructions
+│   ├── 01-task-management-system/      # [Active] Production Task Manager App
+│   │   ├── client/                     # Frontend client (HTML5/React UI)
+│   │   ├── server/                     # Express REST API backend
+│   │   ├── docs/                       # API specs and architecture
+│   │   ├── docker-compose.yml          # Containerized orchestration
+│   │   └── README.md                   # App-specific run instructions
+│   │
+│   └── 20-engineering-hub-pro/         # [Active Flagship] Full-Stack Engineering Hub
+│       ├── src/                        # React 18 frontend (Vite, Tailwind, GSAP)
+│       ├── server/                     # Express 4 backend & Mongoose models
+│       ├── scripts/                    # Test suites, seeding, & verification tools
+│       ├── docs/                       # Specifications and deployment guides
+│       └── README.md                   # Complete application guide
 │
 ├── templates/                          # Reusable engineering templates
 │   ├── application-readme-template.md  # Standardized README for new applications
