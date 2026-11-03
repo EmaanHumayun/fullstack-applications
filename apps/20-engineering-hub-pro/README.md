@@ -83,6 +83,17 @@ It features a **Super Admin Control Center**, centralized **Role-Based Access Co
     - Zero-404 verified links across all 60 projects, 8 practice labs, and 3 assignments.
     - Automatic local path and remote repository synchronization across the entire workspace.
 
+16. **Resume Studio, 20 Professional Templates & Public Integration (`/admin/resumes` & `/admin/resumes/builder`)**
+    - 20 distinct professional resume templates across 4 key categories (ATS-Friendly, Technology & Engineering, Modern Creative, and Specialized).
+    - 10 curated color themes plus custom hex palette picker.
+    - Typography choices (Inter, DM Sans, Playfair Display, JetBrains Mono, Merriweather) and density adjustments (compact, normal, spacious).
+    - Smart Skills Parser with automatic taxonomy matching across 7 domains and duplicate normalization.
+    - One-click non-destructive Workspace Importer snapshotting live Profile, Skill, Project, and Certificate records.
+    - Split-screen live preview with responsive A4 page canvas and 50%-125% zoom controls.
+    - Vector-accurate A4 PDF generation via `@media print` with standardized naming (`Emaan-Humayun-[Role]-Resume.pdf`).
+    - Version control (duplicate, archive, multiple role targets) and Admin Portfolio Featured Resume designation.
+    - Dedicated public portfolio `#resume` showcase section with live preview modal and public PDF download.
+
 ---
 
 ## Architecture & Technology Stack
