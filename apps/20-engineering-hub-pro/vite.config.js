@@ -10,6 +10,9 @@ export default defineConfig(({ mode }) => {
     server: {
       host: true,
       port: 5173,
+      watch: {
+        ignored: ['**/github-ecosystem/**', '**/dist/**', '**/.git/**']
+      },
       proxy: {
         '/api': {
           target: `http://localhost:${backendPort}`,
