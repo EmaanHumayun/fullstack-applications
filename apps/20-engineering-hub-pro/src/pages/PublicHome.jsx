@@ -38,7 +38,9 @@ import {
   Activity,
   Lock,
   ShieldCheck,
-  ChevronRight
+  ChevronRight,
+  Printer,
+  Eye
 } from 'lucide-react';
 import { api } from '../lib/api.js';
 import {
@@ -53,6 +55,7 @@ import { WorkspaceChoiceModal } from '../components/WorkspaceChoiceModal.jsx';
 import { initActiveTheme } from '../lib/theme.js';
 import { getDomainIcon } from './admin/AdminDomains.jsx';
 import { getPlatformIcon } from './admin/AdminSocialLinks.jsx';
+import { ResumeRenderer } from '../components/resume/ResumeRenderer.jsx';
 
 const fallbackProfile = {
   name: 'Emaan Humayun',
@@ -140,6 +143,7 @@ export function PublicNav({ profile, content }) {
             <Link to="/practice-labs">{nav.practiceLabsLabel || 'Labs'}</Link>
             <Link to="/assignments">{nav.assignmentsLabel || 'Assignments'}</Link>
             <Link to="/credentials">{nav.certificatesLabel || 'Credentials'}</Link>
+            <a href="#resume" onClick={(e) => handleNavClick(e, 'resume')}>{nav.resumeLabel || 'Resume'}</a>
             <Link to="/notes">{nav.notesLabel || 'Notes'}</Link>
             <a href="#contact" onClick={(e) => handleNavClick(e, 'contact')}>{nav.contactLabel || 'Contact'}</a>
           </nav>
@@ -255,6 +259,13 @@ export function PublicNav({ profile, content }) {
               >
                 {nav.certificatesLabel || 'Certificates & Credentials'}
               </Link>
+              <a
+                href="#resume"
+                onClick={e => handleNavClick(e, 'resume')}
+                className="text-sm font-bold py-2 text-ink hover:text-primary transition"
+              >
+                {nav.resumeLabel || 'Professional Resume'}
+              </a>
               <Link
                 to="/notes"
                 onClick={() => setMobileOpen(false)}
@@ -1242,6 +1253,8 @@ export function PublicHome() {
   const [skills, setSkills] = useState([]);
   const [milestones, setMilestones] = useState([]);
   const [certs, setCerts] = useState([]);
+  const [featuredResume, setFeaturedResume] = useState(null);
+  const [resumeModalOpen, setResumeModalOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [toastMessage, setToastMessage] = useState('');
   const [selectedCertModal, setSelectedCertModal] = useState(null);
@@ -1285,9 +1298,10 @@ export function PublicHome() {
       api('/projects').catch(() => []),
       api('/skills').catch(() => []),
       api('/milestones').catch(() => []),
-      api('/certificates').catch(() => [])
+      api('/certificates').catch(() => []),
+      api('/resumes/featured/public').catch(() => null)
     ])
-      .then(([p, sc, doms, soc, pr, s, m, c]) => {
+      .then(([p, sc, doms, soc, pr, s, m, c, r]) => {
         if (p?.name) setProfile(p);
         setSiteContent(sc);
         setDomains(doms || []);
@@ -1296,6 +1310,7 @@ export function PublicHome() {
         setSkills(s || []);
         setMilestones(m || []);
         setCerts(c || []);
+        setFeaturedResume(r || null);
 
         if (sc?.seo?.title) {
           document.title = sc.seo.title;
@@ -1867,6 +1882,134 @@ export function PublicHome() {
             ))}
           </div>
         </section>
+      )}
+
+      {/* SECTION 6.5 — FEATURED PROFESSIONAL RESUME & CREDENTIALS */}
+      {sections.resume?.visible !== false && featuredResume && (
+        <section id="resume" className="public-section border-t border-border">
+          <SectionHeading
+            eyebrow={sections.resume?.eyebrow || 'PROFESSIONAL RESUME'}
+            title={sections.resume?.title || 'Engineering Resume & Credentials.'}
+            description={
+              sections.resume?.description ||
+              'Explore my verified technical background, production projects, and core competencies, or download an ATS-compliant PDF copy.'
+            }
+          />
+
+          <div className="bg-surface rounded-2xl border border-border p-6 sm:p-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 shadow-xs">
+            <div className="space-y-3 max-w-xl">
+              <div className="flex items-center gap-2 flex-wrap">
+                <span className="font-mono text-xs font-bold uppercase tracking-wider text-primary bg-primary/10 px-2.5 py-0.5 rounded border border-primary/20">
+                  {featuredResume.targetRole || 'Software Engineer'}
+                </span>
+                <span className="text-xs text-muted font-mono">
+                  v{featuredResume.version || 1} · {featuredResume.templateId}
+                </span>
+                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-200">
+                  Active Portfolio Release
+                </span>
+              </div>
+
+              <h3 className="text-2xl font-bold font-serif text-ink tracking-tight">
+                {featuredResume.title}
+              </h3>
+
+              <p className="text-xs sm:text-sm text-muted leading-relaxed line-clamp-3">
+                {featuredResume.professionalSummary}
+              </p>
+
+              <div className="flex flex-wrap items-center gap-3 pt-2 text-xs">
+                <button
+                  type="button"
+                  onClick={() => setResumeModalOpen(true)}
+                  className="inline-flex items-center gap-1.5 px-4 py-2 font-bold rounded-xl bg-primary text-white hover:brightness-105 transition shadow-xs cursor-pointer"
+                >
+                  <Eye size={14} /> Preview Resume
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    const cleanRole = (featuredResume.targetRole || 'Engineer').replace(/[^a-zA-Z0-9]/g, '-');
+                    const prevTitle = document.title;
+                    document.title = `Emaan-Humayun-${cleanRole}-Resume`;
+                    window.print();
+                    setTimeout(() => {
+                      document.title = prevTitle;
+                    }, 1000);
+                  }}
+                  className="inline-flex items-center gap-1.5 px-4 py-2 font-bold rounded-xl bg-stone-900 text-white hover:bg-stone-800 transition shadow-xs cursor-pointer"
+                >
+                  <Printer size={14} /> Download Resume PDF
+                </button>
+              </div>
+            </div>
+
+            {/* Interactive Miniature Preview Thumbnail */}
+            <div
+              onClick={() => setResumeModalOpen(true)}
+              className="group relative cursor-pointer border-2 border-border/80 rounded-2xl p-2 bg-stone-100 hover:border-primary transition self-center shrink-0 shadow-md overflow-hidden"
+              style={{ width: '185px', height: '255px' }}
+              title="Click to inspect full interactive resume"
+            >
+              <div className="scale-[0.22] origin-top-left pointer-events-none select-none">
+                <ResumeRenderer resume={featuredResume} id="mini-preview-canvas" />
+              </div>
+              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center">
+                <span className="opacity-0 group-hover:opacity-100 transition-opacity bg-stone-900/95 text-white text-[11px] font-bold px-3 py-1.5 rounded-lg shadow-lg flex items-center gap-1">
+                  <Eye size={12} /> Expand
+                </span>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* FULL RESUME PREVIEW MODAL */}
+      {resumeModalOpen && featuredResume && (
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-2 sm:p-4 animate-in fade-in duration-150">
+          <div className="bg-stone-100 rounded-2xl border border-border max-w-4xl w-full max-h-[95vh] flex flex-col shadow-2xl overflow-hidden">
+            {/* Modal Header */}
+            <div className="p-4 border-b border-border bg-white flex items-center justify-between gap-3">
+              <div>
+                <h3 className="font-bold text-sm text-stone-900 font-serif">
+                  {featuredResume.title}
+                </h3>
+                <span className="text-[11px] text-stone-500 font-mono">
+                  {featuredResume.targetRole} · Template: {featuredResume.templateId}
+                </span>
+              </div>
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    const cleanRole = (featuredResume.targetRole || 'Engineer').replace(/[^a-zA-Z0-9]/g, '-');
+                    const prevTitle = document.title;
+                    document.title = `Emaan-Humayun-${cleanRole}-Resume`;
+                    window.print();
+                    setTimeout(() => {
+                      document.title = prevTitle;
+                    }, 1000);
+                  }}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold rounded-lg bg-stone-900 text-white hover:bg-stone-800 transition shadow-xs"
+                >
+                  <Printer size={13} /> Print / Save PDF
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setResumeModalOpen(false)}
+                  className="p-1.5 rounded-lg text-stone-500 hover:text-stone-800 hover:bg-stone-100"
+                >
+                  <X size={18} />
+                </button>
+              </div>
+            </div>
+
+            {/* Modal Canvas Body */}
+            <div className="p-4 sm:p-6 overflow-auto flex-1 flex justify-center items-start">
+              <ResumeRenderer resume={featuredResume} zoom={0.9} id="modal-printable-resume" />
+            </div>
+          </div>
+        </div>
       )}
 
       {/* SECTION 7 — ABOUT & ENGINEERING DIRECTION (Focus Band) */}

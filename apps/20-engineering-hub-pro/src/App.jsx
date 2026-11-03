@@ -43,6 +43,8 @@ import AdminSocialLinks from './pages/admin/AdminSocialLinks.jsx';
 import SuperAdminCenter from './pages/admin/SuperAdminCenter.jsx';
 import AdminEcosystems from './pages/admin/AdminEcosystems.jsx';
 import AdminEcosystemDetail from './pages/admin/AdminEcosystemDetail.jsx';
+import AdminResumes from './pages/admin/AdminResumes.jsx';
+import AdminResumeBuilder from './pages/admin/AdminResumeBuilder.jsx';
 import { AdminResources } from './pages/admin/AdminResources.jsx';
 import { AuthProvider } from './context/AuthContext.jsx';
 
@@ -276,6 +278,36 @@ export default function App() {
           <AdminGate currentUser={currentUser} loadingUser={loadingUser}>
             <Layout currentUser={currentUser} profile={profile}>
               <AdminOverview currentUser={currentUser} />
+            </Layout>
+          </AdminGate>
+        }
+      />
+      <Route
+        path="/admin/resumes"
+        element={
+          <AdminGate currentUser={currentUser} loadingUser={loadingUser}>
+            <Layout currentUser={currentUser} profile={profile}>
+              <AdminResumes />
+            </Layout>
+          </AdminGate>
+        }
+      />
+      <Route
+        path="/admin/resumes/builder"
+        element={
+          <AdminGate currentUser={currentUser} loadingUser={loadingUser}>
+            <Layout currentUser={currentUser} profile={profile}>
+              <AdminResumeBuilder />
+            </Layout>
+          </AdminGate>
+        }
+      />
+      <Route
+        path="/admin/resumes/builder/:id"
+        element={
+          <AdminGate currentUser={currentUser} loadingUser={loadingUser}>
+            <Layout currentUser={currentUser} profile={profile}>
+              <AdminResumeBuilder />
             </Layout>
           </AdminGate>
         }

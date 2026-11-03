@@ -2824,5 +2824,78 @@ table td {
   animation: shake 0.35s ease-in-out;
 }
 
+/* ========================================================
+   HIGH-FIDELITY A4 RESUME PRINT & PDF GENERATION STYLES
+   ======================================================== */
+@page {
+  size: A4 portrait;
+  margin: 0;
+}
+
+@media print {
+  html, body {
+    background: #ffffff !important;
+    color: #000000 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 210mm !important;
+  }
+
+  /* Hide navigation, sidebars, headers, action bars, buttons, and shell containers */
+  .public-nav-sticky-header,
+  .public-footer,
+  .sidebar,
+  .app-shell > aside,
+  header,
+  .resume-builder-workspace > header,
+  .resume-builder-workspace > div:first-child,
+  button,
+  .toast,
+  .stat-strip-container,
+  #root > div > header,
+  #root > div > footer,
+  .public-shell > header,
+  .public-shell > footer,
+  .public-section,
+  .focus-band,
+  .contact-section {
+    display: none !important;
+  }
+
+  /* Unhide printable resume container */
+  .resume-canvas-outer {
+    transform: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 210mm !important;
+    display: block !important;
+    position: static !important;
+  }
+
+  .resume-paper,
+  #printable-resume,
+  #modal-printable-resume {
+    display: block !important;
+    box-shadow: none !important;
+    border: none !important;
+    margin: 0 !important;
+    width: 210mm !important;
+    min-height: 297mm !important;
+    page-break-after: always;
+  }
+
+  .resume-section,
+  .break-inside-avoid {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  a {
+    text-decoration: none !important;
+    color: inherit !important;
+  }
+}
+
+
 
 

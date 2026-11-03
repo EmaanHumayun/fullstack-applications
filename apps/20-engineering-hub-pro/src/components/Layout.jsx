@@ -28,7 +28,8 @@ import {
   Library,
   Eye,
   FlaskConical,
-  FileCheck
+  FileCheck,
+  FileText
 } from 'lucide-react';
 import { api, setStoredToken } from '../lib/api.js';
 import { PaletteSwitcher } from './PaletteSwitcher.jsx';
@@ -107,6 +108,7 @@ export function Layout({ children, currentUser, profile }) {
 
         <div className="side-label mt-5">CMS & PRESENTATION</div>
         <nav className="nav-list">
+          <NavItem to="/admin/resumes" icon={FileText}>Resume Studio</NavItem>
           <NavItem to="/admin/site-content" icon={FileEdit}>Site Content</NavItem>
           <NavItem to="/admin/social-links" icon={Share2}>Social & Contact</NavItem>
           <NavItem to="/admin/profile" icon={Settings2}>Profile</NavItem>

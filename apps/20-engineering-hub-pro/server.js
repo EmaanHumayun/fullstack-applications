@@ -35,6 +35,7 @@ import resourceRoutes from './server/routes/resourceRoutes.js';
 import practiceLabRoutes from './server/routes/practiceLabRoutes.js';
 import assignmentRoutes from './server/routes/assignmentRoutes.js';
 import ecosystemRoutes from './server/routes/ecosystemRoutes.js';
+import resumeRoutes from './server/routes/resumeRoutes.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -113,6 +114,7 @@ app.use('/api/resources', resourceRoutes);
 app.use('/api/practice-labs', practiceLabRoutes);
 app.use('/api/assignments', assignmentRoutes);
 app.use('/api/ecosystems', ecosystemRoutes);
+app.use('/api/resumes', resumeRoutes);
 
 // Backwards Compatibility Aliases
 app.put('/api/projects-reorder', (req, res, next) => {

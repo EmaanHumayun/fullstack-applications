@@ -17,3 +17,4 @@ export { SocialLink } from './SocialLink.js';
 export { Resource } from './Resource.js';
 export { PracticeLab } from './PracticeLab.js';
 export { Assignment } from './Assignment.js';
+export { Resume } from './Resume.js';

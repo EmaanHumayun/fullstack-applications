@@ -85,6 +85,12 @@ const siteContentSchema = new mongoose.Schema({
       description: { type: String, default: 'Lessons learned, architecture notes, and deep dives written while building software.' },
       visible: { type: Boolean, default: true }
     },
+    resume: {
+      eyebrow: { type: String, default: 'PROFESSIONAL RESUME' },
+      title: { type: String, default: 'Engineering Resume & Credentials.' },
+      description: { type: String, default: 'Explore my verified technical background, production projects, and core competencies, or download an ATS-compliant PDF copy.' },
+      visible: { type: Boolean, default: true }
+    },
     contact: {
       eyebrow: { type: String, default: "LET'S CONNECT" },
       title: { type: String, default: 'Good work gets better' },
@@ -110,6 +116,7 @@ const siteContentSchema = new mongoose.Schema({
     assignmentsLabel: { type: String, default: 'Assignments' },
     educationLabel: { type: String, default: 'Education' },
     certificatesLabel: { type: String, default: 'Credentials' },
+    resumeLabel: { type: String, default: 'Resume' },
     notesLabel: { type: String, default: 'Notes' },
     analyticsLabel: { type: String, default: 'Analytics' },
     contactLabel: { type: String, default: 'Contact' }

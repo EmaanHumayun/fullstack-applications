@@ -654,6 +654,7 @@ export function AdminSiteContent() {
             { key: 'assignments', label: 'Technical Assignments & Case Studies', defaultIcon: 'FileCheck' },
             { key: 'education', label: 'Academic Background & Studies', defaultIcon: 'GraduationCap' },
             { key: 'certificates', label: 'Verified Credentials & Certificates', defaultIcon: 'Trophy' },
+            { key: 'resume', label: 'Professional Resume & Credentials', defaultIcon: 'FileText' },
             { key: 'notes', label: 'Knowledge Base & Notes', defaultIcon: 'BookOpen' },
             { key: 'contact', label: 'Contact & Collaboration Section', defaultIcon: 'Share2' }
           ].map(sec => {
