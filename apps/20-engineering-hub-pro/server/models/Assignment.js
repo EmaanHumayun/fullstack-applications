@@ -236,6 +236,9 @@ const assignmentSchema = new mongoose.Schema({
   // Private Notes
   privateNotes: { type: String, default: '' },
 
+  githubUrl: { type: String, default: '' },
+  externalRepositoryUrl: { type: String, default: '' },
+
   // Meta & Visibility
   visibility: {
     type: String,

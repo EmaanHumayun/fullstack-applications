@@ -74,3 +74,4 @@ router.post('/:id/promote', auth, requireEditorOrAbove, async (req, res, next) =
 });
 
 export default router;
+

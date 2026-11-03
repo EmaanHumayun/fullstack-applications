@@ -355,19 +355,32 @@ export default function AssignmentsPage() {
                         </span>
                       </div>
 
-                      <span
-                        className={`font-semibold px-2 py-0.5 rounded text-[11px] ${
-                          item.status === 'Completed'
-                            ? 'bg-emerald-50 text-emerald-700'
-                            : item.status === 'Submitted'
-                            ? 'bg-blue-50 text-blue-700'
-                            : item.status === 'Under Review'
-                            ? 'bg-purple-50 text-purple-700'
-                            : 'bg-background border border-border text-text-muted'
-                        }`}
-                      >
-                        {item.status}
-                      </span>
+                      <div className="flex items-center gap-3">
+                        {item.githubUrl && (
+                          <a
+                            href={item.githubUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            onClick={e => e.stopPropagation()}
+                            className="inline-flex items-center gap-1 text-[11px] font-semibold text-primary hover:underline"
+                          >
+                            <ExternalLink className="w-3 h-3" /> GitHub
+                          </a>
+                        )}
+                        <span
+                          className={`font-semibold px-2 py-0.5 rounded text-[11px] ${
+                            item.status === 'Completed'
+                              ? 'bg-emerald-50 text-emerald-700'
+                              : item.status === 'Submitted'
+                              ? 'bg-blue-50 text-blue-700'
+                              : item.status === 'Under Review'
+                              ? 'bg-purple-50 text-purple-700'
+                              : 'bg-background border border-border text-text-muted'
+                          }`}
+                        >
+                          {item.status}
+                        </span>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -522,7 +535,19 @@ export default function AssignmentsPage() {
             </div>
 
             {/* Modal Footer */}
-            <div className="p-4 bg-background/50 border-t border-border flex justify-end">
+            <div className="p-4 bg-background/50 border-t border-border flex items-center justify-between gap-3">
+              {activeAssignment.githubUrl ? (
+                <a
+                  href={activeAssignment.githubUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-semibold rounded-xl bg-stone-900 text-white hover:bg-stone-800 transition shadow-sm"
+                >
+                  <ExternalLink className="w-3.5 h-3.5" /> Open Assignment on GitHub
+                </a>
+              ) : (
+                <div />
+              )}
               <button
                 onClick={() => setActiveAssignment(null)}
                 className="px-5 py-2 text-sm font-semibold rounded-xl bg-primary text-white hover:bg-primary-hover shadow-sm transition-all"

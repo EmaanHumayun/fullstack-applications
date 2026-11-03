@@ -317,16 +317,29 @@ export default function PracticeLabsPage() {
                       <span>{lab.estimatedDuration || '45m'}</span>
                     </div>
 
-                    <div className="flex items-center gap-2">
-                      <div className="w-16 bg-background rounded-full h-2 border border-border overflow-hidden">
-                        <div
-                          className="bg-primary h-full transition-all duration-300"
-                          style={{ width: `${lab.completionPercentage || 0}%` }}
-                        />
+                    <div className="flex items-center gap-3">
+                      {lab.githubUrl && (
+                        <a
+                          href={lab.githubUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={e => e.stopPropagation()}
+                          className="inline-flex items-center gap-1 text-[11px] font-semibold text-primary hover:underline"
+                        >
+                          <ExternalLink className="w-3 h-3" /> GitHub
+                        </a>
+                      )}
+                      <div className="flex items-center gap-2">
+                        <div className="w-16 bg-background rounded-full h-2 border border-border overflow-hidden">
+                          <div
+                            className="bg-primary h-full transition-all duration-300"
+                            style={{ width: `${lab.completionPercentage || 0}%` }}
+                          />
+                        </div>
+                        <span className="font-mono font-bold text-text">
+                          {lab.completionPercentage || 0}%
+                        </span>
                       </div>
-                      <span className="font-mono font-bold text-text">
-                        {lab.completionPercentage || 0}%
-                      </span>
                     </div>
                   </div>
                 </div>
@@ -523,7 +536,19 @@ export default function PracticeLabsPage() {
             </div>
 
             {/* Modal Footer */}
-            <div className="p-4 bg-background/50 border-t border-border flex justify-end">
+            <div className="p-4 bg-background/50 border-t border-border flex items-center justify-between gap-3">
+              {activeLab.githubUrl ? (
+                <a
+                  href={activeLab.githubUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-semibold rounded-xl bg-stone-900 text-white hover:bg-stone-800 transition shadow-sm"
+                >
+                  <ExternalLink className="w-3.5 h-3.5" /> Open Module on GitHub
+                </a>
+              ) : (
+                <div />
+              )}
               <button
                 onClick={() => setActiveLab(null)}
                 className="px-5 py-2 text-sm font-semibold rounded-xl bg-primary text-white hover:bg-primary-hover shadow-sm transition-all"

@@ -145,7 +145,7 @@ if (
 ) {
   const port = Number(env.PORT || 3000);
   connectDB().then(() => {
-    app.listen(port, () => console.log(`🚀 Engineering Hub Pro API listening on http://localhost:${port}`));
+    app.listen(port, () => console.log(`[SERVER] Engineering Hub Pro API listening on http://localhost:${port}`));
   }).catch(err => {
     console.error('Fatal database startup failure:', err);
     process.exit(1);

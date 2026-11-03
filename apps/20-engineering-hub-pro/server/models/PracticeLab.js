@@ -219,6 +219,9 @@ const practiceLabSchema = new mongoose.Schema({
     ref: 'Assignment'
   }],
 
+  githubUrl: { type: String, default: '' },
+  externalRepositoryUrl: { type: String, default: '' },
+
   // Meta & Security
   visibility: {
     type: String,
