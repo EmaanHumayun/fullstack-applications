@@ -38,7 +38,7 @@ import { printResumeDocument } from '../../components/resume/printResume.js';
 const DEFAULT_RESUME = {
   title: 'Software Engineer Resume',
   targetRole: 'Software Engineer',
-  templateId: 'modern-pro',
+  templateId: 'modern-executive',
   theme: getPalette('canva-executive'),
   typography: {
     fontFamily: 'inter',
@@ -138,6 +138,204 @@ const DEFAULT_RESUME = {
   isFeatured: false,
   version: 1
 };
+
+function TemplateSchematicThumbnail({ templateId, primaryColor, accentColor, blockColor }) {
+  if (templateId === 'modern-executive') {
+    return (
+      <div className="flex flex-col h-full gap-0.5">
+        <div style={{ backgroundColor: primaryColor, borderTop: `2px solid ${accentColor}` }} className="h-4 p-0.5 flex flex-col justify-between">
+          <div className="w-6 h-1 bg-white rounded-xs" />
+          <div className="flex gap-0.5">
+            <span className="w-1 h-1 rounded-full" style={{ backgroundColor: accentColor }} />
+            <span className="w-1 h-1 rounded-full" style={{ backgroundColor: accentColor }} />
+            <span className="w-1 h-1 rounded-full" style={{ backgroundColor: accentColor }} />
+          </div>
+        </div>
+        <div className="flex-1 flex gap-0.5 pt-0.5">
+          <div className="w-2/3 flex flex-col gap-0.5">
+            <div className="w-full h-1 bg-stone-300 rounded" />
+            <div className="w-4/5 h-0.5 bg-stone-200 rounded" />
+            <div className="w-full h-0.5 bg-stone-200 rounded" />
+          </div>
+          <div className="w-1/3 flex flex-col gap-0.5 border-l border-stone-200 pl-0.5">
+            <div style={{ borderColor: accentColor }} className="w-2.5 h-2.5 rounded-full border border-dashed" />
+            <div className="w-full h-0.5 bg-stone-200 rounded" />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (templateId === 'contemporary-split') {
+    return (
+      <div className="flex h-full gap-0.5">
+        <div style={{ backgroundColor: blockColor, borderColor: accentColor }} className="w-5 h-full rounded-xs p-0.5 flex flex-col gap-0.5 border-r">
+          <div style={{ backgroundColor: primaryColor }} className="w-2.5 h-2.5 rounded-full mx-auto" />
+          <div style={{ borderColor: accentColor }} className="w-2 h-2 rounded-full border mx-auto mt-0.5" />
+          <div className="w-full h-0.5 bg-stone-300 rounded mt-auto" />
+        </div>
+        <div className="flex-1 flex flex-col gap-0.5 pl-0.5">
+          <div className="w-3/4 h-1 bg-stone-800 rounded" />
+          <div style={{ backgroundColor: accentColor }} className="w-1/2 h-0.5 rounded" />
+          <div className="w-full h-0.5 bg-stone-200 rounded" />
+          <div className="w-full h-0.5 bg-stone-300 rounded" />
+          <div className="w-2/3 h-0.5 bg-stone-200 rounded" />
+        </div>
+      </div>
+    );
+  }
+
+  if (templateId === 'software-engineer') {
+    return (
+      <div className="flex flex-col h-full gap-0.5 font-mono">
+        <div style={{ backgroundColor: primaryColor }} className="h-3 p-0.5 rounded-xs flex items-center gap-0.5">
+          <span className="w-1 h-1 rounded-full bg-rose-400 inline-block" />
+          <span className="w-1 h-1 rounded-full bg-amber-400 inline-block" />
+          <span className="w-1 h-1 rounded-full bg-emerald-400 inline-block" />
+          <div className="w-3 h-0.5 bg-emerald-300 rounded ml-auto" />
+        </div>
+        <div style={{ backgroundColor: blockColor }} className="p-0.5 rounded">
+          <div className="w-full h-0.5 bg-stone-400 rounded" />
+        </div>
+        <div className="grid grid-cols-2 gap-0.5">
+          <div className="h-2 rounded bg-stone-100 border border-stone-200" />
+          <div className="h-2 rounded bg-stone-100 border border-stone-200" />
+        </div>
+        <div className="w-full h-0.5 bg-stone-200 rounded mt-auto" />
+      </div>
+    );
+  }
+
+  if (templateId === 'data-ai-pro') {
+    return (
+      <div className="flex flex-col h-full gap-0.5">
+        <div className="h-3.5 p-0.5 rounded-xs bg-purple-900 text-white flex items-center justify-between">
+          <div className="w-4 h-0.5 bg-purple-300 rounded" />
+          <div className="w-1.5 h-1.5 rounded-full border border-purple-400" />
+        </div>
+        <div className="flex justify-around py-0.5">
+          <div className="w-2.5 h-2.5 rounded-full border-2 border-purple-600" />
+          <div className="w-2.5 h-2.5 rounded-full border-2 border-purple-400" />
+        </div>
+        <div className="w-full h-0.5 bg-stone-200 rounded mt-auto" />
+        <div className="w-3/4 h-0.5 bg-stone-300 rounded" />
+      </div>
+    );
+  }
+
+  if (templateId === 'devops-engineer') {
+    return (
+      <div className="flex flex-col h-full gap-0.5">
+        <div className="h-4 p-0.5 rounded-xs bg-slate-900 border-t border-sky-400 flex flex-col justify-between">
+          <div className="w-5 h-0.5 bg-sky-400 rounded" />
+          <div className="w-3 h-0.5 bg-emerald-400 rounded" />
+        </div>
+        <div className="grid grid-cols-2 gap-0.5 py-0.5">
+          <div className="h-1.5 rounded bg-sky-50 border border-sky-200" />
+          <div className="h-1.5 rounded bg-sky-50 border border-sky-200" />
+        </div>
+        <div className="w-full h-0.5 bg-stone-200 rounded mt-auto" />
+      </div>
+    );
+  }
+
+  if (templateId === 'luxury-gold') {
+    return (
+      <div className="flex flex-col h-full gap-0.5 p-0.5 border border-[#c5a059] bg-[#fcfaf6]">
+        <div className="w-2 h-2 rounded-full border border-[#c5a059] mx-auto" />
+        <div className="w-8 h-0.5 bg-stone-800 rounded mx-auto" />
+        <div className="w-5 h-0.5 bg-[#c5a059] rounded mx-auto" />
+        <div className="w-full h-px bg-[#c5a059]/40 my-0.5" />
+        <div className="w-full h-0.5 bg-stone-200 rounded" />
+        <div className="w-3/4 h-0.5 bg-stone-200 rounded" />
+      </div>
+    );
+  }
+
+  if (templateId === 'swiss-design') {
+    return (
+      <div className="flex flex-col h-full gap-0.5 p-0.5">
+        <div className="w-2 h-0.5 bg-rose-600 mb-0.5" />
+        <div className="w-full h-1 bg-black rounded-none" />
+        <div className="flex gap-0.5 pt-0.5">
+          <div className="w-1/4 font-mono text-[6px] font-bold">01/</div>
+          <div className="w-3/4 flex flex-col gap-0.5">
+            <div className="w-full h-0.5 bg-stone-400" />
+            <div className="w-2/3 h-0.5 bg-stone-300" />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (templateId === 'burgundy-elegance') {
+    return (
+      <div className="flex flex-col h-full gap-0.5">
+        <div className="h-3.5 bg-[#581825] p-0.5 border-b border-[#d4af37] flex flex-col justify-center">
+          <div className="w-6 h-0.5 bg-[#d4af37] mx-auto rounded" />
+        </div>
+        <div className="p-0.5 flex flex-col gap-0.5">
+          <div className="w-full h-0.5 bg-[#581825] rounded" />
+          <div className="w-3/4 h-0.5 bg-stone-200 rounded" />
+          <div className="w-full h-0.5 bg-stone-200 rounded" />
+        </div>
+      </div>
+    );
+  }
+
+  if (templateId === 'editorial-magazine') {
+    return (
+      <div className="flex flex-col h-full gap-0.5 text-center p-0.5">
+        <div className="w-full h-px bg-stone-900" />
+        <div className="w-6 h-1 bg-stone-900 mx-auto rounded" />
+        <div className="w-4 h-0.5 bg-stone-400 mx-auto rounded" />
+        <div className="flex gap-0.5 text-left pt-0.5">
+          <span className="font-serif text-[7px] italic font-bold">I.</span>
+          <div className="flex-1 flex flex-col gap-0.5">
+            <div className="w-full h-0.5 bg-stone-300" />
+            <div className="w-2/3 h-0.5 bg-stone-200" />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (templateId === 'creative-portfolio') {
+    return (
+      <div className="flex flex-col h-full gap-0.5">
+        <div style={{ backgroundColor: primaryColor }} className="h-3 p-0.5 rounded-xs flex items-center justify-between">
+          <div className="w-4 h-0.5 bg-white rounded" />
+          <div style={{ backgroundColor: accentColor }} className="w-2 h-1 rounded-xs" />
+        </div>
+        <div className="grid grid-cols-2 gap-0.5">
+          <div style={{ borderColor: accentColor }} className="h-2 rounded border bg-stone-50" />
+          <div style={{ borderColor: accentColor }} className="h-2 rounded border bg-stone-50" />
+        </div>
+        <div className="w-full h-0.5 bg-stone-200 rounded mt-auto" />
+      </div>
+    );
+  }
+
+  // Fallback Clean Layout Schematic
+  return (
+    <div className="flex flex-col h-full gap-0.5">
+      <div style={{ borderBottomColor: accentColor }} className="border-b pb-0.5 flex justify-between">
+        <div className="w-6 h-1 bg-stone-700 rounded" />
+        <div style={{ backgroundColor: accentColor }} className="w-2 h-1 rounded" />
+      </div>
+      <div className="grid grid-cols-2 gap-0.5 py-0.5">
+        <div style={{ backgroundColor: blockColor }} className="p-0.5 rounded">
+          <div style={{ backgroundColor: accentColor }} className="w-full h-0.5 rounded" />
+        </div>
+        <div style={{ backgroundColor: blockColor }} className="p-0.5 rounded">
+          <div style={{ backgroundColor: accentColor }} className="w-full h-0.5 rounded" />
+        </div>
+      </div>
+      <div className="w-full h-0.5 bg-stone-200 rounded mt-auto" />
+      <div className="w-3/4 h-0.5 bg-stone-200 rounded" />
+    </div>
+  );
+}
 
 export default function AdminResumeBuilder() {
   const { id } = useParams();
@@ -959,107 +1157,12 @@ export default function AdminResumeBuilder() {
                         <div className="flex gap-3">
                           {/* Mini Layout Schematic Thumbnail */}
                           <div className="w-14 h-18 rounded border border-stone-200 bg-white p-1 flex flex-col gap-1 overflow-hidden shrink-0 shadow-xs">
-                            {t.id === 'modern-pro' ? (
-                              <div className="flex flex-col h-full gap-0.5">
-                                <div style={{ borderTopColor: accentColor, backgroundColor: blockColor }} className="h-4 border-t-2 p-0.5 flex items-center justify-between">
-                                  <div style={{ backgroundColor: primaryColor }} className="w-2 h-2 rounded-xs" />
-                                  <div className="flex gap-0.5">
-                                    <div style={{ borderColor: accentColor }} className="w-2 h-2 rounded-full border" />
-                                    <div style={{ borderColor: accentColor }} className="w-2 h-2 rounded-full border" />
-                                  </div>
-                                </div>
-                                <div className="flex-1 flex gap-0.5 pt-0.5">
-                                  <div className="w-1/3 flex flex-col gap-0.5 border-r border-stone-100 pr-0.5">
-                                    <div style={{ backgroundColor: accentColor }} className="w-full h-0.5 rounded" />
-                                    <div className="w-full h-0.5 bg-stone-200 rounded" />
-                                  </div>
-                                  <div className="flex-1 flex flex-col gap-0.5">
-                                    <div className="w-full h-0.5 bg-stone-300 rounded" />
-                                    <div className="w-3/4 h-0.5 bg-stone-200 rounded" />
-                                  </div>
-                                </div>
-                              </div>
-                            ) : ['software-engineer', 'backend-engineer', 'devops-engineer', 'ai-ml-engineer', 'fullstack-dev', 'automation-engineer', 'cybersecurity-networking'].includes(t.id) ? (
-                              <div className="flex flex-col h-full gap-0.5">
-                                <div style={{ backgroundColor: primaryColor }} className="h-3.5 p-0.5 rounded-xs flex items-center gap-0.5">
-                                  <span className="w-1 h-1 rounded-full bg-rose-400 inline-block" />
-                                  <span className="w-1 h-1 rounded-full bg-amber-400 inline-block" />
-                                  <span className="w-1 h-1 rounded-full bg-emerald-400 inline-block" />
-                                  <div className="w-4 h-0.5 bg-white/60 rounded ml-auto" />
-                                </div>
-                                <div className="grid grid-cols-2 gap-0.5 py-0.5">
-                                  <div style={{ backgroundColor: blockColor }} className="p-0.5 rounded">
-                                    <div style={{ backgroundColor: accentColor }} className="w-full h-0.5 rounded" />
-                                  </div>
-                                  <div style={{ backgroundColor: blockColor }} className="p-0.5 rounded">
-                                    <div style={{ backgroundColor: accentColor }} className="w-full h-0.5 rounded" />
-                                  </div>
-                                </div>
-                                <div className="w-full h-0.5 bg-stone-200 rounded mt-auto" />
-                              </div>
-                            ) : ['two-col-left', 'sidebar-dark'].includes(t.layout) ? (
-                              <div className="flex h-full gap-0.5">
-                                <div style={{ backgroundColor: t.layout === 'sidebar-dark' ? primaryColor : blockColor }} className="w-4 h-full rounded-xs p-0.5 flex flex-col gap-0.5">
-                                  <div style={{ backgroundColor: accentColor }} className="w-2 h-2 rounded-full" />
-                                  <div className="w-full h-0.5 bg-stone-300 rounded" />
-                                  <div className="w-2/3 h-0.5 bg-stone-300 rounded" />
-                                </div>
-                                <div className="flex-1 flex flex-col gap-0.5 pl-0.5">
-                                  <div className="w-3/4 h-1 bg-stone-700 rounded" />
-                                  <div className="w-full h-0.5 bg-stone-200 rounded" />
-                                  <div style={{ backgroundColor: accentColor }} className="w-full h-0.5 rounded" />
-                                  <div className="w-2/3 h-0.5 bg-stone-200 rounded" />
-                                </div>
-                              </div>
-                            ) : t.layout === 'executive' || t.layout === 'creative-editorial' ? (
-                              <div className="flex flex-col h-full gap-0.5">
-                                <div style={{ backgroundColor: primaryColor }} className="h-4 w-full rounded-xs p-0.5 flex items-center justify-between">
-                                  <div style={{ backgroundColor: accentColor }} className="w-2 h-2 rounded-xs" />
-                                  <div className="w-4 h-0.5 bg-white/70 rounded" />
-                                </div>
-                                <div className="flex-1 flex gap-0.5 pt-0.5">
-                                  <div className="w-1/3 flex flex-col gap-0.5 border-r border-stone-100 pr-0.5">
-                                    <div style={{ backgroundColor: accentColor }} className="w-full h-0.5 rounded" />
-                                    <div className="w-full h-0.5 bg-stone-200 rounded" />
-                                  </div>
-                                  <div className="flex-1 flex flex-col gap-0.5">
-                                    <div className="w-full h-0.5 bg-stone-300 rounded" />
-                                    <div className="w-3/4 h-0.5 bg-stone-200 rounded" />
-                                  </div>
-                                </div>
-                              </div>
-                            ) : t.layout === 'timeline-vertical' ? (
-                              <div className="flex flex-col h-full gap-0.5">
-                                <div className="w-2/3 h-1 bg-stone-700 rounded mx-auto" />
-                                <div className="flex-1 pl-1.5 border-l border-stone-300 flex flex-col justify-around">
-                                  <div className="relative">
-                                    <div style={{ backgroundColor: accentColor }} className="absolute -left-[8px] top-0 w-1 h-1 rounded-full" />
-                                    <div className="w-full h-0.5 bg-stone-300 rounded" />
-                                  </div>
-                                  <div className="relative">
-                                    <div style={{ backgroundColor: accentColor }} className="absolute -left-[8px] top-0 w-1 h-1 rounded-full" />
-                                    <div className="w-2/3 h-0.5 bg-stone-300 rounded" />
-                                  </div>
-                                </div>
-                              </div>
-                            ) : (
-                              <div className="flex flex-col h-full gap-0.5">
-                                <div style={{ borderBottomColor: accentColor }} className="border-b pb-0.5 flex justify-between">
-                                  <div className="w-6 h-1 bg-stone-700 rounded" />
-                                  <div style={{ backgroundColor: accentColor }} className="w-2 h-1 rounded" />
-                                </div>
-                                <div className="grid grid-cols-2 gap-0.5 py-0.5">
-                                  <div style={{ backgroundColor: blockColor }} className="p-0.5 rounded">
-                                    <div style={{ backgroundColor: accentColor }} className="w-full h-0.5 rounded" />
-                                  </div>
-                                  <div style={{ backgroundColor: blockColor }} className="p-0.5 rounded">
-                                    <div style={{ backgroundColor: accentColor }} className="w-full h-0.5 rounded" />
-                                  </div>
-                                </div>
-                                <div className="w-full h-0.5 bg-stone-200 rounded mt-auto" />
-                                <div className="w-3/4 h-0.5 bg-stone-200 rounded" />
-                              </div>
-                            )}
+                            <TemplateSchematicThumbnail
+                              templateId={t.id}
+                              primaryColor={primaryColor}
+                              accentColor={accentColor}
+                              blockColor={blockColor}
+                            />
                           </div>
 
                           <div className="flex-1 min-w-0">

@@ -1,222 +1,273 @@
+/**
+ * 20 PREMIUM PROFESSIONAL RESUME TEMPLATES
+ * Canva Pro & Adobe InDesign editorial layouts across 4 distinct categories.
+ * Each template has its own unique visual identity, geometry, typography hierarchy,
+ * and section arrangement.
+ */
+
 export const TEMPLATE_CATEGORIES = [
   'All',
-  'ATS-Friendly Professional',
-  'Technology & Engineering',
-  'Modern Creative',
-  'Specialized'
+  'Modern & Professional',
+  'Creative & Designer',
+  'Elegant & Premium',
+  'Technical & Industry-Specific'
 ];
 
 export const RESUME_TEMPLATES = [
-  // CATEGORY A — ATS-FRIENDLY PROFESSIONAL
+  // =========================================================================
+  // CATEGORY A: MODERN & PROFESSIONAL
+  // =========================================================================
   {
-    id: 'classic-pro',
-    name: 'Classic Professional',
+    id: 'modern-executive',
+    name: 'Modern Executive',
     number: '01',
-    category: 'ATS-Friendly Professional',
+    category: 'Modern & Professional',
     atsFriendly: true,
-    layout: 'single-col',
-    description: 'Traditional single-column layout with clean horizontal divider rules, standard section headings, and zero decorative noise. 100% ATS parser compliant.',
-    recommendedFor: 'Corporate, Enterprise Software, Traditional Engineering Roles'
+    layout: 'executive-grid',
+    description: 'High-level executive layout featuring commanding title band, KPI metric indicators, executive summary callout, and dual-column experience with governance badges.',
+    recommendedFor: 'Engineering Directors, Tech Leads, Principal Engineers, Executives'
   },
   {
-    id: 'modern-pro',
-    name: 'Modern Professional',
+    id: 'modern-minimalist',
+    name: 'Modern Minimalist',
     number: '02',
-    category: 'ATS-Friendly Professional',
+    category: 'Modern & Professional',
     atsFriendly: true,
-    layout: 'single-col-accent',
-    description: 'Modern typography with centered contact header, subtle accent color bands, and crisp hierarchical spacing.',
-    recommendedFor: 'Mid & Senior Software Engineers, Tech Leads, Engineering Managers'
+    layout: 'minimal-zen',
+    description: 'Pristine white canvas with generous whitespace, asymmetric header, hairline dividers, delicate dot skill meters, and refined typographic hierarchy.',
+    recommendedFor: 'Senior Engineers, System Architects, Minimalist Tech Professionals'
   },
   {
-    id: 'minimal-elegant',
-    name: 'Minimal Elegant',
+    id: 'professional-corporate',
+    name: 'Professional Corporate',
     number: '03',
-    category: 'ATS-Friendly Professional',
+    category: 'Modern & Professional',
     atsFriendly: true,
-    layout: 'minimal',
-    description: 'Generous whitespace with borderless sections, refined understated typography, and clean airy bullet points.',
-    recommendedFor: 'Staff Engineers, System Architects, Consultants'
+    layout: 'corporate-cards',
+    description: 'Structured corporate grid with navy and charcoal styling, tinted rectangular section headers, company badges, diamond bullets, and competency meters.',
+    recommendedFor: 'Enterprise Software Engineers, Corporate IT, Fortune 500 Roles'
   },
   {
-    id: 'executive-pro',
-    name: 'Executive Professional',
+    id: 'contemporary-split',
+    name: 'Contemporary Split Layout',
     number: '04',
-    category: 'ATS-Friendly Professional',
-    atsFriendly: true,
-    layout: 'executive',
-    description: 'Commanding header with bold title band, structured executive summary box, and achievement-focused metrics layout.',
-    recommendedFor: 'Engineering Directors, Principal Engineers, Executives'
+    category: 'Modern & Professional',
+    atsFriendly: false,
+    layout: 'architectural-split',
+    description: 'Architectural two-column layout with full-height colored left sidebar housing circular SVG skill dials and education, paired with high-impact right main body.',
+    recommendedFor: 'Mid & Senior Developers, Modern Tech Startups, Product Engineers'
   },
   {
-    id: 'compact-ats',
-    name: 'Compact ATS',
+    id: 'elegant-professional',
+    name: 'Elegant Professional',
     number: '05',
-    category: 'ATS-Friendly Professional',
+    category: 'Modern & Professional',
     atsFriendly: true,
-    layout: 'compact-dense',
-    description: 'High-density space-efficient layout designed to maximize content per A4 page with inline skills and tight line spacing.',
-    recommendedFor: 'Experienced Engineers with high volume of projects and certifications'
+    layout: 'editorial-chic',
+    description: 'Refined editorial styling with centered title hierarchy, subtle accent color bands, philosophy callout card, and horizontal gradient skills telemetry.',
+    recommendedFor: 'Full-Stack Developers, Engineering Managers, Consultants'
   },
 
-  // CATEGORY B — TECHNOLOGY & ENGINEERING
+  // =========================================================================
+  // CATEGORY B: CREATIVE & DESIGNER
+  // =========================================================================
+  {
+    id: 'creative-portfolio',
+    name: 'Creative Portfolio',
+    number: '06',
+    category: 'Creative & Designer',
+    atsFriendly: true,
+    layout: 'portfolio-showcase',
+    description: 'Visual project showcase layout placing production case studies and clickable repository links first, accompanied by interactive skill badges and metrics.',
+    recommendedFor: 'Open-Source Builders, Design Engineers, Frontend Architects'
+  },
+  {
+    id: 'graphic-designer',
+    name: 'Graphic Designer',
+    number: '07',
+    category: 'Creative & Designer',
+    atsFriendly: false,
+    layout: 'creative-blocks',
+    description: 'High-contrast creative composition with geometric header blocks, circular tool proficiency dials, multi-column project showcase, and vibrant tags.',
+    recommendedFor: 'Creative Technologists, UI/UX Engineers, Design Systems Leads'
+  },
+  {
+    id: 'editorial-magazine',
+    name: 'Editorial Magazine',
+    number: '08',
+    category: 'Creative & Designer',
+    atsFriendly: false,
+    layout: 'editorial-magazine',
+    description: 'Magazine-inspired editorial presentation with oversized Roman numeral section headings (I, II, III), large serif initials, pull-quote summary, and italic dates.',
+    recommendedFor: 'Product Designers, Creative Directors, Thought Leaders'
+  },
+  {
+    id: 'bold-creative',
+    name: 'Bold Creative',
+    number: '09',
+    category: 'Creative & Designer',
+    atsFriendly: false,
+    layout: 'bold-brutalist',
+    description: 'Ultra-modern neo-brutalist aesthetic with high-contrast dark header ribbon, solid signature neon accents, bold section headers, and heavy pill tags.',
+    recommendedFor: 'Startup Founders, Creative Coders, Modern Web Innovators'
+  },
+  {
+    id: 'artistic-minimal',
+    name: 'Artistic Minimal',
+    number: '10',
+    category: 'Creative & Designer',
+    atsFriendly: true,
+    layout: 'artistic-minimal',
+    description: 'Japanese Zen-inspired aesthetic with soft warm background, organic rounded cards, delicate 5-dot rating tracks, and serene spacious flow.',
+    recommendedFor: 'Designers, Product Strategists, Refined Engineering Crafters'
+  },
+
+  // =========================================================================
+  // CATEGORY C: ELEGANT & PREMIUM
+  // =========================================================================
+  {
+    id: 'luxury-gold',
+    name: 'Luxury Gold',
+    number: '11',
+    category: 'Elegant & Premium',
+    atsFriendly: true,
+    layout: 'luxury-gold',
+    description: 'Opulent ivory and metallic gold presentation featuring an executive monogram crest, double gold hairline border, Roman serif headers, and star rating meters.',
+    recommendedFor: 'C-Suite Executives, Partners, Senior Advisors, Luxury Tech'
+  },
+  {
+    id: 'burgundy-elegance',
+    name: 'Burgundy Elegance',
+    number: '12',
+    category: 'Elegant & Premium',
+    atsFriendly: true,
+    layout: 'burgundy-elegance',
+    description: 'Deep Bordeaux burgundy paired with warm champagne neutral. Rich banner, gold serif typography, rose-tinted achievement badges, and vertical timeline.',
+    recommendedFor: 'High-Profile Consultants, Corporate Executives, Senior Architects'
+  },
+  {
+    id: 'swiss-design',
+    name: 'Swiss Design',
+    number: '13',
+    category: 'Elegant & Premium',
+    atsFriendly: true,
+    layout: 'swiss-grid',
+    description: 'Strict International Typographic Style based on mathematical grid. Asymmetric numbered headers (01/SUMMARY, 02/SKILLS), precise tabular dates, zero fluff.',
+    recommendedFor: 'Systems Engineers, Quantitative Analysts, European & Global Roles'
+  },
+  {
+    id: 'classic-serif',
+    name: 'Classic Serif',
+    number: '14',
+    category: 'Elegant & Premium',
+    atsFriendly: true,
+    layout: 'classic-serif',
+    description: 'Ivy League / Harvard prestige styling. Timeless serif typography, centered classical header, double horizontal dividers, and justified prose formatting.',
+    recommendedFor: 'Academics, Research Scientists, Corporate Legal & Finance Technologists'
+  },
+  {
+    id: 'scandinavian-minimal',
+    name: 'Scandinavian Minimal',
+    number: '15',
+    category: 'Elegant & Premium',
+    atsFriendly: true,
+    layout: 'scandi-minimal',
+    description: 'Nordic functional minimalism with warm linen canvas, muted slate and sage accents, soft rounded card containers, and clean horizontal progress lines.',
+    recommendedFor: 'Product Engineers, Sustainability Tech, Scandinavian & Remote Roles'
+  },
+
+  // =========================================================================
+  // CATEGORY D: TECHNICAL & INDUSTRY-SPECIFIC
+  // =========================================================================
   {
     id: 'software-engineer',
     name: 'Software Engineer',
-    number: '06',
-    category: 'Technology & Engineering',
+    number: '16',
+    category: 'Technical & Industry-Specific',
     atsFriendly: true,
-    layout: 'tech-skills-top',
-    description: 'Categorized technical skills prominently positioned directly under the summary. Distinct separation between production projects and employment.',
-    recommendedFor: 'Full-Stack & Generalist Software Engineers'
+    layout: 'dev-terminal',
+    description: 'Silicon Valley developer terminal layout with macOS traffic lights, active git branch indicator, monospace code docstrings, and verified GitHub project links.',
+    recommendedFor: 'Full-Stack Software Engineers, Systems Programmers, Backend Developers'
   },
   {
-    id: 'backend-engineer',
-    name: 'Backend Engineer',
-    number: '07',
-    category: 'Technology & Engineering',
+    id: 'data-ai-pro',
+    name: 'Data & AI Professional',
+    number: '17',
+    category: 'Technical & Industry-Specific',
     atsFriendly: true,
-    layout: 'backend-arch',
-    description: 'Architecture and systems focus with emphasized sections for APIs, databases, caching layers, and distributed message queues.',
-    recommendedFor: 'Backend Architects, API Developers, Distributed Systems Engineers'
+    layout: 'ai-telemetry',
+    description: 'AI & Data Science lab presentation with neural framework tags (LangGraph, PyTorch, RAG), circular SVG model accuracy rings, and dataset project metrics.',
+    recommendedFor: 'AI Engineers, Machine Learning Scientists, Data Architects'
   },
   {
     id: 'devops-engineer',
-    name: 'DevOps & Cloud Engineer',
-    number: '08',
-    category: 'Technology & Engineering',
+    name: 'DevOps Engineer',
+    number: '18',
+    category: 'Technical & Industry-Specific',
     atsFriendly: true,
-    layout: 'devops-infra',
-    description: 'Features infrastructure badges (Linux, Docker, K8s, Terraform, CI/CD), reliability metrics, and cloud automation achievements.',
-    recommendedFor: 'DevOps Engineers, SREs, Cloud Platform Engineers'
+    layout: 'devops-sre',
+    description: 'CNCF Cloud Native platform dashboard featuring 99.99% uptime SLA banner, Kubernetes/Terraform infrastructure badges, and automated GitOps pipeline cards.',
+    recommendedFor: 'DevOps Engineers, Site Reliability Engineers (SRE), Cloud Architects'
   },
-  {
-    id: 'ai-ml-engineer',
-    name: 'AI & Machine Learning Engineer',
-    number: '09',
-    category: 'Technology & Engineering',
-    atsFriendly: true,
-    layout: 'ai-research',
-    description: 'Emphasizes LLM frameworks, agentic architectures (LangGraph, Pydantic), vector search, dataset pipelines, and technical research.',
-    recommendedFor: 'AI Engineers, ML Practitioners, Agentic Systems Developers'
-  },
-  {
-    id: 'fullstack-dev',
-    name: 'Full-Stack Developer',
-    number: '10',
-    category: 'Technology & Engineering',
-    atsFriendly: true,
-    layout: 'fullstack-split',
-    description: 'Features balanced dual-column skill categorization (Frontend UI vs Backend/Cloud) with direct GitHub and live demo deployment badges.',
-    recommendedFor: 'Frontend & Full-Stack Web Developers'
-  },
-  {
-    id: 'automation-engineer',
-    name: 'Automation & Integration Engineer',
-    number: '11',
-    category: 'Technology & Engineering',
-    atsFriendly: true,
-    layout: 'automation-flow',
-    description: 'Dedicated to event-driven workflows, webhook listeners, third-party API sync daemons, and measurable operational time-savings.',
-    recommendedFor: 'Integration Engineers, Automation Specialists, QA/SDET'
-  },
-  {
-    id: 'cybersecurity-networking',
-    name: 'Cybersecurity & Networking',
-    number: '12',
-    category: 'Technology & Engineering',
-    atsFriendly: true,
-    layout: 'security-matrix',
-    description: 'Highlights security standards (OWASP, RBAC, JWT, TLS), network topology labs, vulnerability auditing, and verified certifications.',
-    recommendedFor: 'Security Engineers, Network Administrators, DevSecOps'
-  },
-
-  // CATEGORY C — MODERN CREATIVE
-  {
-    id: 'modern-two-col',
-    name: 'Modern Two-Column',
-    number: '13',
-    category: 'Modern Creative',
-    atsFriendly: false,
-    layout: 'two-col-left',
-    description: '35% left sidebar for contact, education, certifications, and skills; 65% right main column for summary, experience, and major projects.',
-    recommendedFor: 'Modern tech companies, startups, and creative engineering agencies'
-  },
-  {
-    id: 'elegant-sidebar',
-    name: 'Elegant Sidebar',
-    number: '14',
-    category: 'Modern Creative',
-    atsFriendly: false,
-    layout: 'sidebar-dark',
-    description: 'Sophisticated dark or accent-tinted sidebar with crisp contrasting typography; white main content body with gold/accent rules.',
-    recommendedFor: 'Product Engineers, UI/UX Technologists, Creative Leads'
-  },
-  {
-    id: 'contemporary-creative',
-    name: 'Contemporary Creative',
-    number: '15',
-    category: 'Modern Creative',
-    atsFriendly: false,
-    layout: 'creative-editorial',
-    description: 'Distinctive editorial typography pairing (`DM Serif` + `Inter`), bold colored initials monogram, and geometric section bullets.',
-    recommendedFor: 'Design Technologists, Creative Coders, Startup Founders'
-  },
-  {
-    id: 'timeline-resume',
-    name: 'Timeline Journey',
-    number: '16',
-    category: 'Modern Creative',
-    atsFriendly: false,
-    layout: 'timeline-vertical',
-    description: 'A continuous vertical timeline spine connecting career roles, academic degrees, and major milestone accomplishments.',
-    recommendedFor: 'Engineers with a continuous, progressive career track'
-  },
-  {
-    id: 'portfolio-oriented',
-    name: 'Portfolio-Oriented Showcase',
-    number: '17',
-    category: 'Modern Creative',
-    atsFriendly: true,
-    layout: 'portfolio-first',
-    description: 'Features prominent showcase project cards with architecture summaries, tech badges, and clickable repo links positioned before work history.',
-    recommendedFor: 'Open-Source Contributors, Independent Builders, Freelancers'
-  },
-
-  // CATEGORY D — SPECIALIZED
   {
     id: 'academic-research',
     name: 'Academic & Research',
-    number: '18',
-    category: 'Specialized',
-    atsFriendly: true,
-    layout: 'academic-formal',
-    description: 'Formal academic hierarchy prioritizing education, thesis/dissertation, research projects, publications, and teaching appointments.',
-    recommendedFor: 'Graduate Researchers, Computer Science Scholars, Academics'
-  },
-  {
-    id: 'entry-graduate',
-    name: 'Graduate & Entry-Level',
     number: '19',
-    category: 'Specialized',
+    category: 'Technical & Industry-Specific',
     atsFriendly: true,
-    layout: 'entry-coursework',
-    description: 'Prioritizes university education, core coursework, academic projects, practical labs, and technical certifications over employment history.',
-    recommendedFor: 'Recent CS Graduates, Junior Developers, Career Changers'
+    layout: 'academic-cv',
+    description: 'Scholarly curriculum vitae hierarchy prioritizing university degrees, thesis research, peer-reviewed publications, academic projects, and certifications.',
+    recommendedFor: 'PhD Candidates, CS Researchers, University Lecturers, Graduate Students'
   },
   {
-    id: 'international-premium',
-    name: 'International Premium',
+    id: 'ats-classic',
+    name: 'ATS Classic',
     number: '20',
-    category: 'Specialized',
+    category: 'Technical & Industry-Specific',
     atsFriendly: true,
-    layout: 'international-tabular',
-    description: 'Standardized European and international format featuring clean tabular date alignment, multilingual proficiency, and exhaustive credential proof.',
-    recommendedFor: 'Global / Remote roles, European & Middle-Eastern tech applications'
+    layout: 'ats-single-col',
+    description: '100% ATS parser compliant single-column document with standard headings, zero graphical interference, perfect text extraction, and maximum readability.',
+    recommendedFor: 'Corporate Job Portals (Workday, Greenhouse, Taleo), High-Volume Applications'
   }
 ];
 
-export function getTemplateMeta(id) {
-  return RESUME_TEMPLATES.find(t => t.id === id) || RESUME_TEMPLATES[1]; // default modern-pro
+/**
+ * Backward compatibility alias map ensuring previously saved resumes
+ * resolve seamlessly to one of the 20 canonical Canva Pro templates.
+ */
+export const TEMPLATE_ALIASES = {
+  'executive-pro': 'modern-executive',
+  'minimal-elegant': 'modern-minimalist',
+  'modern-two-col': 'contemporary-split',
+  'elegant-sidebar': 'contemporary-split',
+  'modern-pro': 'elegant-professional',
+  'portfolio-oriented': 'creative-portfolio',
+  'contemporary-creative': 'bold-creative',
+  'international-premium': 'swiss-design',
+  'ai-ml-engineer': 'data-ai-pro',
+  'classic-pro': 'ats-classic',
+  'compact-ats': 'ats-classic',
+  'fullstack-dev': 'software-engineer',
+  'backend-engineer': 'software-engineer',
+  'automation-engineer': 'devops-engineer',
+  'cybersecurity-networking': 'devops-engineer',
+  'timeline-resume': 'editorial-magazine',
+  'entry-graduate': 'academic-research'
+};
+
+/**
+ * Normalizes any template identifier to one of the 20 canonical IDs.
+ */
+export function normalizeTemplateId(id) {
+  if (!id) return 'modern-executive';
+  if (TEMPLATE_ALIASES[id]) return TEMPLATE_ALIASES[id];
+  return RESUME_TEMPLATES.some(t => t.id === id) ? id : 'modern-executive';
 }
 
+/**
+ * Retrieves the full metadata record for a template id.
+ */
+export function getTemplateMeta(id) {
+  const canonicalId = normalizeTemplateId(id);
+  return RESUME_TEMPLATES.find(t => t.id === canonicalId) || RESUME_TEMPLATES[0];
+}
