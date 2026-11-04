@@ -1252,7 +1252,7 @@ function AcademicAndGraduateLayout({ resume, theme, pi, sections, skillsData, me
         <div className="sm:col-span-5 space-y-4">
           {eduSec && (
             <div className="space-y-2">
-              <h2 style={{ color: theme.c1 }} className="text-xs font-bold uppercase tracking-wider font-serif border-b pb-1" style={{ borderColor: theme.c2 }}>
+              <h2 style={{ color: theme.c1, borderColor: theme.c2 }} className="text-xs font-bold uppercase tracking-wider font-serif border-b pb-1">
                 {eduSec.title}
               </h2>
               <EducationSectionContent entries={eduSec.entries || []} theme={theme} />
@@ -1261,7 +1261,7 @@ function AcademicAndGraduateLayout({ resume, theme, pi, sections, skillsData, me
 
           {skillsSec && (
             <div className="space-y-2.5 pt-1">
-              <h2 style={{ color: theme.c1 }} className="text-xs font-bold uppercase tracking-wider font-serif border-b pb-1" style={{ borderColor: theme.c2 }}>
+              <h2 style={{ color: theme.c1, borderColor: theme.c2 }} className="text-xs font-bold uppercase tracking-wider font-serif border-b pb-1">
                 {skillsSec.title}
               </h2>
               <CanvaProSkillProgressBars skillsData={skillsData} fallbackEntries={skillsSec.entries} theme={theme} />
@@ -1270,7 +1270,7 @@ function AcademicAndGraduateLayout({ resume, theme, pi, sections, skillsData, me
 
           {certSec && (
             <div className="space-y-2 pt-1">
-              <h2 style={{ color: theme.c1 }} className="text-xs font-bold uppercase tracking-wider font-serif border-b pb-1" style={{ borderColor: theme.c2 }}>
+              <h2 style={{ color: theme.c1, borderColor: theme.c2 }} className="text-xs font-bold uppercase tracking-wider font-serif border-b pb-1">
                 {certSec.title}
               </h2>
               <CertificationsSectionContent entries={certSec.entries || []} theme={theme} />
@@ -1281,7 +1281,7 @@ function AcademicAndGraduateLayout({ resume, theme, pi, sections, skillsData, me
         <div className="sm:col-span-7 space-y-5">
           {projectSec && (
             <div className="space-y-3">
-              <h2 style={{ color: theme.c1 }} className="text-xs font-bold uppercase tracking-wider font-serif border-b pb-1" style={{ borderColor: theme.c2 }}>
+              <h2 style={{ color: theme.c1, borderColor: theme.c2 }} className="text-xs font-bold uppercase tracking-wider font-serif border-b pb-1">
                 {projectSec.title}
               </h2>
               <CanvaProjectCards entries={projectSec.entries || []} theme={theme} />
@@ -1290,7 +1290,7 @@ function AcademicAndGraduateLayout({ resume, theme, pi, sections, skillsData, me
 
           {expSec && (
             <div className="space-y-3">
-              <h2 style={{ color: theme.c1 }} className="text-xs font-bold uppercase tracking-wider font-serif border-b pb-1" style={{ borderColor: theme.c2 }}>
+              <h2 style={{ color: theme.c1, borderColor: theme.c2 }} className="text-xs font-bold uppercase tracking-wider font-serif border-b pb-1">
                 {expSec.title}
               </h2>
               <ExperienceSectionContent entries={expSec.entries || []} theme={theme} />
