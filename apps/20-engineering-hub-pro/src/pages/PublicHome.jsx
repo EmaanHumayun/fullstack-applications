@@ -915,7 +915,7 @@ module "production_k8s" {
         {/* Tab 1: cluster.tf with line numbers & dynamic typing */}
         {activeTab === 'blueprint' && (
           <div className="art-code flex items-start">
-            <div className="art-gutter flex flex-col font-mono text-[11px] leading-[2.05]">
+            <div className="art-gutter flex flex-col font-mono text-[10px] leading-[1.7]">
               <span>01</span>
               <span>02</span>
               <span>03</span>
@@ -927,7 +927,7 @@ module "production_k8s" {
               <span>09</span>
               <span>10</span>
             </div>
-            <div className="flex-1 font-mono text-xs leading-[2.05] text-ink overflow-x-auto">
+            <div className="flex-1 font-mono text-[11px] leading-[1.7] text-ink overflow-x-auto">
               <div><span className="code-purple">module</span> <span className="code-gold">"production_cluster"</span> {'{'}</div>
               <div className="code-indent">source = <span className="code-gold">"terraform-aws/eks"</span>,</div>
               <div className="code-indent">cluster_name = <span className="code-gold">"k8s-prod-us-east"</span>,</div>
@@ -949,7 +949,7 @@ module "production_k8s" {
         {/* Tab 2: pipeline.log live console stream */}
         {activeTab === 'telemetry' && (
           <div className="art-code flex items-start">
-            <div className="art-gutter flex flex-col font-mono text-[11px] leading-[2.05]">
+            <div className="art-gutter flex flex-col font-mono text-[10px] leading-[1.7]">
               <span>01</span>
               <span>02</span>
               <span>03</span>
@@ -958,7 +958,7 @@ module "production_k8s" {
               <span>06</span>
               <span>07</span>
             </div>
-            <div className="flex-1 font-mono text-xs leading-[2.05] text-ink overflow-x-auto">
+            <div className="flex-1 font-mono text-[11px] leading-[1.7] text-ink overflow-x-auto">
               <div><span className="text-emerald-600 font-bold">&gt; [K8S]</span> Production EKS: 16 nodes healthy (0 pods failing)</div>
               <div><span className="text-primary font-bold">&gt; [CI/CD]</span> GitHub Actions: build & push to ECR SUCCESS (24s)</div>
               <div><span className="text-blue-500 font-bold">&gt; [ARGO]</span> GitOps controller: sync complete -&gt; rev #3e91da live</div>
@@ -973,7 +973,7 @@ module "production_k8s" {
         {/* Tab 3: k8s-cluster.json structured spec */}
         {activeTab === 'architecture' && (
           <div className="art-code flex items-start">
-            <div className="art-gutter flex flex-col font-mono text-[11px] leading-[2.05]">
+            <div className="art-gutter flex flex-col font-mono text-[10px] leading-[1.7]">
               <span>01</span>
               <span>02</span>
               <span>03</span>
@@ -983,7 +983,7 @@ module "production_k8s" {
               <span>07</span>
               <span>08</span>
             </div>
-            <div className="flex-1 font-mono text-xs leading-[2.05] text-ink overflow-x-auto">
+            <div className="flex-1 font-mono text-[11px] leading-[1.7] text-ink overflow-x-auto">
               <div>{'{'}</div>
               <div className="code-indent">"cluster": <span className="code-gold">"k8s-prod-us-east-1"</span>,</div>
               <div className="code-indent">"devopsLead": <span className="code-gold">"{profile?.name || 'Emaan Humayun'}"</span>,</div>
@@ -1225,17 +1225,17 @@ export function PublicHome() {
             </div>
 
             <h1 className="heading-display">
-              <span className="block text-4xl sm:text-5xl lg:text-6xl font-black font-display tracking-tight text-ink leading-[1.08]">
+              <span className="block text-3xl sm:text-4xl lg:text-5xl font-black font-display tracking-tight text-ink leading-[1.08]">
                 {profile?.name || 'Emaan Humayun'}
               </span>
-              <span className="block text-xl sm:text-2xl lg:text-3xl font-extrabold font-display text-primary mt-2.5 leading-tight tracking-tight">
+              <span className="block text-lg sm:text-xl lg:text-2xl font-extrabold font-display text-primary mt-2 leading-tight tracking-tight">
                 {hero.heading || 'Automating cloud infrastructure.'}{' '}
                 <span className="text-ink/80 font-semibold">{hero.headingAccent || 'From commit to self-healing cluster.'}</span>
               </span>
             </h1>
           </div>
 
-          <p data-hero className="text-sm sm:text-base text-ink/80 font-normal leading-relaxed mt-4 max-w-xl">
+          <p data-hero className="text-xs sm:text-sm text-ink/80 font-normal leading-relaxed mt-3 max-w-lg">
             {hero.description ||
               profile.bio ||
               'DevOps & Site Reliability Engineer specializing in resilient multi-cloud architectures, Kubernetes orchestration, zero-downtime CI/CD delivery pipelines, and Infrastructure as Code. Engineering scalable, observable, and automated production platforms.'}

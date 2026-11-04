@@ -54,6 +54,7 @@
 }
 
 html {
+  font-size: 82.5%;
   scroll-behavior: smooth;
   overflow-x: clip;
   overflow-y: visible;
@@ -65,9 +66,9 @@ body {
   background-color: var(--background);
   color: var(--text);
   font-family: var(--font-sans);
-  font-size: 16px;
+  font-size: 1rem;
   font-weight: 450;
-  line-height: 1.6;
+  line-height: 1.55;
   overflow-x: clip;
   overflow-y: visible;
   transition: background-color 0.25s ease, color 0.25s ease;
@@ -1107,13 +1108,13 @@ section[id],
 
 /* Hero Section: Balanced, Viewport-Aware First Screen */
 .hero-section {
-  max-width: 1240px;
+  max-width: 1140px;
   margin: 0 auto;
-  padding: clamp(28px, 4.5vh, 48px) 24px 32px;
+  padding: clamp(20px, 3vh, 36px) 20px 24px;
   display: grid;
-  grid-template-columns: 1.18fr 0.82fr;
+  grid-template-columns: 1.15fr 0.85fr;
   align-items: center;
-  gap: 40px;
+  gap: 32px;
 }
 
 .hero-copy {
@@ -1125,13 +1126,13 @@ section[id],
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 5px 12px;
+  padding: 4px 10px;
   background-color: var(--surface);
   border: 1px solid var(--border);
   border-radius: 100px;
   color: var(--primary);
   font-family: var(--font-mono);
-  font-size: 10px;
+  font-size: 9.5px;
   font-weight: 600;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -1139,43 +1140,43 @@ section[id],
 }
 
 .hero-description {
-  max-width: 560px;
-  font-size: 16px;
-  line-height: 1.8;
+  max-width: 500px;
+  font-size: 14px;
+  line-height: 1.65;
   color: var(--text-secondary);
   font-weight: 500;
-  margin-top: 18px;
+  margin-top: 14px;
 }
 
 .hero-actions {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: 14px;
-  margin-top: 30px;
+  gap: 12px;
+  margin-top: 22px;
 }
 
 .hero-socials {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 12px;
-  margin-top: 34px;
+  gap: 10px;
+  margin-top: 24px;
   color: var(--text-secondary);
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 600;
 }
 
 .social-action-btn {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 8px 14px;
+  gap: 6px;
+  padding: 6px 12px;
   border: 1px solid var(--border);
-  border-radius: 10px;
+  border-radius: 9px;
   background-color: var(--surface);
   color: var(--text);
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 700;
   transition: all 0.18s ease;
   box-shadow: 0 2px 6px rgba(67, 40, 24, 0.04);
@@ -1199,10 +1200,10 @@ section[id],
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 360px;
-  height: 360px;
+  width: 320px;
+  height: 320px;
   background: radial-gradient(circle, color-mix(in srgb, var(--primary) 28%, transparent) 0%, color-mix(in srgb, var(--gold) 15%, transparent) 50%, transparent 70%);
-  filter: blur(52px);
+  filter: blur(48px);
   border-radius: 50%;
   pointer-events: none;
   z-index: 1;
@@ -1213,12 +1214,12 @@ section[id],
   position: relative;
   z-index: 2;
   width: 100%;
-  max-width: 420px;
+  max-width: 375px;
   border: 1px solid var(--border);
   background-color: var(--surface);
-  border-radius: 20px;
-  padding: 20px 22px;
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.08), 0 4px 16px rgba(0, 0, 0, 0.04);
+  border-radius: 16px;
+  padding: 16px 18px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.07), 0 3px 12px rgba(0, 0, 0, 0.03);
   overflow: hidden;
   transition: transform 0.15s ease-out, box-shadow 0.25s ease;
   will-change: transform;
