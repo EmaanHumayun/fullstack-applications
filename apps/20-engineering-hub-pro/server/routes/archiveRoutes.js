@@ -11,6 +11,7 @@ import { Certificate } from '../models/Certificate.js';
 import { SocialLink } from '../models/SocialLink.js';
 import { PracticeLab } from '../models/PracticeLab.js';
 import { Assignment } from '../models/Assignment.js';
+import { Resume } from '../models/Resume.js';
 import { auth } from '../middleware/auth.js';
 import { requireEditorOrAbove, requireSuperAdmin } from '../middleware/rbac.js';
 import { recordAuditEvent } from '../middleware/audit.js';
@@ -34,7 +35,8 @@ router.get('/', async (req, res, next) => {
       certificates,
       socialLinks,
       practiceLabs,
-      assignments
+      assignments,
+      resumes
     ] = await Promise.all([
       Project.find({ isArchived: true }).select('title type domain archivedAt slug').lean(),
       Skill.find({ isArchived: true }).select('name category level archivedAt').lean(),
@@ -46,7 +48,8 @@ router.get('/', async (req, res, next) => {
       Certificate.find({ isArchived: true }).select('title issuer issuedAt archivedAt').lean(),
       SocialLink.find({ isArchived: true }).select('label platform url archivedAt').lean(),
       PracticeLab.find({ isArchived: true }).select('title domain difficulty archivedAt').lean(),
-      Assignment.find({ isArchived: true }).select('title domain difficulty archivedAt').lean()
+      Assignment.find({ isArchived: true }).select('title domain difficulty archivedAt').lean(),
+      Resume.find({ isArchived: true }).select('title targetRole templateId archivedAt').lean()
     ]);
 
     res.json({
@@ -61,6 +64,7 @@ router.get('/', async (req, res, next) => {
       socialLinks: socialLinks.map(sl => ({ ...sl, entityType: 'socialLink', label: sl.label })),
       practiceLabs: practiceLabs.map(pl => ({ ...pl, entityType: 'practiceLab', label: pl.title })),
       assignments: assignments.map(a => ({ ...a, entityType: 'assignment', label: a.title })),
+      resumes: resumes.map(r => ({ ...r, entityType: 'resume', label: r.title })),
       totalArchived:
         projects.length +
         skills.length +
@@ -72,7 +76,8 @@ router.get('/', async (req, res, next) => {
         certificates.length +
         socialLinks.length +
         practiceLabs.length +
-        assignments.length
+        assignments.length +
+        resumes.length
     });
   } catch (err) {
     next(err);
@@ -98,6 +103,7 @@ router.put('/restore/:entityType/:id', async (req, res, next) => {
       case 'socialLink': model = SocialLink; break;
       case 'practiceLab': model = PracticeLab; break;
       case 'assignment': model = Assignment; break;
+      case 'resume': model = Resume; break;
       default:
         return res.status(400).json({ message: `Unknown entity type: ${entityType}` });
     }
@@ -143,6 +149,7 @@ router.delete('/permanent/:entityType/:id', async (req, res, next) => {
       case 'socialLink': model = SocialLink; break;
       case 'practiceLab': model = PracticeLab; break;
       case 'assignment': model = Assignment; break;
+      case 'resume': model = Resume; break;
       default:
         return res.status(400).json({ message: `Unknown entity type: ${entityType}` });
     }
@@ -179,7 +186,8 @@ router.post('/empty-trash', requireSuperAdmin, async (req, res, next) => {
       Certificate.deleteMany({ isArchived: true }),
       SocialLink.deleteMany({ isArchived: true }),
       PracticeLab.deleteMany({ isArchived: true }),
-      Assignment.deleteMany({ isArchived: true })
+      Assignment.deleteMany({ isArchived: true }),
+      Resume.deleteMany({ isArchived: true })
     ]);
 
     await recordAuditEvent({

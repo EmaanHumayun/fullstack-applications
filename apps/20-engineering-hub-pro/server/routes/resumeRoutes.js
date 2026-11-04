@@ -30,12 +30,12 @@ async function resolveOwnerId(req) {
 router.get('/featured/public', async (req, res, next) => {
   try {
     await connectDB();
-    const featured = await Resume.findOne({ isFeatured: true, visibility: 'public' }).lean();
+    const featured = await Resume.findOne({ isFeatured: true, visibility: 'public', isArchived: { $ne: true } }).lean();
     if (featured) {
       return res.json(featured);
     }
     // Fallback: Return any public resume if available
-    const anyPublic = await Resume.findOne({ visibility: 'public' }).sort({ updatedAt: -1 }).lean();
+    const anyPublic = await Resume.findOne({ visibility: 'public', isArchived: { $ne: true } }).sort({ updatedAt: -1 }).lean();
     return res.json(anyPublic || null);
   } catch (err) {
     next(err);
@@ -130,7 +130,7 @@ router.get('/workspace/data', auth, async (req, res, next) => {
 router.get('/', auth, async (req, res, next) => {
   try {
     await connectDB();
-    const resumes = await Resume.find()
+    const resumes = await Resume.find({ isArchived: { $ne: true } })
       .select('title targetRole templateId theme visibility isFeatured version createdAt updatedAt personalInformation')
       .sort({ isFeatured: -1, updatedAt: -1 })
       .lean();
@@ -281,7 +281,7 @@ router.post('/:id/duplicate', auth, async (req, res, next) => {
   }
 });
 
-// 8. Delete resume
+// 8. Delete resume (Soft delete to recycle bin by default, permanent with ?permanent=true)
 router.delete('/:id', auth, async (req, res, next) => {
   try {
     await connectDB();
@@ -289,12 +289,47 @@ router.delete('/:id', auth, async (req, res, next) => {
       return res.status(400).json({ message: 'Invalid resume identifier' });
     }
 
-    const deleted = await Resume.findByIdAndDelete(req.params.id);
-    if (!deleted) {
+    if (req.query.permanent === 'true') {
+      const deleted = await Resume.findByIdAndDelete(req.params.id);
+      if (!deleted) {
+        return res.status(404).json({ message: 'Resume not found' });
+      }
+      return res.json({ success: true, message: 'Resume permanently deleted' });
+    }
+
+    const archived = await Resume.findByIdAndUpdate(
+      req.params.id,
+      { $set: { isArchived: true, archivedAt: new Date(), isFeatured: false } },
+      { new: true }
+    );
+    if (!archived) {
       return res.status(404).json({ message: 'Resume not found' });
     }
 
-    res.json({ success: true, message: 'Resume deleted successfully' });
+    res.json({ success: true, message: 'Resume moved to Recycle Bin' });
+  } catch (err) {
+    next(err);
+  }
+});
+
+// 8b. Restore resume from archive
+router.put('/:id/restore', auth, async (req, res, next) => {
+  try {
+    await connectDB();
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.status(400).json({ message: 'Invalid resume identifier' });
+    }
+
+    const restored = await Resume.findByIdAndUpdate(
+      req.params.id,
+      { $set: { isArchived: false, archivedAt: null } },
+      { new: true }
+    );
+    if (!restored) {
+      return res.status(404).json({ message: 'Resume not found' });
+    }
+
+    res.json({ success: true, message: 'Resume restored successfully', resume: restored });
   } catch (err) {
     next(err);
   }
@@ -357,3 +392,4 @@ router.delete('/:id/unset-featured', auth, async (req, res, next) => {
 });
 
 export default router;
+

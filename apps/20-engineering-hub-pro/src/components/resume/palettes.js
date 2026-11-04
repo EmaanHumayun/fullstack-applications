@@ -124,3 +124,4 @@ export const RESUME_PALETTES = [
 export function getPalette(id) {
   return RESUME_PALETTES.find(p => p.id === id) || RESUME_PALETTES[0];
 }
+

@@ -113,6 +113,15 @@ const resumeSchema = new mongoose.Schema({
     default: false,
     index: true
   },
+  isArchived: {
+    type: Boolean,
+    default: false,
+    index: true
+  },
+  archivedAt: {
+    type: Date,
+    default: null
+  },
   version: {
     type: Number,
     default: 1
@@ -133,3 +142,4 @@ resumeSchema.pre('save', function (next) {
 });
 
 export const Resume = mongoose.models.Resume || mongoose.model('Resume', resumeSchema);
+

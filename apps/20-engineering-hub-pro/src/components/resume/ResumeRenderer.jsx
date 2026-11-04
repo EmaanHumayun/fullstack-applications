@@ -793,3 +793,4 @@ function CertificationsSectionContent({ entries, theme, isDarkSidebar }) {
     </div>
   );
 }
+

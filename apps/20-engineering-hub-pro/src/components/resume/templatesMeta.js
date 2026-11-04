@@ -219,3 +219,4 @@ export const RESUME_TEMPLATES = [
 export function getTemplateMeta(id) {
   return RESUME_TEMPLATES.find(t => t.id === id) || RESUME_TEMPLATES[1]; // default modern-pro
 }
+

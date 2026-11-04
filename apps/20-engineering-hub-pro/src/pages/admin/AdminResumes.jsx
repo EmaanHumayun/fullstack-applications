@@ -103,14 +103,14 @@ export default function AdminResumes() {
       {/* Confirmation Modal */}
       {deletingId && (
         <Modal
-          title="Delete Resume"
+          title="Move Resume to Recycle Bin"
           onClose={() => setDeletingId(null)}
           onConfirm={handleDelete}
-          confirmText="Yes, Delete Resume"
+          confirmText="Move to Recycle Bin"
           confirmVariant="danger"
         >
           <p className="text-xs text-stone-600">
-            Are you sure you want to permanently delete this resume? This action cannot be undone.
+            Are you sure you want to remove this resume? It will be moved to the Unified Recycle Bin where it can be restored anytime or permanently purged.
           </p>
         </Modal>
       )}
@@ -444,3 +444,4 @@ export default function AdminResumes() {
     </div>
   );
 }
+

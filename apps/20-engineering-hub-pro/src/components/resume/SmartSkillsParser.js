@@ -149,3 +149,4 @@ export function autoCategorizeSkills(skillList) {
     .filter(([_, list]) => list.length > 0)
     .map(([name, skills]) => ({ name, skills }));
 }
+

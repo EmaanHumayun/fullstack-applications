@@ -92,7 +92,8 @@ export function AdminArchive() {
         ...(data.certificates || []),
         ...(data.socialLinks || []),
         ...(data.practiceLabs || []),
-        ...(data.assignments || [])
+        ...(data.assignments || []),
+        ...(data.resumes || [])
       ]
     : [];
 
@@ -142,7 +143,8 @@ export function AdminArchive() {
           { id: 'certificate', label: `Certificates (${data?.certificates?.length ?? 0})` },
           { id: 'socialLink', label: `Social Links (${data?.socialLinks?.length ?? 0})` },
           { id: 'practiceLab', label: `Practice Labs (${data?.practiceLabs?.length ?? 0})` },
-          { id: 'assignment', label: `Assignments (${data?.assignments?.length ?? 0})` }
+          { id: 'assignment', label: `Assignments (${data?.assignments?.length ?? 0})` },
+          { id: 'resume', label: `Resumes (${data?.resumes?.length ?? 0})` }
         ].map(tab => (
           <button
             key={tab.id}
