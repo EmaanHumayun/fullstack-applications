@@ -56,6 +56,7 @@ import { initActiveTheme } from '../lib/theme.js';
 import { getDomainIcon } from './admin/AdminDomains.jsx';
 import { getPlatformIcon } from './admin/AdminSocialLinks.jsx';
 import { ResumeRenderer } from '../components/resume/ResumeRenderer.jsx';
+import { printResumeDocument } from '../components/resume/printResume.js';
 
 const fallbackProfile = {
   name: 'Emaan Humayun',
@@ -1930,12 +1931,10 @@ export function PublicHome() {
                   type="button"
                   onClick={() => {
                     const cleanRole = (featuredResume.targetRole || 'Engineer').replace(/[^a-zA-Z0-9]/g, '-');
-                    const prevTitle = document.title;
-                    document.title = `Emaan-Humayun-${cleanRole}-Resume`;
-                    window.print();
-                    setTimeout(() => {
-                      document.title = prevTitle;
-                    }, 1000);
+                    printResumeDocument({
+                      elementId: 'public-hidden-printable-resume',
+                      title: `Emaan-Humayun-${cleanRole}-Resume`
+                    });
                   }}
                   className="inline-flex items-center gap-1.5 px-4 py-2 font-bold rounded-xl bg-stone-900 text-white hover:bg-stone-800 transition shadow-xs cursor-pointer"
                 >
@@ -1983,12 +1982,10 @@ export function PublicHome() {
                   type="button"
                   onClick={() => {
                     const cleanRole = (featuredResume.targetRole || 'Engineer').replace(/[^a-zA-Z0-9]/g, '-');
-                    const prevTitle = document.title;
-                    document.title = `Emaan-Humayun-${cleanRole}-Resume`;
-                    window.print();
-                    setTimeout(() => {
-                      document.title = prevTitle;
-                    }, 1000);
+                    printResumeDocument({
+                      elementId: 'modal-printable-resume',
+                      title: `Emaan-Humayun-${cleanRole}-Resume`
+                    });
                   }}
                   className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold rounded-lg bg-stone-900 text-white hover:bg-stone-800 transition shadow-xs"
                 >
@@ -2009,6 +2006,13 @@ export function PublicHome() {
               <ResumeRenderer resume={featuredResume} zoom={0.9} id="modal-printable-resume" />
             </div>
           </div>
+        </div>
+      )}
+
+      {/* Offscreen Full-Fidelity Resume for Instant 1-Click PDF Generation */}
+      {featuredResume && (
+        <div style={{ position: 'fixed', left: '-9999px', top: '-9999px', opacity: 0, pointerEvents: 'none' }} aria-hidden="true">
+          <ResumeRenderer resume={featuredResume} zoom={1} id="public-hidden-printable-resume" />
         </div>
       )}
 

@@ -22,7 +22,8 @@ import {
   ZoomIn,
   ZoomOut,
   Maximize2,
-  FileText
+  FileText,
+  Wand2
 } from 'lucide-react';
 import { api, jsonBody } from '../../lib/api.js';
 import { Toast, EmptyState } from '../../components.jsx';
@@ -31,6 +32,8 @@ import { RESUME_TEMPLATES, TEMPLATE_CATEGORIES } from '../../components/resume/t
 import { RESUME_PALETTES, getPalette } from '../../components/resume/palettes.js';
 import { parseRawSkills, autoCategorizeSkills } from '../../components/resume/SmartSkillsParser.js';
 import { WorkspaceImporterModal } from '../../components/resume/WorkspaceImporterModal.jsx';
+import { JobTailoringModal } from '../../components/resume/JobTailoringModal.jsx';
+import { printResumeDocument } from '../../components/resume/printResume.js';
 
 const DEFAULT_RESUME = {
   title: 'Software Engineer Resume',
@@ -148,6 +151,7 @@ export default function AdminResumeBuilder() {
   const [mobileView, setMobileView] = useState('editor'); // 'editor' | 'preview'
   const [zoom, setZoom] = useState(0.85);
   const [isImporterOpen, setIsImporterOpen] = useState(false);
+  const [isTailoringOpen, setIsTailoringOpen] = useState(false);
 
   // Skill text paste state
   const [rawSkillsInput, setRawSkillsInput] = useState('');
@@ -198,16 +202,13 @@ export default function AdminResumeBuilder() {
     }
   };
 
-  // Handle Print / PDF Download
+  // Handle Isolated Vector Print & PDF Download
   const handlePrint = () => {
-    // Generate clean professional title for download
     const cleanRole = (resume.targetRole || 'Engineer').replace(/[^a-zA-Z0-9]/g, '-');
-    const prevTitle = document.title;
-    document.title = `Emaan-Humayun-${cleanRole}-Resume`;
-    window.print();
-    setTimeout(() => {
-      document.title = prevTitle;
-    }, 1000);
+    printResumeDocument({
+      elementId: 'printable-resume',
+      title: `Emaan-Humayun-${cleanRole}-Resume`
+    });
   };
 
   // Update Personal Info
@@ -395,6 +396,16 @@ export default function AdminResumeBuilder() {
         onImportData={handleImportWorkspaceData}
       />
 
+      <JobTailoringModal
+        isOpen={isTailoringOpen}
+        onClose={() => setIsTailoringOpen(false)}
+        currentResume={resume}
+        onApplyTailoredResume={data => {
+          setResume(prev => ({ ...prev, ...data }));
+          showToast('Resume tailored and customized for target job requirements!');
+        }}
+      />
+
       {/* TOP ACTION BAR */}
       <header className="bg-white border-b border-border px-5 py-3 flex items-center justify-between shrink-0 shadow-xs z-20">
         <div className="flex items-center gap-3 min-w-0">
@@ -428,6 +439,16 @@ export default function AdminResumeBuilder() {
 
         {/* Action Controls */}
         <div className="flex items-center gap-2">
+          {/* Job Requirements Tailoring Button */}
+          <button
+            type="button"
+            onClick={() => setIsTailoringOpen(true)}
+            className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-50 text-emerald-800 border border-emerald-300 hover:bg-emerald-100 transition shadow-xs"
+          >
+            <Wand2 size={13} className="text-emerald-700" />
+            <span>Tailor to Job Spec</span>
+          </button>
+
           {/* Workspace Data Quick Import Button */}
           <button
             type="button"

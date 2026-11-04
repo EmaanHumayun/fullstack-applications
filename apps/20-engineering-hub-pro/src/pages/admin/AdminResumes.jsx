@@ -22,6 +22,8 @@ import {
 import { api, jsonBody } from '../../lib/api.js';
 import { Toast, EmptyState, Modal } from '../../components.jsx';
 import { RESUME_TEMPLATES, TEMPLATE_CATEGORIES } from '../../components/resume/templatesMeta.js';
+import { ResumeRenderer } from '../../components/resume/ResumeRenderer.jsx';
+import { printResumeDocument } from '../../components/resume/printResume.js';
 
 export default function AdminResumes() {
   const navigate = useNavigate();
@@ -32,6 +34,26 @@ export default function AdminResumes() {
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [search, setSearch] = useState('');
   const [deletingId, setDeletingId] = useState(null);
+  const [downloadingResume, setDownloadingResume] = useState(null);
+
+  const handleDirectDownload = async (resumeId, targetRole) => {
+    try {
+      showToast('Preparing vector PDF download...');
+      const full = await api(`/resumes/${resumeId}`);
+      if (full) {
+        setDownloadingResume(full);
+        setTimeout(() => {
+          const cleanRole = (targetRole || 'Engineer').replace(/[^a-zA-Z0-9]/g, '-');
+          printResumeDocument({
+            elementId: 'admin-dashboard-hidden-printable-resume',
+            title: `Emaan-Humayun-${cleanRole}-Resume`
+          });
+        }, 200);
+      }
+    } catch (e) {
+      showToast('Failed to load resume document for download');
+    }
+  };
 
   const showToast = msg => {
     setToast(msg);
@@ -241,12 +263,23 @@ export default function AdminResumes() {
 
                   {/* Actions Bar */}
                   <div className="mt-5 pt-3 border-t border-border/80 flex items-center justify-between gap-2">
-                    <Link
-                      to={`/admin/resumes/builder/${r._id}`}
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold rounded-lg bg-stone-900 text-white hover:bg-stone-800 transition"
-                    >
-                      <Edit size={12} /> Edit in Builder
-                    </Link>
+                    <div className="flex items-center gap-1.5">
+                      <Link
+                        to={`/admin/resumes/builder/${r._id}`}
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold rounded-lg bg-stone-900 text-white hover:bg-stone-800 transition"
+                      >
+                        <Edit size={12} /> Edit
+                      </Link>
+                      <button
+                        type="button"
+                        onClick={() => handleDirectDownload(r._id, r.targetRole)}
+                        className="inline-flex items-center gap-1 px-2.5 py-1.5 text-xs font-semibold rounded-lg bg-stone-100 hover:bg-stone-200 text-stone-700 transition"
+                        title="Download Vector PDF"
+                      >
+                        <Printer size={13} />
+                        <span className="hidden sm:inline">PDF</span>
+                      </button>
+                    </div>
 
                     <div className="flex items-center gap-1">
                       {!r.isFeatured && (
@@ -439,6 +472,13 @@ export default function AdminResumes() {
               ))}
             </div>
           </div>
+        </div>
+      )}
+
+      {/* Hidden Offscreen Resume for Direct Dashboard Vector PDF Downloads */}
+      {downloadingResume && (
+        <div style={{ position: 'fixed', left: '-9999px', top: '-9999px', opacity: 0, pointerEvents: 'none' }} aria-hidden="true">
+          <ResumeRenderer resume={downloadingResume} zoom={1} id="admin-dashboard-hidden-printable-resume" />
         </div>
       )}
     </div>

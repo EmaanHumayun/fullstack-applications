@@ -116,17 +116,17 @@ async function seedResumes() {
     ]
   };
 
-  // Resume 1: Flagship Software Engineer Resume (Featured Public)
+  // Resume 1: Flagship Executive Software Engineer Resume (Featured Public)
   const resume1 = {
     ownerId: admin._id,
-    title: 'Software Engineer — Full-Stack & Systems',
-    targetRole: 'Software Engineer',
-    templateId: 'modern-pro',
-    theme: getPalette('burgundy-gold'),
+    title: 'Executive Software Engineer — Systems & Cloud Architecture',
+    targetRole: 'Senior Software Engineer',
+    templateId: 'executive-pro',
+    theme: getPalette('canva-executive'),
     typography: { fontFamily: 'inter', fontSize: 'normal', lineHeight: 'normal' },
     personalInformation: {
       fullName: profile?.name || 'Emaan Humayun',
-      professionalTitle: 'Software Engineer | DevOps Engineer',
+      professionalTitle: 'Software Engineer | Systems & Cloud Architect',
       email: profile?.email || profile?.contactEmail || 'emaan.humayun@example.com',
       phone: profile?.phone || '',
       location: profile?.location || 'Lahore, Pakistan',
@@ -138,9 +138,9 @@ async function seedResumes() {
     professionalSummary:
       'Software Engineer and DevOps practitioner dedicated to building resilient backend architectures, automated cloud platforms, and practical agentic AI workflows. Grounded in first-principles software engineering with production experience across decoupled REST APIs, relational/document persistence, and continuous release pipelines.',
     sections: [
-      { id: 's-sum', sectionType: 'summary', title: 'Professional Summary', visible: true, order: 0, entries: [] },
+      { id: 's-sum', sectionType: 'summary', title: 'Executive Summary', visible: true, order: 0, entries: [] },
       { id: 's-ski', sectionType: 'skills', title: 'Technical Competencies', visible: true, order: 1, entries: [] },
-      { id: 's-pro', sectionType: 'projects', title: 'Key Production Projects', visible: true, order: 2, entries: projectEntries },
+      { id: 's-pro', sectionType: 'projects', title: 'Production Engineering Projects', visible: true, order: 2, entries: projectEntries },
       { id: 's-exp', sectionType: 'experience', title: 'Engineering Experience', visible: true, order: 3, entries: expEntries },
       { id: 's-edu', sectionType: 'education', title: 'Academic Education', visible: true, order: 4, entries: eduEntries },
       { id: 's-cer', sectionType: 'certifications', title: 'Verified Credentials', visible: true, order: 5, entries: certEntries }
@@ -152,22 +152,22 @@ async function seedResumes() {
     version: 1
   };
 
-  // Resume 2: DevOps & Cloud Infrastructure Resume
+  // Resume 2: Adobe Modern Split DevOps Resume
   const resume2 = {
     ownerId: admin._id,
-    title: 'DevOps & Cloud Infrastructure Resume',
+    title: 'Cloud & Infrastructure Engineer Resume (Adobe InDesign Style)',
     targetRole: 'DevOps / Cloud Platform Engineer',
-    templateId: 'devops-engineer',
-    theme: getPalette('classic-navy'),
+    templateId: 'modern-two-col',
+    theme: getPalette('nordic-slate'),
     typography: { fontFamily: 'jetbrains-mono', fontSize: 'normal', lineHeight: 'normal' },
     personalInformation: { ...resume1.personalInformation },
     professionalSummary:
       'Cloud & DevOps Engineer focused on multi-AZ cloud architecture, immutable infrastructure as code, containerized Kubernetes orchestration, and continuous telemetry monitoring. Proven record of zero-downtime rolling deployments and automated CI/CD releases.',
     sections: [
-      { id: 's-sum', sectionType: 'summary', title: 'Infrastructure Profile', visible: true, order: 0, entries: [] },
-      { id: 's-ski', sectionType: 'skills', title: 'Platform & Cloud Stack', visible: true, order: 1, entries: [] },
-      { id: 's-pro', sectionType: 'projects', title: 'Infrastructure & IaC Deployments', visible: true, order: 2, entries: projectEntries },
-      { id: 's-exp', sectionType: 'experience', title: 'DevOps Experience', visible: true, order: 3, entries: expEntries },
+      { id: 's-sum', sectionType: 'summary', title: 'Platform Profile', visible: true, order: 0, entries: [] },
+      { id: 's-ski', sectionType: 'skills', title: 'Infrastructure Competencies', visible: true, order: 1, entries: [] },
+      { id: 's-pro', sectionType: 'projects', title: 'Production Deployments & IaC', visible: true, order: 2, entries: projectEntries },
+      { id: 's-exp', sectionType: 'experience', title: 'DevOps Track Record', visible: true, order: 3, entries: expEntries },
       { id: 's-cer', sectionType: 'certifications', title: 'Cloud Certifications', visible: true, order: 4, entries: certEntries },
       { id: 's-edu', sectionType: 'education', title: 'Education', visible: true, order: 5, entries: eduEntries }
     ],

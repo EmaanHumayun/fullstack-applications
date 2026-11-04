@@ -150,11 +150,10 @@ export function AdminArchive() {
             key={tab.id}
             type="button"
             onClick={() => setSelectedEntity(tab.id)}
-            className={`rounded-lg px-3 py-1.5 text-xs font-semibold transition ${
-              selectedEntity === tab.id
-                ? 'bg-stone-900 text-white'
-                : 'bg-white text-stone-600 hover:bg-stone-100 border border-stone-200'
-            }`}
+            className={`rounded-lg px-3 py-1.5 text-xs font-semibold transition ${selectedEntity === tab.id
+              ? 'bg-stone-900 text-white'
+              : 'bg-white text-stone-600 hover:bg-stone-100 border border-stone-200'
+              }`}
           >
             {tab.label}
           </button>
