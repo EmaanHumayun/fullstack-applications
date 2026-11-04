@@ -124,7 +124,7 @@ export function PublicNav({ profile, content }) {
     <>
       <header className={`public-nav-sticky-header ${isScrolled ? 'is-scrolled' : ''}`}>
         <div className="public-nav">
-          <Link to="/" className="brand" aria-label="Go to homepage">
+          <Link to="/" className="brand shrink-0" aria-label="Go to homepage">
             <span className="brand-mark">{initials || 'EH'}</span>
             <span className="flex flex-col">
               <strong className="text-sm sm:text-base font-bold tracking-tight text-ink whitespace-nowrap font-display">
@@ -136,8 +136,8 @@ export function PublicNav({ profile, content }) {
             </span>
           </Link>
 
-          {/* Desktop Navigation */}
-          <nav aria-label="Primary navigation">
+          {/* Desktop Navigation Links */}
+          <nav aria-label="Primary navigation" className="hidden lg:flex items-center gap-1 xl:gap-2">
             <Link to="/projects">{nav.projectsLabel || 'Projects'}</Link>
             <Link to="/domains">{nav.domainsLabel || 'Domains'}</Link>
             <Link to="/skills">{nav.skillsLabel || 'Skills'}</Link>
@@ -147,8 +147,8 @@ export function PublicNav({ profile, content }) {
             <a href="#contact" onClick={(e) => handleNavClick(e, 'contact')}>{nav.contactLabel || 'Contact'}</a>
           </nav>
 
-          {/* Desktop CTAs */}
-          <div className="hidden sm:flex items-center gap-2.5">
+          {/* Desktop CTAs & Mobile Toggle (Always fully visible, shrink-0, zero clipping) */}
+          <div className="flex items-center gap-2 shrink-0">
             {profile?.githubUrl && (
               <Button
                 as="a"
@@ -157,8 +157,9 @@ export function PublicNav({ profile, content }) {
                 rel="noreferrer"
                 variant="ghost"
                 size="sm"
+                className="hidden xl:inline-flex shrink-0 text-xs px-2.5"
               >
-                <Github size={15} /> GitHub
+                <Github size={14} /> <span>GitHub</span>
               </Button>
             )}
             <Button
@@ -166,22 +167,23 @@ export function PublicNav({ profile, content }) {
               onClick={() => setChoiceModalOpen(true)}
               variant="primary"
               size="sm"
+              className="shrink-0 whitespace-nowrap font-bold shadow-xs text-xs px-3 py-1.5 flex items-center gap-1.5"
             >
-              Workspace <ArrowUpRight size={14} />
+              <span>Workspace</span> <ArrowUpRight size={13} />
             </Button>
-          </div>
 
-          {/* Mobile Hamburger Toggle */}
-          <button
-            type="button"
-            className="mobile-nav-toggle"
-            onClick={() => setMobileOpen(!mobileOpen)}
-            aria-label={mobileOpen ? 'Close navigation menu' : 'Open navigation menu'}
-            aria-expanded={mobileOpen}
-            aria-controls="mobile-nav-drawer"
-          >
-            {mobileOpen ? <X size={20} /> : <Menu size={20} />}
-          </button>
+            {/* Mobile/Tablet Hamburger Toggle */}
+            <button
+              type="button"
+              className="mobile-nav-toggle lg:hidden shrink-0"
+              onClick={() => setMobileOpen(!mobileOpen)}
+              aria-label={mobileOpen ? 'Close navigation menu' : 'Open navigation menu'}
+              aria-expanded={mobileOpen}
+              aria-controls="mobile-nav-drawer"
+            >
+              {mobileOpen ? <X size={20} /> : <Menu size={20} />}
+            </button>
+          </div>
         </div>
       </header>
 
