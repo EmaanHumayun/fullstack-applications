@@ -129,3 +129,4 @@ export function printResumeDocument({ elementId, htmlContent, title = 'Emaan-Hum
     }
   }, 400);
 }
+

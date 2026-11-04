@@ -57,6 +57,8 @@ import { getDomainIcon } from './admin/AdminDomains.jsx';
 import { getPlatformIcon } from './admin/AdminSocialLinks.jsx';
 import { ResumeRenderer } from '../components/resume/ResumeRenderer.jsx';
 import { printResumeDocument } from '../components/resume/printResume.js';
+import { SkillsArchitectureGraph } from '../components/SkillsArchitectureGraph.jsx';
+import { LabsAndChallengesSection } from '../components/LabsAndChallengesSection.jsx';
 
 const fallbackProfile = {
   name: 'Emaan Humayun',
@@ -139,13 +141,9 @@ export function PublicNav({ profile, content }) {
             <Link to="/projects">{nav.projectsLabel || 'Projects'}</Link>
             <Link to="/domains">{nav.domainsLabel || 'Domains'}</Link>
             <Link to="/skills">{nav.skillsLabel || 'Skills'}</Link>
-            <Link to="/analytics">{nav.analyticsLabel || 'Analytics'}</Link>
-            <Link to="/roadmaps">{nav.roadmapsLabel || 'Roadmaps'}</Link>
-            <Link to="/practice-labs">{nav.practiceLabsLabel || 'Labs'}</Link>
-            <Link to="/assignments">{nav.assignmentsLabel || 'Assignments'}</Link>
+            <a href="#labs-challenges" onClick={(e) => handleNavClick(e, 'labs-challenges')}>Labs &amp; Challenges</a>
             <Link to="/credentials">{nav.certificatesLabel || 'Credentials'}</Link>
             <a href="#resume" onClick={(e) => handleNavClick(e, 'resume')}>{nav.resumeLabel || 'Resume'}</a>
-            <Link to="/notes">{nav.notesLabel || 'Notes'}</Link>
             <a href="#contact" onClick={(e) => handleNavClick(e, 'contact')}>{nav.contactLabel || 'Contact'}</a>
           </nav>
 
@@ -225,34 +223,13 @@ export function PublicNav({ profile, content }) {
               >
                 {nav.skillsLabel || 'Skills & Competencies'}
               </Link>
-              <Link
-                to="/analytics"
-                onClick={() => setMobileOpen(false)}
+              <a
+                href="#labs-challenges"
+                onClick={e => handleNavClick(e, 'labs-challenges')}
                 className="text-sm font-bold py-2 text-ink hover:text-primary transition"
               >
-                {nav.analyticsLabel || 'Analytics & Evidence'}
-              </Link>
-              <Link
-                to="/roadmaps"
-                onClick={() => setMobileOpen(false)}
-                className="text-sm font-bold py-2 text-ink hover:text-primary transition"
-              >
-                {nav.roadmapsLabel || 'Learning Roadmaps'}
-              </Link>
-              <Link
-                to="/practice-labs"
-                onClick={() => setMobileOpen(false)}
-                className="text-sm font-bold py-2 text-ink hover:text-primary transition"
-              >
-                {nav.practiceLabsLabel || 'Practice Labs & Sandboxes'}
-              </Link>
-              <Link
-                to="/assignments"
-                onClick={() => setMobileOpen(false)}
-                className="text-sm font-bold py-2 text-ink hover:text-primary transition"
-              >
-                {nav.assignmentsLabel || 'Technical Assignments'}
-              </Link>
+                Labs &amp; Challenges
+              </a>
               <Link
                 to="/credentials"
                 onClick={() => setMobileOpen(false)}
@@ -267,13 +244,6 @@ export function PublicNav({ profile, content }) {
               >
                 {nav.resumeLabel || 'Professional Resume'}
               </a>
-              <Link
-                to="/notes"
-                onClick={() => setMobileOpen(false)}
-                className="text-sm font-bold py-2 text-ink hover:text-primary transition"
-              >
-                {nav.notesLabel || 'Engineering Notes'}
-              </Link>
               <a
                 href="#contact"
                 onClick={(e) => handleNavClick(e, 'contact')}
@@ -468,28 +438,10 @@ export function PublicFooter({ profile, content, socialLinks = [] }) {
                 </Link>
               </li>
               <li>
-                <Link to="/analytics" className="hover:text-primary transition-colors flex items-center gap-2">
-                  <BarChart3 size={15} className="text-primary" />
-                  <span>{nav.analyticsLabel || 'Analytics & Telemetry'}</span>
-                </Link>
-              </li>
-              <li>
-                <Link to="/roadmaps" className="hover:text-primary transition-colors flex items-center gap-2">
-                  <Workflow size={15} className="text-primary" />
-                  <span>{nav.roadmapsLabel || 'Learning Roadmaps'}</span>
-                </Link>
-              </li>
-              <li>
-                <Link to="/practice-labs" className="hover:text-primary transition-colors flex items-center gap-2">
+                <a href="#labs-challenges" className="hover:text-primary transition-colors flex items-center gap-2">
                   <Terminal size={15} className="text-primary" />
-                  <span>{nav.practiceLabsLabel || 'Practice Labs'}</span>
-                </Link>
-              </li>
-              <li>
-                <Link to="/assignments" className="hover:text-primary transition-colors flex items-center gap-2">
-                  <FileBadge size={15} className="text-primary" />
-                  <span>{nav.assignmentsLabel || 'Assignments'}</span>
-                </Link>
+                  <span>Labs &amp; Architecture Challenges</span>
+                </a>
               </li>
               <li>
                 <Link to="/credentials" className="hover:text-primary transition-colors flex items-center gap-2">
@@ -498,10 +450,10 @@ export function PublicFooter({ profile, content, socialLinks = [] }) {
                 </Link>
               </li>
               <li>
-                <Link to="/notes" className="hover:text-primary transition-colors flex items-center gap-2">
-                  <BookOpen size={15} className="text-primary" />
-                  <span>{nav.notesLabel || 'Knowledge Notes'}</span>
-                </Link>
+                <a href="#resume" className="hover:text-primary transition-colors flex items-center gap-2">
+                  <Printer size={15} className="text-primary" />
+                  <span>{nav.resumeLabel || 'Professional Resume'}</span>
+                </a>
               </li>
             </ul>
           </div>
@@ -1064,185 +1016,6 @@ module "production_k8s" {
 }
 
 /**
- * AWWWARDS-INSPIRED DEVOPS TOOLCHAIN & CLOUD ECOSYSTEM MATRIX
- * Modern, executive 3x3 capability architecture with live status,
- * authentic icons, and interactive category filtering.
- */
-function getToolIcon(tech) {
-  const name = (tech?.name || '').toLowerCase();
-  const cat = (tech?.category || '').toLowerCase();
-  if (name.includes('kube') || name.includes('k8s')) return Layers;
-  if (name.includes('docker') || name.includes('container')) return Server;
-  if (name.includes('linux') || name.includes('bash') || name.includes('shell')) return Terminal;
-  if (name.includes('terraform') || name.includes('iac')) return Code2;
-  if (name.includes('aws') || name.includes('gcp') || name.includes('azure') || name.includes('cloud')) return Cloud;
-  if (name.includes('helm')) return Tag;
-  if (name.includes('ci/cd') || name.includes('action') || name.includes('pipeline') || name.includes('workflow')) return Workflow;
-  if (name.includes('argo') || name.includes('gitops')) return CheckCircle2;
-  if (name.includes('prometh') || name.includes('grafana') || name.includes('observ') || name.includes('monitor')) return Activity;
-  if (name.includes('python') || name.includes('node') || name.includes('code') || name.includes('rust')) return Code2;
-  if (name.includes('sec') || name.includes('vault') || name.includes('shield')) return Shield;
-  if (name.includes('ai') || name.includes('llm')) return Cpu;
-  return Layers;
-}
-
-export function DevOpsToolchainMatrix({ skills = [] }) {
-  const [activeCategory, setActiveCategory] = useState('all');
-
-  const activeSkills = useMemo(() => {
-    return (skills || []).filter(s => !s.isArchived && s.visibility !== 'private');
-  }, [skills]);
-
-  // Extract unique categories from actual user skills
-  const categories = useMemo(() => {
-    if (!activeSkills.length) return [];
-    const set = new Set();
-    activeSkills.forEach(s => {
-      const cat = s.category || s.subcategory;
-      if (cat) set.add(cat);
-    });
-    return Array.from(set);
-  }, [activeSkills]);
-
-  const filteredTools = useMemo(() => {
-    if (activeCategory === 'all') return activeSkills;
-    return activeSkills.filter(
-      (s) => (s.category || s.subcategory) === activeCategory
-    );
-  }, [activeCategory, activeSkills]);
-
-  if (activeSkills.length === 0) {
-    return (
-      <section className="toolchain-matrix-card" aria-label="DevOps Toolchain & Cloud Infrastructure Ecosystem">
-        <div className="toolchain-matrix-surface p-8 sm:p-10 text-center">
-          <div className="w-12 h-12 rounded-2xl bg-primary/10 text-primary flex items-center justify-center mx-auto mb-3">
-            <Layers size={22} />
-          </div>
-          <span className="font-mono text-xs font-bold uppercase tracking-widest text-primary">
-            Cloud Native Ecosystem
-          </span>
-          <h2 className="font-display font-extrabold text-base sm:text-lg text-ink tracking-tight mt-1 mb-2">
-            DevOps Toolchain &amp; Cloud Infrastructure Matrix
-          </h2>
-          <p className="text-xs text-muted max-w-md mx-auto mb-5 leading-relaxed">
-            No tools or skills added to the workspace yet. As soon as you add your tools, cloud platforms, and engineering skills in the Admin Console, they will sync live here.
-          </p>
-          <Link
-            to="/admin/skills"
-            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-primary text-white text-xs font-bold hover:brightness-105 transition shadow-xs"
-          >
-            <span>Add Skills in Admin</span>
-            <ArrowRight size={13} />
-          </Link>
-        </div>
-      </section>
-    );
-  }
-
-  return (
-    <section className="toolchain-matrix-card" aria-label="DevOps Toolchain & Cloud Infrastructure Ecosystem">
-      <div className="toolchain-matrix-surface p-5 sm:p-6">
-        {/* Architectural Header */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-5 border-b border-border/80">
-          <div className="space-y-1">
-            <div className="flex items-center gap-2.5">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-              </span>
-              <span className="font-mono text-xs font-bold uppercase tracking-widest text-primary">
-                Cloud Native Ecosystem
-              </span>
-              <span className="text-[10px] font-mono text-muted px-2 py-0.5 rounded-full border border-border bg-secondary-background font-semibold">
-                {activeSkills.length} Verified {activeSkills.length === 1 ? 'Skill' : 'Skills'}
-              </span>
-            </div>
-            <h2 className="font-display font-extrabold text-base sm:text-lg text-ink tracking-tight">
-              DevOps Toolchain &amp; Cloud Infrastructure Matrix
-            </h2>
-            <p className="text-xs text-muted leading-relaxed max-w-xl">
-              Code-defined platforms, automated container orchestration, GitOps delivery pipelines, and continuous observability.
-            </p>
-          </div>
-
-          {/* Dynamic Interactive Filter Pills */}
-          {categories.length > 1 && (
-            <div className="flex items-center gap-1.5 p-1 rounded-xl bg-secondary-background/80 border border-border/80 self-start md:self-auto overflow-x-auto max-w-full">
-              <button
-                type="button"
-                onClick={() => setActiveCategory('all')}
-                className={`toolchain-filter-btn whitespace-nowrap ${
-                  activeCategory === 'all' ? 'is-active' : ''
-                }`}
-              >
-                <span>All</span>
-                <span className="ml-1.5 opacity-60 font-normal">({activeSkills.length})</span>
-              </button>
-              {categories.map((cat) => {
-                const count = activeSkills.filter(s => (s.category || s.subcategory) === cat).length;
-                return (
-                  <button
-                    key={cat}
-                    type="button"
-                    onClick={() => setActiveCategory(cat)}
-                    className={`toolchain-filter-btn whitespace-nowrap ${
-                      activeCategory === cat ? 'is-active' : ''
-                    }`}
-                  >
-                    <span>{cat}</span>
-                    <span className="ml-1.5 opacity-60 font-normal">({count})</span>
-                  </button>
-                );
-              })}
-            </div>
-          )}
-        </div>
-
-        {/* Dynamic Precision Engineering Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 pt-5">
-          {filteredTools.map((tech) => {
-            const Icon = getToolIcon(tech);
-            const role = tech.publicDescription || tech.description || tech.subcategory || `${tech.level || 'Intermediate'} Proficiency`;
-            return (
-              <div key={tech._id || tech.name} className="toolchain-grid-item group">
-                <div className="flex items-center gap-3 min-w-0">
-                  <div className="toolchain-icon-box">
-                    <Icon size={17} />
-                  </div>
-                  <div className="min-w-0">
-                    <span className="font-display font-bold text-sm text-ink truncate block group-hover:text-primary transition-colors">
-                      {tech.name}
-                    </span>
-                    <span className="font-mono text-[11px] text-muted truncate block">
-                      {role}
-                    </span>
-                  </div>
-                </div>
-                <span className="toolchain-pill-tag">
-                  {tech.proficiencyPercentage ? `${tech.proficiencyPercentage}%` : tech.level || 'Practiced'}
-                </span>
-              </div>
-            );
-          })}
-        </div>
-
-        {/* Executive Footnote Ribbon */}
-        <div className="mt-5 pt-4 border-t border-border/60 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-[11px] font-mono text-muted">
-          <div className="flex items-center gap-2">
-            <span className="w-1.5 h-1.5 rounded-full bg-primary/70" />
-            <span>Continuous GitOps Reconciliation · Self-Healing Production State</span>
-          </div>
-          <Link to="/skills" className="hover:text-primary transition flex items-center gap-1 font-semibold">
-            <span>Explore All Skills</span>
-            <ArrowRight size={11} />
-          </Link>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/**
  * PUBLIC HOME (Layer 1: Curated Professional Overview)
  */
 export function PublicHome() {
@@ -1255,6 +1028,8 @@ export function PublicHome() {
   const [milestones, setMilestones] = useState([]);
   const [certs, setCerts] = useState([]);
   const [featuredResume, setFeaturedResume] = useState(null);
+  const [practiceLabs, setPracticeLabs] = useState([]);
+  const [assignments, setAssignments] = useState([]);
   const [resumeModalOpen, setResumeModalOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [toastMessage, setToastMessage] = useState('');
@@ -1300,9 +1075,11 @@ export function PublicHome() {
       api('/skills').catch(() => []),
       api('/milestones').catch(() => []),
       api('/certificates').catch(() => []),
-      api('/resumes/featured/public').catch(() => null)
+      api('/resumes/featured/public').catch(() => null),
+      api('/practice-labs').catch(() => []),
+      api('/assignments').catch(() => [])
     ])
-      .then(([p, sc, doms, soc, pr, s, m, c, r]) => {
+      .then(([p, sc, doms, soc, pr, s, m, c, r, labs, ass]) => {
         if (p?.name) setProfile(p);
         setSiteContent(sc);
         setDomains(doms || []);
@@ -1312,6 +1089,8 @@ export function PublicHome() {
         setMilestones(m || []);
         setCerts(c || []);
         setFeaturedResume(r || null);
+        setPracticeLabs(labs || []);
+        setAssignments(ass || []);
 
         if (sc?.seo?.title) {
           document.title = sc.seo.title;
@@ -1516,147 +1295,8 @@ export function PublicHome() {
         </div>
       </section>
 
-      {/* SECTION 2.5 — AWWWARDS-INSPIRED DEVOPS TOOLCHAIN MATRIX */}
-      <DevOpsToolchainMatrix skills={skills} />
-
-      {/* SECTION 3 — PROFESSIONAL PROOF STATS STRIP (Interactive, Animated & Eye-Catching) */}
-      <section className="stat-strip-container" aria-label="Professional Engineering Telemetry">
-        {/* Live System Telemetry Status Bar */}
-        <div className="stat-strip-telemetry-bar">
-          <div className="flex items-center gap-2.5">
-            <span className="relative flex h-2.5 w-2.5">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
-            </span>
-            <span className="font-mono text-[11px] font-bold tracking-wider text-ink uppercase">
-              Production Telemetry Verified
-            </span>
-            <span className="hidden sm:inline-block text-[11px] font-mono text-muted">
-              · GitOps Active Continuous Sync
-            </span>
-          </div>
-
-          <div className="flex items-center gap-2 font-mono text-[11px] text-muted">
-            <Activity size={13} className="text-emerald-500 animate-pulse" />
-            <span className="font-semibold text-ink">99.99%</span>
-            <span className="hidden xs:inline">Target SLA</span>
-          </div>
-        </div>
-
-        {/* 4 Clean Editorial Metrics Cards */}
-        <div className="stat-strip-grid">
-          {/* Card 1: Public Repositories */}
-          <Link
-            to="/projects"
-            title="Explore All Published Projects & IaC Repositories"
-            className="stat-card stat-card-emerald group"
-          >
-            <div className="stat-card-header">
-              <div className="stat-icon-badge">
-                <Code2 size={20} className="stat-icon text-emerald-600 dark:text-emerald-400" />
-              </div>
-              <ArrowUpRight size={15} className="stat-arrow" />
-            </div>
-
-            <div className="stat-card-body">
-              <div className="stat-number">
-                <AnimatedCounter
-                  target={genuineProjects.length}
-                  padZeros={2}
-                  suffix={genuineProjects.length > 0 ? "+" : ""}
-                />
-              </div>
-              <h3 className="stat-label">Public Repositories</h3>
-              <p className="stat-desc">Production IaC, Helm Charts &amp; Cloud Workloads</p>
-            </div>
-
-            <div className="stat-card-progress" />
-          </Link>
-
-          {/* Card 2: Technical Domains */}
-          <Link
-            to="/domains"
-            title="Explore Technical Architecture Domains"
-            className="stat-card stat-card-indigo group"
-          >
-            <div className="stat-card-header">
-              <div className="stat-icon-badge">
-                <Layers size={20} className="stat-icon text-indigo-600 dark:text-indigo-400" />
-              </div>
-              <ArrowUpRight size={15} className="stat-arrow" />
-            </div>
-
-            <div className="stat-card-body">
-              <div className="stat-number">
-                <AnimatedCounter
-                  target={domains.length}
-                  padZeros={2}
-                />
-              </div>
-              <h3 className="stat-label">Technical Domains</h3>
-              <p className="stat-desc">Cloud Platform, K8s, CI/CD, SecOps &amp; SRE</p>
-            </div>
-
-            <div className="stat-card-progress" />
-          </Link>
-
-          {/* Card 3: Skills & Toolsets */}
-          <Link
-            to="/skills"
-            title="Explore Verified Skills & Competencies"
-            className="stat-card stat-card-amber group"
-          >
-            <div className="stat-card-header">
-              <div className="stat-icon-badge">
-                <Cpu size={20} className="stat-icon text-amber-600 dark:text-amber-400" />
-              </div>
-              <ArrowUpRight size={15} className="stat-arrow" />
-            </div>
-
-            <div className="stat-card-body">
-              <div className="stat-number">
-                <AnimatedCounter
-                  target={skills.length}
-                  padZeros={2}
-                  suffix={skills.length > 0 ? "+" : ""}
-                />
-              </div>
-              <h3 className="stat-label">Skills &amp; Toolsets</h3>
-              <p className="stat-desc">Docker, Terraform, AWS, K8s, Linux &amp; Prometheus</p>
-            </div>
-
-            <div className="stat-card-progress" />
-          </Link>
-
-          {/* Card 4: Credentials & Proof */}
-          <Link
-            to="/credentials"
-            title="Explore Verified Credentials & Deliverables"
-            className="stat-card stat-card-purple group"
-          >
-            <div className="stat-card-header">
-              <div className="stat-icon-badge">
-                <Trophy size={20} className="stat-icon text-purple-600 dark:text-purple-400" />
-              </div>
-              <ArrowUpRight size={15} className="stat-arrow" />
-            </div>
-
-            <div className="stat-card-body">
-              <div className="stat-number">
-                <AnimatedCounter
-                  target={certs.length + completedMilestones.length}
-                  padZeros={2}
-                  suffix={(certs.length + completedMilestones.length) > 0 ? "+" : ""}
-                />
-              </div>
-              <h3 className="stat-label">Credentials &amp; Proof</h3>
-              <p className="stat-desc">Industry Certifications, Key Milestones &amp; SLAs</p>
-            </div>
-
-            <div className="stat-card-progress" />
-          </Link>
-        </div>
-      </section>
+      {/* SECTION 2.5 — TECHNICAL COMPETENCIES & RADAR GRAPH */}
+      <SkillsArchitectureGraph skills={skills} />
 
       {/* SECTION 4 — SELECTED WORK (Featured Projects: Strictly Up to 3 Cards) */}
       {sections.projects?.visible !== false && (
@@ -1822,6 +1462,9 @@ export function PublicHome() {
           </div>
         </section>
       )}
+
+      {/* SECTION 5.5 — PRACTICE LABS & ARCHITECTURE CHALLENGES */}
+      <LabsAndChallengesSection practiceLabs={practiceLabs} assignments={assignments} />
 
       {/* SECTION 6 — SELECTED CREDENTIALS & ACCOMPLISHMENTS (Curated 3 items) */}
       {sections.certificates?.visible !== false && certs.length > 0 && (
