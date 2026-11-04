@@ -29,7 +29,7 @@ import { getTemplateMeta } from './templatesMeta.js';
 
 // =========================================================================
 // DETERMINISTIC SKILL PROFICIENCY GENERATOR
-// Provides realistic engineering percentages (96%, 92%, 88%, etc.)
+// Provides realistic engineering percentages (96%, 94%, 92%, 88%, etc.)
 // =========================================================================
 function getSkillProficiency(skill, index = 0) {
   if (typeof skill === 'object' && skill.percentage) {
@@ -50,6 +50,182 @@ function getSkillProficiency(skill, index = 0) {
   return fallbackScores[index % fallbackScores.length];
 }
 
+// =========================================================================
+// CANVA PRO SVG CIRCULAR SKILL GAUGE
+// Ultra-crisp radial progress dial with percentage in the center
+// =========================================================================
+function CircularSkillGauge({ label, percentage, color, trackColor, size = 52 }) {
+  const strokeWidth = 4.5;
+  const radius = (size - strokeWidth) / 2;
+  const circumference = 2 * Math.PI * radius;
+  const offset = circumference - (percentage / 100) * circumference;
+
+  return (
+    <div className="flex flex-col items-center gap-1">
+      <div className="relative flex items-center justify-center" style={{ width: size, height: size }}>
+        <svg width={size} height={size} className="transform -rotate-90">
+          <circle
+            cx={size / 2}
+            cy={size / 2}
+            r={radius}
+            stroke={trackColor || '#e2e8f0'}
+            strokeWidth={strokeWidth}
+            fill="transparent"
+          />
+          <circle
+            cx={size / 2}
+            cy={size / 2}
+            r={radius}
+            stroke={color}
+            strokeWidth={strokeWidth}
+            fill="transparent"
+            strokeDasharray={circumference}
+            strokeDashoffset={offset}
+            strokeLinecap="round"
+          />
+        </svg>
+        <div className="absolute inset-0 flex items-center justify-center">
+          <span className="font-mono text-[10px] font-bold text-stone-900">{percentage}%</span>
+        </div>
+      </div>
+      <span className="text-[10px] font-semibold text-stone-800 text-center max-w-[64px] truncate" title={label}>
+        {label}
+      </span>
+    </div>
+  );
+}
+
+// =========================================================================
+// CANVA PRO VISUAL SKILL GRAPH COMPONENTS
+// =========================================================================
+
+// 1. Gradient Linear Progress Bars with Percentage Badges
+export function CanvaProSkillProgressBars({ skillsData, fallbackEntries, theme }) {
+  if (skillsData && skillsData.length > 0) {
+    return (
+      <div className="space-y-3.5">
+        {skillsData.map((cat, idx) => (
+          <div key={idx} className="space-y-1.5">
+            <span
+              style={{ color: theme.c1 }}
+              className="font-bold text-[10.5px] uppercase tracking-wider block font-mono"
+            >
+              {cat.name}
+            </span>
+            <div className="space-y-1.5">
+              {cat.skills.map((sk, sIdx) => {
+                const pct = getSkillProficiency(sk, sIdx);
+                return (
+                  <div key={sIdx} className="space-y-0.5">
+                    <div className="flex justify-between items-baseline text-[10.5px]">
+                      <span className="font-semibold text-stone-800">{sk}</span>
+                      <span
+                        style={{ color: theme.c2 }}
+                        className="font-mono text-[9.5px] font-bold px-1.5 py-0.2 rounded bg-stone-100"
+                      >
+                        {pct}%
+                      </span>
+                    </div>
+                    {/* Progress Bar Track with Gradient Fill */}
+                    <div
+                      className="h-1.5 w-full rounded-full overflow-hidden"
+                      style={{ backgroundColor: theme.c3 || '#e2e8f0' }}
+                    >
+                      <div
+                        className="h-full rounded-full transition-all duration-300"
+                        style={{
+                          width: `${pct}%`,
+                          background: `linear-gradient(90deg, ${theme.c2} 0%, ${theme.c2}dd 100%)`
+                        }}
+                      />
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  // Fallback flat skills
+  return (
+    <div className="space-y-2">
+      {(fallbackEntries || []).map((e, idx) => {
+        const pct = getSkillProficiency(e.title, idx);
+        return (
+          <div key={idx} className="space-y-0.5">
+            <div className="flex justify-between text-[10.5px]">
+              <span className="font-semibold text-stone-800">{e.title}</span>
+              <span style={{ color: theme.c2 }} className="font-mono text-[9.5px] font-bold">
+                {pct}%
+              </span>
+            </div>
+            <div
+              className="h-1.5 w-full rounded-full overflow-hidden"
+              style={{ backgroundColor: theme.c3 || '#e2e8f0' }}
+            >
+              <div
+                className="h-full rounded-full"
+                style={{ width: `${pct}%`, backgroundColor: theme.c2 }}
+              />
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+// 2. Canva Pro 5-Dot Visual Rating Scale (Sidebar & Compact)
+export function CanvaPro5DotRatingMeters({ skillsData, theme, isDark }) {
+  const topSkills = (skillsData || []).flatMap(c => c.skills).slice(0, 10);
+  return (
+    <div className="space-y-2.5">
+      {topSkills.map((sk, idx) => {
+        const pct = getSkillProficiency(sk, idx);
+        const dotsFilled = pct >= 93 ? 5 : pct >= 86 ? 4 : 3;
+        return (
+          <div key={idx} className="space-y-1">
+            <div className="flex justify-between text-[10.5px] font-medium">
+              <span style={{ color: isDark ? '#ffffff' : theme.c1 }}>{sk}</span>
+              <span
+                style={{ color: isDark ? theme.c2 : theme.c2 }}
+                className="font-mono text-[9.5px] font-semibold"
+              >
+                {pct}%
+              </span>
+            </div>
+            {/* 5-Dot Rating Scale */}
+            <div className="flex gap-1.5">
+              {[1, 2, 3, 4, 5].map(dot => (
+                <div
+                  key={dot}
+                  style={{
+                    backgroundColor:
+                      dot <= dotsFilled
+                        ? isDark
+                          ? theme.c2
+                          : theme.c2
+                        : isDark
+                        ? 'rgba(255,255,255,0.2)'
+                        : theme.c3 || '#e2e8f0'
+                  }}
+                  className="h-1.5 flex-1 rounded-full transition"
+                />
+              ))}
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+// =========================================================================
+// MAIN RESUME RENDERER COMPONENT
+// =========================================================================
 export function ResumeRenderer({
   resume,
   zoom = 1,
@@ -111,6 +287,7 @@ export function ResumeRenderer({
   };
 
   // Archetype Dispatcher
+  const isModernPro = templateId === 'modern-pro' || meta.layout === 'single-col-accent';
   const isExecutiveLuxe = ['executive-pro', 'contemporary-creative'].includes(templateId) || meta.layout === 'executive';
   const isSplitSidebar = ['modern-two-col', 'elegant-sidebar'].includes(templateId) || ['two-col-left', 'sidebar-dark'].includes(meta.layout);
   const isTimeline = templateId === 'timeline-resume' || meta.layout === 'timeline-vertical';
@@ -138,7 +315,17 @@ export function ResumeRenderer({
         }}
         className={`resume-paper shadow-2xl border border-stone-200 relative text-left box-border ${fontClass} print:shadow-none print:border-none print:m-0`}
       >
-        {isExecutiveLuxe ? (
+        {isModernPro ? (
+          <CanvaModernProLayout
+            resume={resume}
+            theme={normalizedTheme}
+            pi={pi}
+            sections={sections}
+            skillsData={skillsData}
+            meta={meta}
+            marginPadding={marginPadding}
+          />
+        ) : isExecutiveLuxe ? (
           <CanvaExecutiveLuxeLayout
             resume={resume}
             theme={normalizedTheme}
@@ -214,7 +401,199 @@ export function ResumeRenderer({
 }
 
 // =========================================================================
-// 1. CANVA EXECUTIVE LUXE LAYOUT
+// 1. CANVA MODERN PROFESSIONAL LAYOUT (New Flagship Modern Template)
+// Accent Header Strip, Monogram Seal, Circular Skill Dials & 2-Col Hierarchy
+// =========================================================================
+function CanvaModernProLayout({ resume, theme, pi, sections, skillsData, meta, marginPadding }) {
+  const initials = (pi.fullName || 'EH')
+    .split(' ')
+    .filter(Boolean)
+    .map(n => n[0])
+    .join('')
+    .slice(0, 2)
+    .toUpperCase();
+
+  const sortedSections = [...sections].sort((a, b) => (a.order || 0) - (b.order || 0));
+  const summarySec = sortedSections.find(s => s.sectionType === 'summary');
+  const mainSecs = sortedSections.filter(s => ['projects', 'experience'].includes(s.sectionType));
+  const sideSecs = sortedSections.filter(s => ['skills', 'education', 'certifications', 'custom'].includes(s.sectionType));
+
+  // Top 4 skills for radial SVG dials
+  const flatSkills = (skillsData || []).flatMap(c => c.skills);
+  const top4Skills = flatSkills.slice(0, 4);
+
+  return (
+    <div className="flex flex-col min-h-[297mm]">
+      {/* CANVA MODERN ACCENT HEADER */}
+      <div
+        style={{
+          borderTopColor: theme.c2,
+          backgroundColor: theme.c4
+        }}
+        className="p-7 sm:p-8 border-t-8 border-b border-stone-200 relative overflow-hidden"
+      >
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="flex items-center gap-4">
+            {/* Monogram Seal */}
+            <div
+              style={{
+                backgroundColor: theme.c1,
+                color: theme.c2,
+                borderColor: theme.c2
+              }}
+              className="w-14 h-14 rounded-2xl border-2 flex items-center justify-center font-serif text-xl font-black shadow-md shrink-0"
+            >
+              {initials}
+            </div>
+
+            <div>
+              <h1 style={{ color: theme.c1 }} className="text-2xl sm:text-3xl font-black tracking-tight font-serif">
+                {pi.fullName || 'Emaan Humayun'}
+              </h1>
+              <p
+                style={{ color: theme.c2 }}
+                className="text-xs font-bold uppercase tracking-[0.2em] mt-0.5"
+              >
+                {pi.professionalTitle || resume.targetRole || 'Software Engineer'}
+              </p>
+            </div>
+          </div>
+
+          {/* Contact Pills */}
+          <div className="flex flex-wrap sm:flex-col sm:items-end gap-1.5 text-[11px] text-stone-700">
+            {pi.email && (
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white border border-stone-200 shadow-2xs">
+                <Mail size={12} style={{ color: theme.c2 }} /> {pi.email}
+              </span>
+            )}
+            {pi.phone && (
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white border border-stone-200 shadow-2xs">
+                <Phone size={12} style={{ color: theme.c2 }} /> {pi.phone}
+              </span>
+            )}
+            {pi.location && (
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white border border-stone-200 shadow-2xs">
+                <MapPin size={12} style={{ color: theme.c2 }} /> {pi.location}
+              </span>
+            )}
+            <div className="flex items-center gap-2 pt-0.5">
+              {pi.linkedinUrl && (
+                <a
+                  href={pi.linkedinUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-white border border-stone-200 text-[10px] font-mono hover:underline"
+                >
+                  <Linkedin size={11} style={{ color: theme.c2 }} /> LinkedIn
+                </a>
+              )}
+              {pi.githubUrl && (
+                <a
+                  href={pi.githubUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-white border border-stone-200 text-[10px] font-mono hover:underline"
+                >
+                  <Github size={11} style={{ color: theme.c2 }} /> GitHub
+                </a>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* TOP 4 CIRCULAR SVG SKILL DIALS (Signature Canva Pro Feature) */}
+        {top4Skills.length > 0 && (
+          <div className="mt-5 pt-4 border-t border-stone-200/80 flex items-center justify-around flex-wrap gap-3">
+            {top4Skills.map((sk, sIdx) => {
+              const pct = getSkillProficiency(sk, sIdx);
+              return (
+                <CircularSkillGauge
+                  key={sIdx}
+                  label={sk}
+                  percentage={pct}
+                  color={theme.c2}
+                  trackColor={theme.c3}
+                />
+              );
+            })}
+          </div>
+        )}
+      </div>
+
+      {/* 2-COLUMN BODY */}
+      <div className="p-7 sm:p-8 flex-1 flex flex-col sm:flex-row gap-7">
+        {/* LEFT COLUMN (38%): Skill Progress Bars, Education, Certifications */}
+        <div className="w-full sm:w-[38%] flex flex-col space-y-6">
+          {sideSecs.map(sec => (
+            <div key={sec.id || sec._id || sec.title} className="space-y-3">
+              <div className="flex items-center gap-2 pb-1.5 border-b-2" style={{ borderColor: theme.c1 }}>
+                <h2 style={{ color: theme.c1 }} className="text-xs font-bold uppercase tracking-wider font-serif">
+                  {sec.title}
+                </h2>
+              </div>
+
+              {sec.sectionType === 'skills' && (
+                <CanvaProSkillProgressBars skillsData={skillsData} fallbackEntries={sec.entries} theme={theme} />
+              )}
+              {sec.sectionType === 'education' && (
+                <EducationSectionContent entries={sec.entries || []} theme={theme} />
+              )}
+              {sec.sectionType === 'certifications' && (
+                <CertificationsSectionContent entries={sec.entries || []} theme={theme} />
+              )}
+              {sec.sectionType === 'custom' && (
+                <div className="text-[11.5px] leading-relaxed text-stone-700 whitespace-pre-line">
+                  {sec.customContent}
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+
+        {/* RIGHT COLUMN (62%): Executive Summary, Experience, Projects */}
+        <div className="w-full sm:w-[62%] flex flex-col space-y-6">
+          {/* Executive Summary Quote Box */}
+          {summarySec && (
+            <div
+              style={{
+                backgroundColor: theme.c4,
+                borderLeftColor: theme.c2
+              }}
+              className="p-4 border-l-4 rounded-r-xl shadow-xs"
+            >
+              <h2 style={{ color: theme.c1 }} className="text-xs font-bold uppercase tracking-wider font-serif mb-1">
+                {summarySec.title}
+              </h2>
+              <p className="text-[11.5px] leading-relaxed text-stone-700">
+                {summarySec.customContent || summarySec.entries?.[0]?.description || resume.professionalSummary}
+              </p>
+            </div>
+          )}
+
+          {mainSecs.map(sec => (
+            <div key={sec.id || sec._id || sec.title} className="space-y-3">
+              <div className="flex items-center gap-2 pb-1.5 border-b-2" style={{ borderColor: theme.c1 }}>
+                <h2 style={{ color: theme.c1 }} className="text-xs font-bold uppercase tracking-wider font-serif">
+                  {sec.title}
+                </h2>
+              </div>
+
+              {sec.sectionType === 'projects' && (
+                <CanvaProjectCards entries={sec.entries || []} theme={theme} />
+              )}
+              {sec.sectionType === 'experience' && (
+                <ExperienceSectionContent entries={sec.entries || []} theme={theme} />
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// =========================================================================
+// 2. CANVA EXECUTIVE LUXE LAYOUT
 // Top Gradient Ribbon, Monogram Badge, 2-Column Grid with Visual Skill Bars
 // =========================================================================
 function CanvaExecutiveLuxeLayout({ resume, theme, pi, sections, skillsData, meta, marginPadding }) {
@@ -391,8 +770,8 @@ function CanvaExecutiveLuxeLayout({ resume, theme, pi, sections, skillsData, met
 }
 
 // =========================================================================
-// 2. ADOBE SPLIT SIDEBAR LAYOUT
-// 34% Tinted Architectural Sidebar with 5-Dot Visual Rating Meters & Monogram
+// 3. ADOBE SPLIT SIDEBAR LAYOUT
+// 34% Full-Height Tinted Architectural Sidebar with 5-Dot Visual Rating Meters
 // =========================================================================
 function AdobeSplitSidebarLayout({ resume, theme, pi, sections, skillsData, meta }) {
   const isDark = meta.layout === 'sidebar-dark';
@@ -534,7 +913,7 @@ function AdobeSplitSidebarLayout({ resume, theme, pi, sections, skillsData, meta
 }
 
 // =========================================================================
-// 3. SILICON VALLEY TECH & ENGINEERING LAYOUT
+// 4. SILICON VALLEY TECH & ENGINEERING LAYOUT
 // Domain Cards with Telemetry Progress Meters & Tech Badges
 // =========================================================================
 function SiliconValleyTechLayout({ resume, theme, pi, sections, skillsData, meta, marginPadding }) {
@@ -706,7 +1085,7 @@ function SiliconValleyTechLayout({ resume, theme, pi, sections, skillsData, meta
 }
 
 // =========================================================================
-// 4. PORTFOLIO SHOWCASE FIRST LAYOUT
+// 5. PORTFOLIO SHOWCASE FIRST LAYOUT
 // Projects Prominently Positioned with Capability Progress Meters
 // =========================================================================
 function PortfolioShowcaseLayout({ resume, theme, pi, sections, skillsData, meta, marginPadding }) {
@@ -810,7 +1189,7 @@ function PortfolioShowcaseLayout({ resume, theme, pi, sections, skillsData, meta
 }
 
 // =========================================================================
-// 5. MODERN TIMELINE LAYOUT
+// 6. MODERN TIMELINE LAYOUT
 // Vertical Progress Spine with Milestone Nodes & Skill Telemetry Bars
 // =========================================================================
 function ModernTimelineLayout({ resume, theme, pi, sections, skillsData, meta, marginPadding }) {
@@ -898,7 +1277,7 @@ function ModernTimelineLayout({ resume, theme, pi, sections, skillsData, meta, m
 }
 
 // =========================================================================
-// 6. SWISS GRID MINIMALIST LAYOUT
+// 7. SWISS GRID MINIMALIST LAYOUT
 // Left Vertical Accent Rule with Clean Progress Bars & Academic Purity
 // =========================================================================
 function SwissMinimalLayout({ resume, theme, pi, sections, skillsData, meta, marginPadding }) {
@@ -960,8 +1339,8 @@ function SwissMinimalLayout({ resume, theme, pi, sections, skillsData, meta, mar
 }
 
 // =========================================================================
-// 7. CLASSIC ATS HARVARD / STANFORD LAYOUT
-// Single Column Parser Safe with Horizontal Dividers
+// 8. POLISHED ATS CLASSIC LAYOUT
+// Single Column Parser Safe with Horizontal Dividers and Clean Telemetry
 // =========================================================================
 function ClassicATSLayout({ resume, theme, pi, sections, skillsData, meta, marginPadding }) {
   const sortedSections = [...sections].sort((a, b) => (a.order || 0) - (b.order || 0));
@@ -998,13 +1377,8 @@ function ClassicATSLayout({ resume, theme, pi, sections, skillsData, meta, margi
           )}
 
           {sec.sectionType === 'skills' && (
-            <div className="text-[11px] space-y-1">
-              {(skillsData || []).map((cat, idx) => (
-                <div key={idx} className="flex gap-2">
-                  <span className="font-bold text-stone-900 shrink-0">{cat.name}:</span>
-                  <span className="text-stone-700">{cat.skills.join(', ')}</span>
-                </div>
-              ))}
+            <div className="space-y-2 py-1">
+              <CanvaProSkillProgressBars skillsData={skillsData} fallbackEntries={sec.entries} theme={theme} />
             </div>
           )}
 
@@ -1044,134 +1418,6 @@ function ClassicATSLayout({ resume, theme, pi, sections, skillsData, meta, margi
           )}
         </div>
       ))}
-    </div>
-  );
-}
-
-// =========================================================================
-// CANVA PRO VISUAL SKILLS GRAPH COMPONENTS
-// =========================================================================
-
-// 1. Sleek Linear Progress Bars with Dynamic Percentages & 5-Color Harmony
-export function CanvaProSkillProgressBars({ skillsData, fallbackEntries, theme }) {
-  if (skillsData && skillsData.length > 0) {
-    return (
-      <div className="space-y-3.5">
-        {skillsData.map((cat, idx) => (
-          <div key={idx} className="space-y-1.5">
-            <span
-              style={{ color: theme.c1 }}
-              className="font-bold text-[10.5px] uppercase tracking-wider block font-mono"
-            >
-              {cat.name}
-            </span>
-            <div className="space-y-1.5">
-              {cat.skills.map((sk, sIdx) => {
-                const pct = getSkillProficiency(sk, sIdx);
-                return (
-                  <div key={sIdx} className="space-y-0.5">
-                    <div className="flex justify-between items-baseline text-[10.5px]">
-                      <span className="font-medium text-stone-800">{sk}</span>
-                      <span
-                        style={{ color: theme.c2 }}
-                        className="font-mono text-[10px] font-bold"
-                      >
-                        {pct}%
-                      </span>
-                    </div>
-                    {/* Linear Progress Bar */}
-                    <div
-                      className="h-1.5 w-full rounded-full overflow-hidden"
-                      style={{ backgroundColor: theme.c3 || '#e2e8f0' }}
-                    >
-                      <div
-                        className="h-full rounded-full transition-all duration-300"
-                        style={{
-                          width: `${pct}%`,
-                          backgroundColor: theme.c2
-                        }}
-                      />
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        ))}
-      </div>
-    );
-  }
-
-  // Fallback flat skills
-  return (
-    <div className="space-y-2">
-      {(fallbackEntries || []).map((e, idx) => {
-        const pct = getSkillProficiency(e.title, idx);
-        return (
-          <div key={idx} className="space-y-0.5">
-            <div className="flex justify-between text-[10.5px]">
-              <span className="font-medium text-stone-800">{e.title}</span>
-              <span style={{ color: theme.c2 }} className="font-mono text-[10px] font-bold">
-                {pct}%
-              </span>
-            </div>
-            <div
-              className="h-1.5 w-full rounded-full overflow-hidden"
-              style={{ backgroundColor: theme.c3 || '#e2e8f0' }}
-            >
-              <div
-                className="h-full rounded-full"
-                style={{ width: `${pct}%`, backgroundColor: theme.c2 }}
-              />
-            </div>
-          </div>
-        );
-      })}
-    </div>
-  );
-}
-
-// 2. Canva Pro 5-Dot Visual Rating Scale (Sidebar & Compact)
-export function CanvaPro5DotRatingMeters({ skillsData, theme, isDark }) {
-  const topSkills = (skillsData || []).flatMap(c => c.skills).slice(0, 10);
-  return (
-    <div className="space-y-2.5">
-      {topSkills.map((sk, idx) => {
-        const pct = getSkillProficiency(sk, idx);
-        const dotsFilled = pct >= 93 ? 5 : pct >= 86 ? 4 : 3;
-        return (
-          <div key={idx} className="space-y-1">
-            <div className="flex justify-between text-[10.5px] font-medium">
-              <span style={{ color: isDark ? '#ffffff' : theme.c1 }}>{sk}</span>
-              <span
-                style={{ color: isDark ? theme.c2 : theme.c2 }}
-                className="font-mono text-[9.5px] font-semibold"
-              >
-                {pct}%
-              </span>
-            </div>
-            {/* 5-Dot Visual Rating Scale */}
-            <div className="flex gap-1.5">
-              {[1, 2, 3, 4, 5].map(dot => (
-                <div
-                  key={dot}
-                  style={{
-                    backgroundColor:
-                      dot <= dotsFilled
-                        ? isDark
-                          ? theme.c2
-                          : theme.c2
-                        : isDark
-                        ? 'rgba(255,255,255,0.2)'
-                        : theme.c3 || '#e2e8f0'
-                  }}
-                  className="h-1.5 flex-1 rounded-full transition"
-                />
-              ))}
-            </div>
-          </div>
-        );
-      })}
     </div>
   );
 }
