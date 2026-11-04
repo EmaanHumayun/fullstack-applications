@@ -19,10 +19,36 @@ import {
   BookOpen,
   Briefcase,
   GraduationCap,
-  Sparkles
+  Sparkles,
+  BarChart2,
+  TrendingUp,
+  Code2
 } from 'lucide-react';
 import { getPalette } from './palettes.js';
 import { getTemplateMeta } from './templatesMeta.js';
+
+// =========================================================================
+// DETERMINISTIC SKILL PROFICIENCY GENERATOR
+// Provides realistic engineering percentages (96%, 92%, 88%, etc.)
+// =========================================================================
+function getSkillProficiency(skill, index = 0) {
+  if (typeof skill === 'object' && skill.percentage) {
+    return Math.min(100, Math.max(10, skill.percentage));
+  }
+  const name = typeof skill === 'string' ? skill : skill?.name || skill?.title || '';
+  const highTier = [
+    'Docker', 'Kubernetes', 'Node.js', 'React', 'TypeScript',
+    'Python', 'PostgreSQL', 'AWS', 'Linux', 'REST APIs',
+    'CI/CD', 'GitOps', 'FastAPI', 'Redis', 'MongoDB', 'System Design'
+  ];
+  const isHigh = highTier.some(h => name.toLowerCase().includes(h.toLowerCase()));
+  if (isHigh) {
+    const scores = [96, 94, 92, 95, 93];
+    return scores[index % scores.length];
+  }
+  const fallbackScores = [90, 88, 85, 91, 87, 86, 89, 84];
+  return fallbackScores[index % fallbackScores.length];
+}
 
 export function ResumeRenderer({
   resume,
@@ -63,12 +89,34 @@ export function ResumeRenderer({
     spacious: 'p-10 sm:p-11'
   }[resume.pageSettings?.margins] || 'p-8 sm:p-9';
 
+  // Strict 5-Color Normalization
+  const c1 = theme.c1 || theme.primary || '#0f172a';
+  const c2 = theme.c2 || theme.accent || '#d97706';
+  const c3 = theme.c3 || theme.lightAccent || '#fef3c7';
+  const c4 = theme.c4 || theme.sidebarBg || '#f8fafc';
+  const c5 = theme.c5 || theme.background || '#ffffff';
+
+  const normalizedTheme = {
+    ...theme,
+    c1,
+    c2,
+    c3,
+    c4,
+    c5,
+    primary: c1,
+    accent: c2,
+    lightAccent: c3,
+    sidebarBg: c4,
+    background: c5
+  };
+
   // Archetype Dispatcher
   const isExecutiveLuxe = ['executive-pro', 'contemporary-creative'].includes(templateId) || meta.layout === 'executive';
   const isSplitSidebar = ['modern-two-col', 'elegant-sidebar'].includes(templateId) || ['two-col-left', 'sidebar-dark'].includes(meta.layout);
   const isTimeline = templateId === 'timeline-resume' || meta.layout === 'timeline-vertical';
   const isTechGrid = ['software-engineer', 'backend-engineer', 'devops-engineer', 'ai-ml-engineer', 'fullstack-dev', 'automation-engineer', 'cybersecurity-networking'].includes(templateId);
   const isSwissMinimal = ['minimal-elegant', 'academic-research', 'international-premium'].includes(templateId);
+  const isPortfolioShowcase = templateId === 'portfolio-oriented' || meta.layout === 'portfolio-first';
 
   return (
     <div
@@ -84,8 +132,8 @@ export function ResumeRenderer({
         style={{
           width: '210mm',
           minHeight: '297mm',
-          backgroundColor: theme.background || '#ffffff',
-          color: theme.text || '#0f172a',
+          backgroundColor: c5,
+          color: c1,
           ...fontSizeStyle
         }}
         className={`resume-paper shadow-2xl border border-stone-200 relative text-left box-border ${fontClass} print:shadow-none print:border-none print:m-0`}
@@ -93,7 +141,7 @@ export function ResumeRenderer({
         {isExecutiveLuxe ? (
           <CanvaExecutiveLuxeLayout
             resume={resume}
-            theme={theme}
+            theme={normalizedTheme}
             pi={pi}
             sections={sections}
             skillsData={skillsData}
@@ -103,16 +151,26 @@ export function ResumeRenderer({
         ) : isSplitSidebar ? (
           <AdobeSplitSidebarLayout
             resume={resume}
-            theme={theme}
+            theme={normalizedTheme}
             pi={pi}
             sections={sections}
             skillsData={skillsData}
             meta={meta}
           />
+        ) : isPortfolioShowcase ? (
+          <PortfolioShowcaseLayout
+            resume={resume}
+            theme={normalizedTheme}
+            pi={pi}
+            sections={sections}
+            skillsData={skillsData}
+            meta={meta}
+            marginPadding={marginPadding}
+          />
         ) : isTechGrid ? (
           <SiliconValleyTechLayout
             resume={resume}
-            theme={theme}
+            theme={normalizedTheme}
             pi={pi}
             sections={sections}
             skillsData={skillsData}
@@ -122,7 +180,7 @@ export function ResumeRenderer({
         ) : isTimeline ? (
           <ModernTimelineLayout
             resume={resume}
-            theme={theme}
+            theme={normalizedTheme}
             pi={pi}
             sections={sections}
             skillsData={skillsData}
@@ -132,7 +190,7 @@ export function ResumeRenderer({
         ) : isSwissMinimal ? (
           <SwissMinimalLayout
             resume={resume}
-            theme={theme}
+            theme={normalizedTheme}
             pi={pi}
             sections={sections}
             skillsData={skillsData}
@@ -142,7 +200,7 @@ export function ResumeRenderer({
         ) : (
           <ClassicATSLayout
             resume={resume}
-            theme={theme}
+            theme={normalizedTheme}
             pi={pi}
             sections={sections}
             skillsData={skillsData}
@@ -156,7 +214,8 @@ export function ResumeRenderer({
 }
 
 // =========================================================================
-// 1. CANVA EXECUTIVE LUXE LAYOUT (Top Gradient Banner + 2-Column Body)
+// 1. CANVA EXECUTIVE LUXE LAYOUT
+// Top Gradient Ribbon, Monogram Badge, 2-Column Grid with Visual Skill Bars
 // =========================================================================
 function CanvaExecutiveLuxeLayout({ resume, theme, pi, sections, skillsData, meta, marginPadding }) {
   const initials = (pi.fullName || 'EH')
@@ -177,24 +236,28 @@ function CanvaExecutiveLuxeLayout({ resume, theme, pi, sections, skillsData, met
       {/* LUXURY TOP BANNER */}
       <div
         style={{
-          background: `linear-gradient(135deg, ${theme.primary} 0%, ${theme.secondary} 100%)`,
+          background: `linear-gradient(135deg, ${theme.c1} 0%, ${theme.c1}ee 100%)`,
           color: '#ffffff'
         }}
         className="p-8 sm:p-9 relative overflow-hidden"
       >
-        {/* Subtle decorative geometry */}
+        {/* Subtle geometric circles */}
         <div
-          style={{ borderColor: theme.accent || '#d97706' }}
-          className="absolute -right-10 -bottom-10 w-44 h-44 rounded-full border-8 opacity-15 pointer-events-none"
+          style={{ borderColor: theme.c2 }}
+          className="absolute -right-10 -bottom-10 w-48 h-48 rounded-full border-8 opacity-15 pointer-events-none"
+        />
+        <div
+          style={{ borderColor: theme.c3 }}
+          className="absolute -right-4 -bottom-4 w-28 h-28 rounded-full border-4 opacity-20 pointer-events-none"
         />
 
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 relative z-10">
           <div className="flex items-center gap-4">
-            {/* Initials Seal */}
+            {/* Monogram Seal */}
             <div
               style={{
-                borderColor: theme.accent || '#d97706',
-                color: theme.accent || '#d97706'
+                borderColor: theme.c2,
+                color: theme.c2
               }}
               className="w-14 h-14 rounded-2xl border-2 bg-white/10 backdrop-blur-xs flex items-center justify-center font-serif text-xl font-black shadow-inner shrink-0"
             >
@@ -206,7 +269,7 @@ function CanvaExecutiveLuxeLayout({ resume, theme, pi, sections, skillsData, met
                 {pi.fullName || 'Emaan Humayun'}
               </h1>
               <p
-                style={{ color: theme.accent || '#d97706' }}
+                style={{ color: theme.c2 }}
                 className="text-xs font-bold uppercase tracking-[0.2em] mt-1"
               >
                 {pi.professionalTitle || resume.targetRole || 'Software Engineer'}
@@ -214,21 +277,21 @@ function CanvaExecutiveLuxeLayout({ resume, theme, pi, sections, skillsData, met
             </div>
           </div>
 
-          {/* Contact Pill Badges */}
+          {/* Contact Badges */}
           <div className="flex flex-wrap sm:flex-col sm:items-end gap-1.5 text-[11px] text-white/90">
             {pi.email && (
               <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-white/10 backdrop-blur-xs">
-                <Mail size={12} style={{ color: theme.accent }} /> {pi.email}
+                <Mail size={12} style={{ color: theme.c2 }} /> {pi.email}
               </span>
             )}
             {pi.phone && (
               <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-white/10 backdrop-blur-xs">
-                <Phone size={12} style={{ color: theme.accent }} /> {pi.phone}
+                <Phone size={12} style={{ color: theme.c2 }} /> {pi.phone}
               </span>
             )}
             {pi.location && (
               <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-white/10 backdrop-blur-xs">
-                <MapPin size={12} style={{ color: theme.accent }} /> {pi.location}
+                <MapPin size={12} style={{ color: theme.c2 }} /> {pi.location}
               </span>
             )}
             {pi.linkedinUrl && (
@@ -238,7 +301,7 @@ function CanvaExecutiveLuxeLayout({ resume, theme, pi, sections, skillsData, met
                 rel="noreferrer"
                 className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-white/10 backdrop-blur-xs hover:bg-white/20 transition"
               >
-                <Linkedin size={12} style={{ color: theme.accent }} /> LinkedIn
+                <Linkedin size={12} style={{ color: theme.c2 }} /> LinkedIn
               </a>
             )}
             {pi.githubUrl && (
@@ -248,7 +311,7 @@ function CanvaExecutiveLuxeLayout({ resume, theme, pi, sections, skillsData, met
                 rel="noreferrer"
                 className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-white/10 backdrop-blur-xs hover:bg-white/20 transition"
               >
-                <Github size={12} style={{ color: theme.accent }} /> GitHub
+                <Github size={12} style={{ color: theme.c2 }} /> GitHub
               </a>
             )}
           </div>
@@ -257,18 +320,18 @@ function CanvaExecutiveLuxeLayout({ resume, theme, pi, sections, skillsData, met
 
       {/* BODY (2-Column Grid) */}
       <div className="p-8 sm:p-9 flex-1 flex flex-col sm:flex-row gap-8">
-        {/* LEFT COLUMN (35%): Skills, Education, Certifications */}
-        <div className="w-full sm:w-[35%] flex flex-col space-y-6">
+        {/* LEFT COLUMN (38%): Visual Skill Progress Bars, Education, Certifications */}
+        <div className="w-full sm:w-[38%] flex flex-col space-y-6">
           {sideSecs.map(sec => (
-            <div key={sec.id || sec._id || sec.title} className="space-y-2.5">
-              <div className="flex items-center gap-2 pb-1.5 border-b-2" style={{ borderColor: theme.primary }}>
-                <h2 style={{ color: theme.primary }} className="text-xs font-bold uppercase tracking-wider font-serif">
+            <div key={sec.id || sec._id || sec.title} className="space-y-3">
+              <div className="flex items-center gap-2 pb-1.5 border-b-2" style={{ borderColor: theme.c1 }}>
+                <h2 style={{ color: theme.c1 }} className="text-xs font-bold uppercase tracking-wider font-serif">
                   {sec.title}
                 </h2>
               </div>
 
               {sec.sectionType === 'skills' && (
-                <CanvaPillSkills skillsData={skillsData} fallbackEntries={sec.entries} theme={theme} />
+                <CanvaProSkillProgressBars skillsData={skillsData} fallbackEntries={sec.entries} theme={theme} />
               )}
               {sec.sectionType === 'education' && (
                 <EducationSectionContent entries={sec.entries || []} theme={theme} />
@@ -285,18 +348,18 @@ function CanvaExecutiveLuxeLayout({ resume, theme, pi, sections, skillsData, met
           ))}
         </div>
 
-        {/* RIGHT COLUMN (65%): Executive Summary, Experience, Projects */}
-        <div className="w-full sm:w-[65%] flex flex-col space-y-6">
+        {/* RIGHT COLUMN (62%): Executive Summary, Experience, Projects */}
+        <div className="w-full sm:w-[62%] flex flex-col space-y-6">
           {/* Executive Summary Quote Box */}
           {summarySec && (
             <div
               style={{
-                backgroundColor: theme.sidebarBg || '#f8fafc',
-                borderLeftColor: theme.accent || theme.primary
+                backgroundColor: theme.c4,
+                borderLeftColor: theme.c2
               }}
               className="p-4 border-l-4 rounded-r-xl shadow-xs"
             >
-              <h2 style={{ color: theme.primary }} className="text-xs font-bold uppercase tracking-wider font-serif mb-1">
+              <h2 style={{ color: theme.c1 }} className="text-xs font-bold uppercase tracking-wider font-serif mb-1">
                 {summarySec.title}
               </h2>
               <p className="text-[11.5px] leading-relaxed text-stone-700">
@@ -307,8 +370,8 @@ function CanvaExecutiveLuxeLayout({ resume, theme, pi, sections, skillsData, met
 
           {mainSecs.map(sec => (
             <div key={sec.id || sec._id || sec.title} className="space-y-3">
-              <div className="flex items-center gap-2 pb-1.5 border-b-2" style={{ borderColor: theme.primary }}>
-                <h2 style={{ color: theme.primary }} className="text-xs font-bold uppercase tracking-wider font-serif">
+              <div className="flex items-center gap-2 pb-1.5 border-b-2" style={{ borderColor: theme.c1 }}>
+                <h2 style={{ color: theme.c1 }} className="text-xs font-bold uppercase tracking-wider font-serif">
                   {sec.title}
                 </h2>
               </div>
@@ -328,13 +391,13 @@ function CanvaExecutiveLuxeLayout({ resume, theme, pi, sections, skillsData, met
 }
 
 // =========================================================================
-// 2. ADOBE SPLIT SIDEBAR LAYOUT (34% Tinted Sidebar + 66% Editorial Main)
+// 2. ADOBE SPLIT SIDEBAR LAYOUT
+// 34% Tinted Architectural Sidebar with 5-Dot Visual Rating Meters & Monogram
 // =========================================================================
 function AdobeSplitSidebarLayout({ resume, theme, pi, sections, skillsData, meta }) {
   const isDark = meta.layout === 'sidebar-dark';
-  const sidebarBg = isDark ? theme.primary : (theme.sidebarBg || '#f8fafc');
-  const sidebarTextColor = isDark ? '#ffffff' : (theme.text || '#0f172a');
-  const sidebarMuted = isDark ? 'rgba(255,255,255,0.7)' : (theme.muted || '#475569');
+  const sidebarBg = isDark ? theme.c1 : theme.c4;
+  const sidebarTextColor = isDark ? '#ffffff' : theme.c1;
 
   const sideSecs = sections.filter(s => ['skills', 'education', 'certifications'].includes(s.sectionType));
   const mainSecs = sections.filter(s => !['skills', 'education', 'certifications'].includes(s.sectionType));
@@ -347,7 +410,7 @@ function AdobeSplitSidebarLayout({ resume, theme, pi, sections, skillsData, meta
           width: '34%',
           backgroundColor: sidebarBg,
           color: sidebarTextColor,
-          borderRightColor: theme.border || '#e2e8f0'
+          borderRightColor: theme.c3
         }}
         className="p-7 border-r flex flex-col space-y-6"
       >
@@ -355,8 +418,8 @@ function AdobeSplitSidebarLayout({ resume, theme, pi, sections, skillsData, meta
         <div className="pb-4 border-b border-black/10 dark:border-white/20">
           <div
             style={{
-              backgroundColor: isDark ? 'rgba(255,255,255,0.15)' : theme.primary,
-              color: isDark ? theme.accent : '#ffffff'
+              backgroundColor: isDark ? 'rgba(255,255,255,0.15)' : theme.c1,
+              color: isDark ? theme.c2 : '#ffffff'
             }}
             className="w-12 h-12 rounded-xl flex items-center justify-center font-serif text-lg font-bold mb-3 shadow-xs"
           >
@@ -366,7 +429,7 @@ function AdobeSplitSidebarLayout({ resume, theme, pi, sections, skillsData, meta
             {pi.fullName || 'Emaan Humayun'}
           </h1>
           <p
-            style={{ color: isDark ? theme.accent : theme.primary }}
+            style={{ color: isDark ? theme.c2 : theme.c1 }}
             className="text-[11px] font-bold uppercase tracking-widest mt-1"
           >
             {pi.professionalTitle || resume.targetRole}
@@ -377,25 +440,25 @@ function AdobeSplitSidebarLayout({ resume, theme, pi, sections, skillsData, meta
         <div className="space-y-2 text-[11px]">
           {pi.email && (
             <div className="flex items-center gap-2">
-              <Mail size={13} style={{ color: isDark ? theme.accent : theme.primary }} className="shrink-0" />
+              <Mail size={13} style={{ color: isDark ? theme.c2 : theme.c2 }} className="shrink-0" />
               <span className="truncate">{pi.email}</span>
             </div>
           )}
           {pi.phone && (
             <div className="flex items-center gap-2">
-              <Phone size={13} style={{ color: isDark ? theme.accent : theme.primary }} className="shrink-0" />
+              <Phone size={13} style={{ color: isDark ? theme.c2 : theme.c2 }} className="shrink-0" />
               <span>{pi.phone}</span>
             </div>
           )}
           {pi.location && (
             <div className="flex items-center gap-2">
-              <MapPin size={13} style={{ color: isDark ? theme.accent : theme.primary }} className="shrink-0" />
+              <MapPin size={13} style={{ color: isDark ? theme.c2 : theme.c2 }} className="shrink-0" />
               <span>{pi.location}</span>
             </div>
           )}
           {pi.githubUrl && (
             <div className="flex items-center gap-2">
-              <Github size={13} style={{ color: isDark ? theme.accent : theme.primary }} className="shrink-0" />
+              <Github size={13} style={{ color: isDark ? theme.c2 : theme.c2 }} className="shrink-0" />
               <a href={pi.githubUrl} target="_blank" rel="noreferrer" className="truncate hover:underline">
                 {pi.githubUrl.replace(/^https?:\/\//, '')}
               </a>
@@ -403,7 +466,7 @@ function AdobeSplitSidebarLayout({ resume, theme, pi, sections, skillsData, meta
           )}
           {pi.linkedinUrl && (
             <div className="flex items-center gap-2">
-              <Linkedin size={13} style={{ color: isDark ? theme.accent : theme.primary }} className="shrink-0" />
+              <Linkedin size={13} style={{ color: isDark ? theme.c2 : theme.c2 }} className="shrink-0" />
               <a href={pi.linkedinUrl} target="_blank" rel="noreferrer" className="truncate hover:underline">
                 LinkedIn Profile
               </a>
@@ -411,7 +474,7 @@ function AdobeSplitSidebarLayout({ resume, theme, pi, sections, skillsData, meta
           )}
           {pi.portfolioUrl && (
             <div className="flex items-center gap-2">
-              <Globe size={13} style={{ color: isDark ? theme.accent : theme.primary }} className="shrink-0" />
+              <Globe size={13} style={{ color: isDark ? theme.c2 : theme.c2 }} className="shrink-0" />
               <a href={pi.portfolioUrl} target="_blank" rel="noreferrer" className="truncate hover:underline">
                 Portfolio Site
               </a>
@@ -423,14 +486,14 @@ function AdobeSplitSidebarLayout({ resume, theme, pi, sections, skillsData, meta
         {sideSecs.map(sec => (
           <div key={sec.id || sec._id || sec.title} className="space-y-2.5">
             <h2
-              style={{ color: isDark ? theme.accent : theme.primary }}
+              style={{ color: isDark ? theme.c2 : theme.c1 }}
               className="text-xs font-bold uppercase tracking-wider font-serif border-b pb-1"
             >
               {sec.title}
             </h2>
 
             {sec.sectionType === 'skills' && (
-              <VisualMeterSkills skillsData={skillsData} theme={theme} isDark={isDark} />
+              <CanvaPro5DotRatingMeters skillsData={skillsData} theme={theme} isDark={isDark} />
             )}
             {sec.sectionType === 'education' && (
               <EducationSectionContent entries={sec.entries || []} theme={theme} isDarkSidebar={isDark} />
@@ -446,8 +509,8 @@ function AdobeSplitSidebarLayout({ resume, theme, pi, sections, skillsData, meta
       <div className="p-8 sm:p-9 flex-1 flex flex-col space-y-6">
         {mainSecs.map(sec => (
           <div key={sec.id || sec._id || sec.title} className="space-y-3">
-            <div className="flex items-center justify-between pb-1.5 border-b-2" style={{ borderColor: theme.primary }}>
-              <h2 style={{ color: theme.primary }} className="text-xs font-bold uppercase tracking-wider font-serif">
+            <div className="flex items-center justify-between pb-1.5 border-b-2" style={{ borderColor: theme.c1 }}>
+              <h2 style={{ color: theme.c1 }} className="text-xs font-bold uppercase tracking-wider font-serif">
                 {sec.title}
               </h2>
             </div>
@@ -471,7 +534,8 @@ function AdobeSplitSidebarLayout({ resume, theme, pi, sections, skillsData, meta
 }
 
 // =========================================================================
-// 3. SILICON VALLEY TECH & ENGINEERING LAYOUT (Domain Cards & Project Tags)
+// 3. SILICON VALLEY TECH & ENGINEERING LAYOUT
+// Domain Cards with Telemetry Progress Meters & Tech Badges
 // =========================================================================
 function SiliconValleyTechLayout({ resume, theme, pi, sections, skillsData, meta, marginPadding }) {
   const sortedSections = [...sections].sort((a, b) => (a.order || 0) - (b.order || 0));
@@ -482,13 +546,13 @@ function SiliconValleyTechLayout({ resume, theme, pi, sections, skillsData, meta
   return (
     <div className={`${marginPadding} flex flex-col space-y-5`}>
       {/* TECH HERO HEADER */}
-      <div className="pb-4 border-b-2" style={{ borderColor: theme.primary }}>
+      <div className="pb-4 border-b-2" style={{ borderColor: theme.c1 }}>
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
           <div>
-            <h1 style={{ color: theme.primary }} className="text-2xl sm:text-3xl font-black tracking-tight">
+            <h1 style={{ color: theme.c1 }} className="text-2xl sm:text-3xl font-black tracking-tight">
               {pi.fullName || 'Emaan Humayun'}
             </h1>
-            <p style={{ color: theme.accent || theme.secondary }} className="text-xs font-bold uppercase tracking-widest mt-1">
+            <p style={{ color: theme.c2 }} className="text-xs font-bold uppercase tracking-widest mt-1">
               {pi.professionalTitle || resume.targetRole || 'Full-Stack Software Engineer'}
             </p>
           </div>
@@ -496,28 +560,28 @@ function SiliconValleyTechLayout({ resume, theme, pi, sections, skillsData, meta
           <div className="text-[11px] text-stone-600 flex flex-wrap sm:flex-col sm:items-end gap-1.5">
             {pi.email && (
               <span className="flex items-center gap-1 font-mono">
-                <Mail size={12} style={{ color: theme.primary }} /> {pi.email}
+                <Mail size={12} style={{ color: theme.c2 }} /> {pi.email}
               </span>
             )}
             {pi.location && (
               <span className="flex items-center gap-1">
-                <MapPin size={12} style={{ color: theme.primary }} /> {pi.location}
+                <MapPin size={12} style={{ color: theme.c2 }} /> {pi.location}
               </span>
             )}
             <div className="flex items-center gap-3 pt-1">
               {pi.githubUrl && (
                 <a href={pi.githubUrl} target="_blank" rel="noreferrer" className="flex items-center gap-1 hover:underline text-stone-800 font-mono text-[10.5px]">
-                  <Github size={12} style={{ color: theme.primary }} /> github
+                  <Github size={12} style={{ color: theme.c2 }} /> github
                 </a>
               )}
               {pi.linkedinUrl && (
                 <a href={pi.linkedinUrl} target="_blank" rel="noreferrer" className="flex items-center gap-1 hover:underline text-stone-800 font-mono text-[10.5px]">
-                  <Linkedin size={12} style={{ color: theme.primary }} /> linkedin
+                  <Linkedin size={12} style={{ color: theme.c2 }} /> linkedin
                 </a>
               )}
               {pi.portfolioUrl && (
                 <a href={pi.portfolioUrl} target="_blank" rel="noreferrer" className="flex items-center gap-1 hover:underline text-stone-800 font-mono text-[10.5px]">
-                  <Globe size={12} style={{ color: theme.primary }} /> portfolio
+                  <Globe size={12} style={{ color: theme.c2 }} /> portfolio
                 </a>
               )}
             </div>
@@ -528,7 +592,7 @@ function SiliconValleyTechLayout({ resume, theme, pi, sections, skillsData, meta
       {/* SUMMARY */}
       {summarySec && (
         <div className="space-y-1.5">
-          <h2 style={{ color: theme.primary }} className="text-[11.5px] font-bold uppercase tracking-wider font-mono">
+          <h2 style={{ color: theme.c1 }} className="text-[11.5px] font-bold uppercase tracking-wider font-mono">
             // {summarySec.title}
           </h2>
           <p className="text-[11.5px] leading-relaxed text-stone-700">
@@ -537,39 +601,77 @@ function SiliconValleyTechLayout({ resume, theme, pi, sections, skillsData, meta
         </div>
       )}
 
-      {/* TECHNICAL COMPETENCIES (Interactive Domain Cards) */}
+      {/* TECHNICAL COMPETENCIES (Interactive Domain Cards with Progress Meters) */}
       {skillsSec && (
-        <div className="space-y-2">
-          <h2 style={{ color: theme.primary }} className="text-[11.5px] font-bold uppercase tracking-wider font-mono">
-            // {skillsSec.title}
+        <div className="space-y-2.5">
+          <h2 style={{ color: theme.c1 }} className="text-[11.5px] font-bold uppercase tracking-wider font-mono flex items-center justify-between">
+            <span>// {skillsSec.title}</span>
+            <span className="text-[10px] text-stone-500 font-normal">Telemetry Verification: Active</span>
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {(skillsData || []).map((cat, idx) => (
               <div
                 key={idx}
                 style={{
-                  backgroundColor: theme.sidebarBg || '#f8fafc',
-                  borderColor: theme.border || '#e2e8f0'
+                  backgroundColor: theme.c4,
+                  borderColor: theme.c3
                 }}
-                className="p-2.5 rounded-xl border flex flex-col gap-1"
+                className="p-3 rounded-xl border flex flex-col gap-2 shadow-xs"
               >
-                <span style={{ color: theme.primary }} className="font-bold text-[11px] font-mono flex items-center gap-1">
-                  <Terminal size={11} /> {cat.name}
-                </span>
-                <div className="flex flex-wrap gap-1 mt-0.5">
-                  {cat.skills.map((sk, sIdx) => (
-                    <span
-                      key={sIdx}
-                      style={{
-                        backgroundColor: theme.tagBg || '#f1f5f9',
-                        color: theme.tagText || '#0f172a'
-                      }}
-                      className="px-2 py-0.5 rounded text-[10.5px] font-mono font-medium"
-                    >
-                      {sk}
-                    </span>
-                  ))}
+                <div className="flex items-center justify-between">
+                  <span style={{ color: theme.c1 }} className="font-bold text-[11px] font-mono flex items-center gap-1.5">
+                    <Terminal size={12} style={{ color: theme.c2 }} /> {cat.name}
+                  </span>
+                  <span
+                    style={{ backgroundColor: theme.c3, color: theme.c1 }}
+                    className="text-[9.5px] font-mono font-bold px-1.5 py-0.5 rounded"
+                  >
+                    Tier-1
+                  </span>
                 </div>
+
+                {/* Progress telemetry tracks for top skills */}
+                <div className="space-y-1.5 pt-1">
+                  {(cat.skills || []).slice(0, 3).map((sk, sIdx) => {
+                    const pct = getSkillProficiency(sk, sIdx);
+                    return (
+                      <div key={sIdx} className="space-y-0.5">
+                        <div className="flex justify-between text-[10px] font-mono">
+                          <span className="text-stone-700 font-medium">{sk}</span>
+                          <span style={{ color: theme.c2 }} className="font-bold">{pct}%</span>
+                        </div>
+                        <div className="h-1.5 w-full rounded-full overflow-hidden" style={{ backgroundColor: theme.c3 }}>
+                          <div
+                            className="h-full rounded-full transition-all duration-300"
+                            style={{
+                              width: `${pct}%`,
+                              backgroundColor: theme.c2
+                            }}
+                          />
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+
+                {/* Secondary skill badges */}
+                {(cat.skills || []).length > 3 && (
+                  <div className="flex flex-wrap gap-1 pt-1 border-t border-black/5">
+                    {(cat.skills || []).slice(3).map((sk, sIdx) => (
+                      <span
+                        key={sIdx}
+                        style={{
+                          backgroundColor: '#ffffff',
+                          color: theme.c1,
+                          borderColor: theme.c3
+                        }}
+                        className="px-1.5 py-0.5 rounded text-[9.5px] font-mono border"
+                      >
+                        {sk}
+                      </span>
+                    ))}
+                  </div>
+                )}
               </div>
             ))}
           </div>
@@ -579,8 +681,8 @@ function SiliconValleyTechLayout({ resume, theme, pi, sections, skillsData, meta
       {/* OTHER SECTIONS (Projects, Experience, Education) */}
       {otherSecs.map(sec => (
         <div key={sec.id || sec._id || sec.title} className="space-y-2.5">
-          <div className="flex items-center gap-2 pb-1 border-b" style={{ borderColor: theme.border || '#e2e8f0' }}>
-            <h2 style={{ color: theme.primary }} className="text-[11.5px] font-bold uppercase tracking-wider font-mono">
+          <div className="flex items-center gap-2 pb-1 border-b" style={{ borderColor: theme.c3 }}>
+            <h2 style={{ color: theme.c1 }} className="text-[11.5px] font-bold uppercase tracking-wider font-mono">
               // {sec.title}
             </h2>
           </div>
@@ -604,7 +706,112 @@ function SiliconValleyTechLayout({ resume, theme, pi, sections, skillsData, meta
 }
 
 // =========================================================================
-// 4. MODERN TIMELINE LAYOUT (Vertical Progress Spine)
+// 4. PORTFOLIO SHOWCASE FIRST LAYOUT
+// Projects Prominently Positioned with Capability Progress Meters
+// =========================================================================
+function PortfolioShowcaseLayout({ resume, theme, pi, sections, skillsData, meta, marginPadding }) {
+  const sortedSections = [...sections].sort((a, b) => (a.order || 0) - (b.order || 0));
+  const summarySec = sortedSections.find(s => s.sectionType === 'summary');
+  const projectSec = sortedSections.find(s => s.sectionType === 'projects');
+  const skillsSec = sortedSections.find(s => s.sectionType === 'skills');
+  const otherSecs = sortedSections.filter(s => !['summary', 'projects', 'skills'].includes(s.sectionType));
+
+  return (
+    <div className={`${marginPadding} flex flex-col space-y-6`}>
+      {/* Editorial Header */}
+      <div
+        style={{
+          borderBottomColor: theme.c2,
+          backgroundColor: theme.c4
+        }}
+        className="p-6 rounded-2xl border-b-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4"
+      >
+        <div>
+          <span
+            style={{ color: theme.c2, backgroundColor: theme.c3 }}
+            className="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-widest inline-block mb-1.5"
+          >
+            Engineering Portfolio Resume
+          </span>
+          <h1 style={{ color: theme.c1 }} className="text-2xl sm:text-3xl font-black font-serif tracking-tight">
+            {pi.fullName || 'Emaan Humayun'}
+          </h1>
+          <p style={{ color: theme.c1 }} className="text-xs font-semibold uppercase tracking-wider mt-0.5 opacity-80">
+            {pi.professionalTitle || resume.targetRole}
+          </p>
+        </div>
+
+        <div className="text-[11px] space-y-1 text-stone-700">
+          {pi.email && <div className="flex items-center gap-1.5"><Mail size={12} style={{ color: theme.c2 }} /> {pi.email}</div>}
+          {pi.location && <div className="flex items-center gap-1.5"><MapPin size={12} style={{ color: theme.c2 }} /> {pi.location}</div>}
+          <div className="flex items-center gap-2 pt-1 font-mono text-[10.5px]">
+            {pi.githubUrl && <a href={pi.githubUrl} target="_blank" rel="noreferrer" className="underline hover:text-stone-900">GitHub</a>}
+            {pi.portfolioUrl && <a href={pi.portfolioUrl} target="_blank" rel="noreferrer" className="underline hover:text-stone-900">Live Portfolio</a>}
+          </div>
+        </div>
+      </div>
+
+      {/* Summary */}
+      {summarySec && (
+        <div className="space-y-1">
+          <p className="text-[12px] leading-relaxed text-stone-700 italic border-l-2 pl-3" style={{ borderColor: theme.c2 }}>
+            "{summarySec.customContent || summarySec.entries?.[0]?.description || resume.professionalSummary}"
+          </p>
+        </div>
+      )}
+
+      {/* 2-Column: Left (Skills Graphs), Right (Showcase Projects) */}
+      <div className="grid grid-cols-1 sm:grid-cols-12 gap-6">
+        {/* Left: Skills Progress Bars (40%) */}
+        <div className="sm:col-span-5 space-y-4">
+          {skillsSec && (
+            <div className="space-y-3">
+              <h2 style={{ color: theme.c1, borderColor: theme.c2 }} className="text-xs font-bold uppercase tracking-wider font-serif border-b pb-1">
+                {skillsSec.title}
+              </h2>
+              <CanvaProSkillProgressBars skillsData={skillsData} fallbackEntries={skillsSec.entries} theme={theme} />
+            </div>
+          )}
+
+          {otherSecs.filter(s => ['education', 'certifications'].includes(s.sectionType)).map(sec => (
+            <div key={sec.id || sec.title} className="space-y-2 pt-2">
+              <h2 style={{ color: theme.c1, borderColor: theme.c2 }} className="text-xs font-bold uppercase tracking-wider font-serif border-b pb-1">
+                {sec.title}
+              </h2>
+              {sec.sectionType === 'education' && <EducationSectionContent entries={sec.entries || []} theme={theme} />}
+              {sec.sectionType === 'certifications' && <CertificationsSectionContent entries={sec.entries || []} theme={theme} />}
+            </div>
+          ))}
+        </div>
+
+        {/* Right: Projects First & Experience (60%) */}
+        <div className="sm:col-span-7 space-y-5">
+          {projectSec && (
+            <div className="space-y-3">
+              <h2 style={{ color: theme.c1, borderColor: theme.c2 }} className="text-xs font-bold uppercase tracking-wider font-serif border-b pb-1">
+                {projectSec.title}
+              </h2>
+              <CanvaProjectCards entries={projectSec.entries || []} theme={theme} />
+            </div>
+          )}
+
+          {otherSecs.filter(s => s.sectionType === 'experience').map(sec => (
+            <div key={sec.id || sec.title} className="space-y-3">
+              <h2 style={{ color: theme.c1, borderColor: theme.c2 }} className="text-xs font-bold uppercase tracking-wider font-serif border-b pb-1">
+                {sec.title}
+              </h2>
+              <ExperienceSectionContent entries={sec.entries || []} theme={theme} />
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// =========================================================================
+// 5. MODERN TIMELINE LAYOUT
+// Vertical Progress Spine with Milestone Nodes & Skill Telemetry Bars
 // =========================================================================
 function ModernTimelineLayout({ resume, theme, pi, sections, skillsData, meta, marginPadding }) {
   const sortedSections = [...sections].sort((a, b) => (a.order || 0) - (b.order || 0));
@@ -612,11 +819,11 @@ function ModernTimelineLayout({ resume, theme, pi, sections, skillsData, meta, m
   return (
     <div className={`${marginPadding} flex flex-col space-y-6`}>
       {/* Header */}
-      <div className="pb-4 border-b-2" style={{ borderColor: theme.primary }}>
-        <h1 style={{ color: theme.primary }} className="text-3xl font-black font-serif tracking-tight">
+      <div className="pb-4 border-b-2" style={{ borderColor: theme.c1 }}>
+        <h1 style={{ color: theme.c1 }} className="text-3xl font-black font-serif tracking-tight">
           {pi.fullName || 'Emaan Humayun'}
         </h1>
-        <p style={{ color: theme.accent || theme.secondary }} className="text-xs font-bold uppercase tracking-widest mt-1">
+        <p style={{ color: theme.c2 }} className="text-xs font-bold uppercase tracking-widest mt-1">
           {pi.professionalTitle || resume.targetRole}
         </p>
         <div className="mt-2.5 flex flex-wrap gap-x-4 gap-y-1 text-[11px] text-stone-600">
@@ -630,7 +837,7 @@ function ModernTimelineLayout({ resume, theme, pi, sections, skillsData, meta, m
 
       {sortedSections.map(sec => (
         <div key={sec.id || sec._id || sec.title} className="space-y-3">
-          <h2 style={{ color: theme.primary }} className="text-xs font-bold uppercase tracking-widest font-serif border-b pb-1">
+          <h2 style={{ color: theme.c1 }} className="text-xs font-bold uppercase tracking-widest font-serif border-b pb-1">
             {sec.title}
           </h2>
 
@@ -641,7 +848,9 @@ function ModernTimelineLayout({ resume, theme, pi, sections, skillsData, meta, m
           )}
 
           {sec.sectionType === 'skills' && (
-            <CanvaPillSkills skillsData={skillsData} fallbackEntries={sec.entries} theme={theme} />
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <CanvaProSkillProgressBars skillsData={skillsData} fallbackEntries={sec.entries} theme={theme} />
+            </div>
           )}
 
           {['experience', 'projects', 'education'].includes(sec.sectionType) && (
@@ -650,7 +859,7 @@ function ModernTimelineLayout({ resume, theme, pi, sections, skillsData, meta, m
                 <div key={idx} className="relative break-inside-avoid">
                   {/* Timeline Node Dot */}
                   <div
-                    style={{ backgroundColor: theme.primary }}
+                    style={{ backgroundColor: theme.c2 }}
                     className="absolute -left-6 top-1.5 w-2.5 h-2.5 rounded-full ring-4 ring-white"
                   />
                   <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1">
@@ -660,7 +869,7 @@ function ModernTimelineLayout({ resume, theme, pi, sections, skillsData, meta, m
                     </span>
                   </div>
                   {entry.subtitle && (
-                    <div style={{ color: theme.accent || theme.secondary }} className="text-[11px] font-semibold">
+                    <div style={{ color: theme.c2 }} className="text-[11px] font-semibold">
                       {entry.subtitle} {entry.organization ? `| ${entry.organization}` : ''}
                     </div>
                   )}
@@ -689,21 +898,22 @@ function ModernTimelineLayout({ resume, theme, pi, sections, skillsData, meta, m
 }
 
 // =========================================================================
-// 5. SWISS GRID MINIMALIST LAYOUT (Architectural Left Accent Rule)
+// 6. SWISS GRID MINIMALIST LAYOUT
+// Left Vertical Accent Rule with Clean Progress Bars & Academic Purity
 // =========================================================================
 function SwissMinimalLayout({ resume, theme, pi, sections, skillsData, meta, marginPadding }) {
   const sortedSections = [...sections].sort((a, b) => (a.order || 0) - (b.order || 0));
 
   return (
     <div
-      style={{ borderLeftColor: theme.primary }}
+      style={{ borderLeftColor: theme.c1 }}
       className={`min-h-[297mm] border-l-8 ${marginPadding} flex flex-col space-y-6`}
     >
       <div className="pb-4 border-b border-stone-200">
-        <h1 style={{ color: theme.primary }} className="text-3xl font-black font-serif tracking-tight">
+        <h1 style={{ color: theme.c1 }} className="text-3xl font-black font-serif tracking-tight">
           {pi.fullName || 'Emaan Humayun'}
         </h1>
-        <p style={{ color: theme.secondary }} className="text-xs font-bold uppercase tracking-[0.15em] mt-1">
+        <p style={{ color: theme.c2 }} className="text-xs font-bold uppercase tracking-[0.15em] mt-1">
           {pi.professionalTitle || resume.targetRole}
         </p>
         <div className="mt-2.5 flex flex-wrap gap-x-5 gap-y-1 text-[11px] text-stone-600 font-mono">
@@ -718,7 +928,7 @@ function SwissMinimalLayout({ resume, theme, pi, sections, skillsData, meta, mar
       {sortedSections.map(sec => (
         <div key={sec.id || sec._id || sec.title} className="space-y-2.5">
           <div className="flex items-center gap-2 pb-1 border-b border-stone-300">
-            <h2 style={{ color: theme.primary }} className="text-xs font-bold uppercase tracking-widest font-serif">
+            <h2 style={{ color: theme.c1 }} className="text-xs font-bold uppercase tracking-widest font-serif">
               {sec.title}
             </h2>
           </div>
@@ -729,7 +939,7 @@ function SwissMinimalLayout({ resume, theme, pi, sections, skillsData, meta, mar
             </p>
           )}
           {sec.sectionType === 'skills' && (
-            <CanvaPillSkills skillsData={skillsData} fallbackEntries={sec.entries} theme={theme} />
+            <CanvaProSkillProgressBars skillsData={skillsData} fallbackEntries={sec.entries} theme={theme} />
           )}
           {sec.sectionType === 'projects' && (
             <CanvaProjectCards entries={sec.entries || []} theme={theme} />
@@ -750,7 +960,8 @@ function SwissMinimalLayout({ resume, theme, pi, sections, skillsData, meta, mar
 }
 
 // =========================================================================
-// 6. CLASSIC ATS HARVARD / STANFORD LAYOUT (Centered Clean Single Column)
+// 7. CLASSIC ATS HARVARD / STANFORD LAYOUT
+// Single Column Parser Safe with Horizontal Dividers
 // =========================================================================
 function ClassicATSLayout({ resume, theme, pi, sections, skillsData, meta, marginPadding }) {
   const sortedSections = [...sections].sort((a, b) => (a.order || 0) - (b.order || 0));
@@ -838,32 +1049,52 @@ function ClassicATSLayout({ resume, theme, pi, sections, skillsData, meta, margi
 }
 
 // =========================================================================
-// REUSABLE SUBCOMPONENTS
+// CANVA PRO VISUAL SKILLS GRAPH COMPONENTS
 // =========================================================================
 
-// Visual Canva Pill Skills
-function CanvaPillSkills({ skillsData, fallbackEntries, theme }) {
+// 1. Sleek Linear Progress Bars with Dynamic Percentages & 5-Color Harmony
+export function CanvaProSkillProgressBars({ skillsData, fallbackEntries, theme }) {
   if (skillsData && skillsData.length > 0) {
     return (
-      <div className="space-y-2.5">
+      <div className="space-y-3.5">
         {skillsData.map((cat, idx) => (
-          <div key={idx} className="space-y-1">
-            <span style={{ color: theme.primary }} className="font-bold text-[10.5px] uppercase tracking-wider block">
+          <div key={idx} className="space-y-1.5">
+            <span
+              style={{ color: theme.c1 }}
+              className="font-bold text-[10.5px] uppercase tracking-wider block font-mono"
+            >
               {cat.name}
             </span>
-            <div className="flex flex-wrap gap-1">
-              {cat.skills.map((sk, sIdx) => (
-                <span
-                  key={sIdx}
-                  style={{
-                    backgroundColor: theme.tagBg || '#f1f5f9',
-                    color: theme.tagText || '#0f172a'
-                  }}
-                  className="px-2 py-0.5 rounded-md text-[10.5px] font-medium"
-                >
-                  {sk}
-                </span>
-              ))}
+            <div className="space-y-1.5">
+              {cat.skills.map((sk, sIdx) => {
+                const pct = getSkillProficiency(sk, sIdx);
+                return (
+                  <div key={sIdx} className="space-y-0.5">
+                    <div className="flex justify-between items-baseline text-[10.5px]">
+                      <span className="font-medium text-stone-800">{sk}</span>
+                      <span
+                        style={{ color: theme.c2 }}
+                        className="font-mono text-[10px] font-bold"
+                      >
+                        {pct}%
+                      </span>
+                    </div>
+                    {/* Linear Progress Bar */}
+                    <div
+                      className="h-1.5 w-full rounded-full overflow-hidden"
+                      style={{ backgroundColor: theme.c3 || '#e2e8f0' }}
+                    >
+                      <div
+                        className="h-full rounded-full transition-all duration-300"
+                        style={{
+                          width: `${pct}%`,
+                          backgroundColor: theme.c2
+                        }}
+                      />
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           </div>
         ))}
@@ -871,52 +1102,85 @@ function CanvaPillSkills({ skillsData, fallbackEntries, theme }) {
     );
   }
 
-  return (
-    <div className="flex flex-wrap gap-1">
-      {(fallbackEntries || []).map((e, idx) => (
-        <span
-          key={idx}
-          style={{ backgroundColor: theme.tagBg || '#f1f5f9', color: theme.tagText || '#0f172a' }}
-          className="px-2 py-0.5 rounded-md text-[10.5px] font-medium"
-        >
-          {e.title}
-        </span>
-      ))}
-    </div>
-  );
-}
-
-// Visual Skill Meters for Adobe Sidebar
-function VisualMeterSkills({ skillsData, theme, isDark }) {
-  const topSkills = (skillsData || []).flatMap(c => c.skills).slice(0, 10);
+  // Fallback flat skills
   return (
     <div className="space-y-2">
-      {topSkills.map((sk, idx) => (
-        <div key={idx} className="space-y-1">
-          <div className="flex justify-between text-[10.5px] font-semibold">
-            <span style={{ color: isDark ? '#ffffff' : theme.text }}>{sk}</span>
-          </div>
-          {/* 5-Dot Visual Rating */}
-          <div className="flex gap-1.5">
-            {[1, 2, 3, 4, 5].map(dot => (
+      {(fallbackEntries || []).map((e, idx) => {
+        const pct = getSkillProficiency(e.title, idx);
+        return (
+          <div key={idx} className="space-y-0.5">
+            <div className="flex justify-between text-[10.5px]">
+              <span className="font-medium text-stone-800">{e.title}</span>
+              <span style={{ color: theme.c2 }} className="font-mono text-[10px] font-bold">
+                {pct}%
+              </span>
+            </div>
+            <div
+              className="h-1.5 w-full rounded-full overflow-hidden"
+              style={{ backgroundColor: theme.c3 || '#e2e8f0' }}
+            >
               <div
-                key={dot}
-                style={{
-                  backgroundColor: dot <= 4
-                    ? (isDark ? theme.accent : theme.primary)
-                    : (isDark ? 'rgba(255,255,255,0.2)' : '#e2e8f0')
-                }}
-                className="h-1.5 flex-1 rounded-full"
+                className="h-full rounded-full"
+                style={{ width: `${pct}%`, backgroundColor: theme.c2 }}
               />
-            ))}
+            </div>
           </div>
-        </div>
-      ))}
+        );
+      })}
     </div>
   );
 }
 
-// Canva Project Highlight Cards
+// 2. Canva Pro 5-Dot Visual Rating Scale (Sidebar & Compact)
+export function CanvaPro5DotRatingMeters({ skillsData, theme, isDark }) {
+  const topSkills = (skillsData || []).flatMap(c => c.skills).slice(0, 10);
+  return (
+    <div className="space-y-2.5">
+      {topSkills.map((sk, idx) => {
+        const pct = getSkillProficiency(sk, idx);
+        const dotsFilled = pct >= 93 ? 5 : pct >= 86 ? 4 : 3;
+        return (
+          <div key={idx} className="space-y-1">
+            <div className="flex justify-between text-[10.5px] font-medium">
+              <span style={{ color: isDark ? '#ffffff' : theme.c1 }}>{sk}</span>
+              <span
+                style={{ color: isDark ? theme.c2 : theme.c2 }}
+                className="font-mono text-[9.5px] font-semibold"
+              >
+                {pct}%
+              </span>
+            </div>
+            {/* 5-Dot Visual Rating Scale */}
+            <div className="flex gap-1.5">
+              {[1, 2, 3, 4, 5].map(dot => (
+                <div
+                  key={dot}
+                  style={{
+                    backgroundColor:
+                      dot <= dotsFilled
+                        ? isDark
+                          ? theme.c2
+                          : theme.c2
+                        : isDark
+                        ? 'rgba(255,255,255,0.2)'
+                        : theme.c3 || '#e2e8f0'
+                  }}
+                  className="h-1.5 flex-1 rounded-full transition"
+                />
+              ))}
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+// =========================================================================
+// REUSABLE SUBCOMPONENTS (PROJECT CARDS, EXPERIENCE, EDUCATION)
+// =========================================================================
+
+// Canva Project Highlight Cards with Repo & Demo Pills
 function CanvaProjectCards({ entries, theme }) {
   if (!entries || entries.length === 0) return null;
 
@@ -926,10 +1190,10 @@ function CanvaProjectCards({ entries, theme }) {
         <div
           key={idx}
           style={{
-            borderColor: theme.border || '#e2e8f0',
-            backgroundColor: theme.sidebarBg || '#ffffff'
+            borderColor: theme.c3,
+            backgroundColor: theme.c4
           }}
-          className="p-3 rounded-xl border shadow-xs break-inside-avoid"
+          className="p-3.5 rounded-xl border shadow-xs break-inside-avoid"
         >
           <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1">
             <div className="flex items-center gap-2 flex-wrap">
@@ -939,10 +1203,21 @@ function CanvaProjectCards({ entries, theme }) {
                   href={p.githubUrl}
                   target="_blank"
                   rel="noreferrer"
-                  style={{ color: theme.primary }}
-                  className="inline-flex items-center gap-0.5 text-[10px] font-mono hover:underline"
+                  style={{ color: theme.c2, borderColor: theme.c3 }}
+                  className="inline-flex items-center gap-1 text-[10px] font-mono px-1.5 py-0.5 rounded bg-white border hover:underline"
                 >
                   <Github size={10} /> repo <ExternalLink size={9} />
+                </a>
+              )}
+              {p.liveUrl && (
+                <a
+                  href={p.liveUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  style={{ color: theme.c2, borderColor: theme.c3 }}
+                  className="inline-flex items-center gap-1 text-[10px] font-mono px-1.5 py-0.5 rounded bg-white border hover:underline"
+                >
+                  <Globe size={10} /> demo <ExternalLink size={9} />
                 </a>
               )}
             </div>
@@ -970,8 +1245,12 @@ function CanvaProjectCards({ entries, theme }) {
               {p.technologies.map((t, tIdx) => (
                 <span
                   key={tIdx}
-                  style={{ backgroundColor: theme.tagBg || '#f1f5f9', color: theme.tagText || '#0f172a' }}
-                  className="px-2 py-0.2 rounded text-[10px] font-mono font-medium"
+                  style={{
+                    backgroundColor: '#ffffff',
+                    color: theme.c1,
+                    borderColor: theme.c3
+                  }}
+                  className="px-2 py-0.5 rounded text-[10px] font-mono font-medium border"
                 >
                   {t}
                 </span>
@@ -1043,7 +1322,7 @@ function EducationSectionContent({ entries, theme, isDarkSidebar }) {
             </span>
           </div>
           <div
-            style={{ color: isDarkSidebar ? theme.accent : theme.primary }}
+            style={{ color: isDarkSidebar ? theme.c2 : theme.c2 }}
             className="text-[11px] font-medium"
           >
             {edu.organization || edu.subtitle}

@@ -39,7 +39,7 @@ const DEFAULT_RESUME = {
   title: 'Software Engineer Resume',
   targetRole: 'Software Engineer',
   templateId: 'modern-pro',
-  theme: getPalette('burgundy-gold'),
+  theme: getPalette('canva-executive'),
   typography: {
     fontFamily: 'inter',
     fontSize: 'normal',
@@ -942,36 +942,109 @@ export default function AdminResumeBuilder() {
                     t => selectedTemplateCategory === 'All' || t.category === selectedTemplateCategory
                   ).map(t => {
                     const isSelected = resume.templateId === t.id;
+                    const accentColor = resume.theme?.c2 || resume.theme?.accent || '#d97706';
+                    const primaryColor = resume.theme?.c1 || resume.theme?.primary || '#0f172a';
+                    const blockColor = resume.theme?.c4 || resume.theme?.sidebarBg || '#f8fafc';
+
                     return (
                       <div
                         key={t.id}
                         onClick={() => setResume(prev => ({ ...prev, templateId: t.id }))}
-                        className={`p-4 rounded-xl border cursor-pointer transition flex flex-col justify-between ${
+                        className={`p-3.5 rounded-xl border cursor-pointer transition flex flex-col justify-between gap-3 ${
                           isSelected
                             ? 'bg-primary/5 border-primary ring-2 ring-primary/20 shadow-sm'
                             : 'bg-white border-border hover:border-stone-400'
                         }`}
                       >
-                        <div>
-                          <div className="flex items-center justify-between gap-1 mb-1">
-                            <span className="font-bold text-xs text-stone-900">
-                              {t.number}. {t.name}
-                            </span>
-                            {t.atsFriendly && (
-                              <span className="text-[9.5px] font-bold px-1.5 py-0.2 rounded bg-emerald-50 text-emerald-700 border border-emerald-200">
-                                ATS
-                              </span>
+                        <div className="flex gap-3">
+                          {/* Mini Layout Schematic Thumbnail */}
+                          <div className="w-14 h-18 rounded border border-stone-200 bg-white p-1 flex flex-col gap-1 overflow-hidden shrink-0 shadow-xs">
+                            {['two-col-left', 'sidebar-dark'].includes(t.layout) ? (
+                              <div className="flex h-full gap-0.5">
+                                <div style={{ backgroundColor: t.layout === 'sidebar-dark' ? primaryColor : blockColor }} className="w-4 h-full rounded-xs p-0.5 flex flex-col gap-0.5">
+                                  <div style={{ backgroundColor: accentColor }} className="w-2 h-2 rounded-full" />
+                                  <div className="w-full h-0.5 bg-stone-300 rounded" />
+                                  <div className="w-2/3 h-0.5 bg-stone-300 rounded" />
+                                </div>
+                                <div className="flex-1 flex flex-col gap-0.5 pl-0.5">
+                                  <div className="w-3/4 h-1 bg-stone-700 rounded" />
+                                  <div className="w-full h-0.5 bg-stone-200 rounded" />
+                                  <div style={{ backgroundColor: accentColor }} className="w-full h-0.5 rounded" />
+                                  <div className="w-2/3 h-0.5 bg-stone-200 rounded" />
+                                </div>
+                              </div>
+                            ) : t.layout === 'executive' || t.layout === 'creative-editorial' ? (
+                              <div className="flex flex-col h-full gap-0.5">
+                                <div style={{ backgroundColor: primaryColor }} className="h-4 w-full rounded-xs p-0.5 flex items-center justify-between">
+                                  <div style={{ backgroundColor: accentColor }} className="w-2 h-2 rounded-xs" />
+                                  <div className="w-4 h-0.5 bg-white/70 rounded" />
+                                </div>
+                                <div className="flex-1 flex gap-0.5 pt-0.5">
+                                  <div className="w-1/3 flex flex-col gap-0.5 border-r border-stone-100 pr-0.5">
+                                    <div style={{ backgroundColor: accentColor }} className="w-full h-0.5 rounded" />
+                                    <div className="w-full h-0.5 bg-stone-200 rounded" />
+                                  </div>
+                                  <div className="flex-1 flex flex-col gap-0.5">
+                                    <div className="w-full h-0.5 bg-stone-300 rounded" />
+                                    <div className="w-3/4 h-0.5 bg-stone-200 rounded" />
+                                  </div>
+                                </div>
+                              </div>
+                            ) : t.layout === 'timeline-vertical' ? (
+                              <div className="flex flex-col h-full gap-0.5">
+                                <div className="w-2/3 h-1 bg-stone-700 rounded mx-auto" />
+                                <div className="flex-1 pl-1.5 border-l border-stone-300 flex flex-col justify-around">
+                                  <div className="relative">
+                                    <div style={{ backgroundColor: accentColor }} className="absolute -left-[8px] top-0 w-1 h-1 rounded-full" />
+                                    <div className="w-full h-0.5 bg-stone-300 rounded" />
+                                  </div>
+                                  <div className="relative">
+                                    <div style={{ backgroundColor: accentColor }} className="absolute -left-[8px] top-0 w-1 h-1 rounded-full" />
+                                    <div className="w-2/3 h-0.5 bg-stone-300 rounded" />
+                                  </div>
+                                </div>
+                              </div>
+                            ) : (
+                              <div className="flex flex-col h-full gap-0.5">
+                                <div style={{ borderBottomColor: accentColor }} className="border-b pb-0.5 flex justify-between">
+                                  <div className="w-6 h-1 bg-stone-700 rounded" />
+                                  <div style={{ backgroundColor: accentColor }} className="w-2 h-1 rounded" />
+                                </div>
+                                <div className="grid grid-cols-2 gap-0.5 py-0.5">
+                                  <div style={{ backgroundColor: blockColor }} className="p-0.5 rounded">
+                                    <div style={{ backgroundColor: accentColor }} className="w-full h-0.5 rounded" />
+                                  </div>
+                                  <div style={{ backgroundColor: blockColor }} className="p-0.5 rounded">
+                                    <div style={{ backgroundColor: accentColor }} className="w-full h-0.5 rounded" />
+                                  </div>
+                                </div>
+                                <div className="w-full h-0.5 bg-stone-200 rounded mt-auto" />
+                                <div className="w-3/4 h-0.5 bg-stone-200 rounded" />
+                              </div>
                             )}
                           </div>
-                          <span className="text-[10px] text-stone-500 font-mono block mb-2">
-                            {t.category}
-                          </span>
-                          <p className="text-[11px] text-stone-600 line-clamp-2 leading-relaxed">
-                            {t.description}
-                          </p>
+
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center justify-between gap-1 mb-0.5">
+                              <span className="font-bold text-xs text-stone-900 truncate">
+                                {t.number}. {t.name}
+                              </span>
+                              {t.atsFriendly && (
+                                <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-emerald-50 text-emerald-700 border border-emerald-200 shrink-0">
+                                  ATS
+                                </span>
+                              )}
+                            </div>
+                            <span className="text-[9.5px] text-stone-500 font-mono block mb-1">
+                              {t.category}
+                            </span>
+                            <p className="text-[10.5px] text-stone-600 line-clamp-2 leading-relaxed">
+                              {t.description}
+                            </p>
+                          </div>
                         </div>
 
-                        <div className="mt-3 pt-2 border-t border-border/60 flex items-center justify-between text-[10.5px]">
+                        <div className="pt-2 border-t border-border/60 flex items-center justify-between text-[10px]">
                           <span className="text-stone-500 font-mono">{t.layout}</span>
                           <span
                             className={`font-semibold ${
@@ -991,11 +1064,15 @@ export default function AdminResumeBuilder() {
             {/* 3. THEME & TYPOGRAPHY TAB */}
             {activeTab === 'theme' && (
               <div className="space-y-6">
-                {/* 10 Preset Color Palettes */}
+                {/* 10+ Canva Pro & Adobe InDesign 5-Color Palettes */}
                 <div className="space-y-3">
-                  <h3 className="font-bold text-xs uppercase tracking-wider text-stone-900">
-                    Ready-Made Colour Palettes
-                  </h3>
+                  <div className="flex items-center justify-between">
+                    <h3 className="font-bold text-xs uppercase tracking-wider text-stone-900">
+                      Canva Pro & Adobe InDesign 5-Color Palettes
+                    </h3>
+                    <span className="text-[10px] text-stone-500 font-mono">5 Strict Harmonies</span>
+                  </div>
+
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                     {RESUME_PALETTES.map(p => {
                       const isSelected = resume.theme?.id === p.id;
@@ -1003,30 +1080,101 @@ export default function AdminResumeBuilder() {
                         <div
                           key={p.id}
                           onClick={() => setResume(prev => ({ ...prev, theme: p }))}
-                          className={`p-3 rounded-xl border cursor-pointer transition flex items-center justify-between ${
+                          className={`p-3 rounded-xl border cursor-pointer transition flex flex-col justify-between gap-2 ${
                             isSelected
-                              ? 'bg-primary/5 border-primary ring-1 ring-primary/20'
+                              ? 'bg-primary/5 border-primary ring-2 ring-primary/20 shadow-xs'
                               : 'bg-white border-border hover:border-stone-300'
                           }`}
                         >
-                          <div className="flex items-center gap-2">
-                            <div className="flex items-center -space-x-1">
-                              <span
-                                style={{ backgroundColor: p.primary }}
-                                className="w-4 h-4 rounded-full border border-white"
-                              />
-                              <span
-                                style={{ backgroundColor: p.accent }}
-                                className="w-4 h-4 rounded-full border border-white"
-                              />
-                              <span
-                                style={{ backgroundColor: p.secondary }}
-                                className="w-4 h-4 rounded-full border border-white"
-                              />
+                          <div className="flex items-start justify-between gap-1">
+                            <div>
+                              <span className="text-xs font-bold text-stone-900 block leading-tight">{p.name}</span>
+                              {p.subtitle && (
+                                <span className="text-[10px] text-stone-500 block mt-0.5">{p.subtitle}</span>
+                              )}
                             </div>
-                            <span className="text-xs font-semibold text-stone-800">{p.name}</span>
+                            {isSelected && <Check size={14} className="text-primary shrink-0" />}
                           </div>
-                          {isSelected && <Check size={14} className="text-primary shrink-0" />}
+
+                          {/* 5-Color Swatch Strip */}
+                          <div className="flex items-center gap-1.5 pt-1.5 border-t border-black/5">
+                            <span className="text-[9.5px] font-mono text-stone-400 mr-1">5-Color:</span>
+                            {(p.colors || [p.c1, p.c2, p.c3, p.c4, p.c5]).map((col, cIdx) => (
+                              <span
+                                key={cIdx}
+                                style={{ backgroundColor: col }}
+                                title={`Tone ${cIdx + 1}: ${col}`}
+                                className="w-4 h-4 rounded-full border border-stone-200 shadow-2xs shrink-0"
+                              />
+                            ))}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* 5-Color Palette Customizer */}
+                <div className="p-4 rounded-xl border border-border bg-stone-50/50 space-y-3">
+                  <div className="flex items-center justify-between">
+                    <h3 className="font-bold text-xs uppercase tracking-wider text-stone-900">
+                      5-Color Tone Customizer (Live Live Vector Preview)
+                    </h3>
+                    <span className="text-[10px] text-stone-500 font-mono">Live Hex Sync</span>
+                  </div>
+                  <p className="text-[11px] text-stone-600">
+                    Adjust any of the 5 colors below. Changes update the live resume canvas immediately.
+                  </p>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-5 gap-2 pt-1">
+                    {[
+                      { key: 'c1', label: '1. Headings & Text', fallback: '#0f172a' },
+                      { key: 'c2', label: '2. Accent & Skill Bar', fallback: '#d97706' },
+                      { key: 'c3', label: '3. Light Track Tint', fallback: '#fef3c7' },
+                      { key: 'c4', label: '4. Block & Sidebar', fallback: '#f8fafc' },
+                      { key: 'c5', label: '5. Canvas Paper', fallback: '#ffffff' }
+                    ].map(({ key, label, fallback }) => {
+                      const curVal = resume.theme?.[key] || fallback;
+                      return (
+                        <div key={key} className="p-2 rounded-lg bg-white border border-stone-200 text-left space-y-1">
+                          <label className="text-[10px] font-semibold text-stone-700 block truncate" title={label}>
+                            {label}
+                          </label>
+                          <div className="flex items-center gap-1.5">
+                            <input
+                              type="color"
+                              value={curVal}
+                              onChange={e => {
+                                const nextVal = e.target.value;
+                                setResume(prev => {
+                                  const base = prev.theme || getPalette('canva-executive');
+                                  const updated = {
+                                    ...base,
+                                    id: 'custom',
+                                    name: 'Custom 5-Color Harmony',
+                                    [key]: nextVal
+                                  };
+                                  updated.colors = [
+                                    updated.c1 || '#0f172a',
+                                    updated.c2 || '#d97706',
+                                    updated.c3 || '#fef3c7',
+                                    updated.c4 || '#f8fafc',
+                                    updated.c5 || '#ffffff'
+                                  ];
+                                  updated.primary = updated.c1;
+                                  updated.accent = updated.c2;
+                                  updated.lightAccent = updated.c3;
+                                  updated.sidebarBg = updated.c4;
+                                  updated.background = updated.c5;
+                                  return { ...prev, theme: updated };
+                                });
+                              }}
+                              className="w-7 h-7 rounded border border-stone-300 cursor-pointer p-0 shrink-0"
+                            />
+                            <span className="font-mono text-[10px] text-stone-600 uppercase truncate">
+                              {curVal}
+                            </span>
+                          </div>
                         </div>
                       );
                     })}

@@ -259,6 +259,26 @@ export default function AdminResumes() {
                         Updated: {new Date(r.updatedAt || r.createdAt).toLocaleDateString()}
                       </div>
                     </div>
+
+                    {/* 5-Color Theme Indicator */}
+                    {r.theme && (
+                      <div className="flex items-center gap-1.5 mt-3 pt-2 border-t border-stone-100">
+                        <span className="text-[9.5px] font-mono text-stone-400">Palette:</span>
+                        <div className="flex items-center -space-x-1">
+                          {(r.theme.colors || [r.theme.c1, r.theme.c2, r.theme.c3, r.theme.c4, r.theme.c5].filter(Boolean)).map((c, i) => (
+                            <span
+                              key={i}
+                              style={{ backgroundColor: c }}
+                              className="w-3.5 h-3.5 rounded-full border border-white shadow-2xs"
+                              title={`Tone ${i + 1}: ${c}`}
+                            />
+                          ))}
+                        </div>
+                        <span className="text-[10px] text-stone-500 truncate ml-1 font-medium">
+                          {r.theme.name || 'Default Palette'}
+                        </span>
+                      </div>
+                    )}
                   </div>
 
                   {/* Actions Bar */}
