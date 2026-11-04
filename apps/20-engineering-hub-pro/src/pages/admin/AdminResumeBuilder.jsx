@@ -959,7 +959,45 @@ export default function AdminResumeBuilder() {
                         <div className="flex gap-3">
                           {/* Mini Layout Schematic Thumbnail */}
                           <div className="w-14 h-18 rounded border border-stone-200 bg-white p-1 flex flex-col gap-1 overflow-hidden shrink-0 shadow-xs">
-                            {['two-col-left', 'sidebar-dark'].includes(t.layout) ? (
+                            {t.id === 'modern-pro' ? (
+                              <div className="flex flex-col h-full gap-0.5">
+                                <div style={{ borderTopColor: accentColor, backgroundColor: blockColor }} className="h-4 border-t-2 p-0.5 flex items-center justify-between">
+                                  <div style={{ backgroundColor: primaryColor }} className="w-2 h-2 rounded-xs" />
+                                  <div className="flex gap-0.5">
+                                    <div style={{ borderColor: accentColor }} className="w-2 h-2 rounded-full border" />
+                                    <div style={{ borderColor: accentColor }} className="w-2 h-2 rounded-full border" />
+                                  </div>
+                                </div>
+                                <div className="flex-1 flex gap-0.5 pt-0.5">
+                                  <div className="w-1/3 flex flex-col gap-0.5 border-r border-stone-100 pr-0.5">
+                                    <div style={{ backgroundColor: accentColor }} className="w-full h-0.5 rounded" />
+                                    <div className="w-full h-0.5 bg-stone-200 rounded" />
+                                  </div>
+                                  <div className="flex-1 flex flex-col gap-0.5">
+                                    <div className="w-full h-0.5 bg-stone-300 rounded" />
+                                    <div className="w-3/4 h-0.5 bg-stone-200 rounded" />
+                                  </div>
+                                </div>
+                              </div>
+                            ) : ['software-engineer', 'backend-engineer', 'devops-engineer', 'ai-ml-engineer', 'fullstack-dev', 'automation-engineer', 'cybersecurity-networking'].includes(t.id) ? (
+                              <div className="flex flex-col h-full gap-0.5">
+                                <div style={{ backgroundColor: primaryColor }} className="h-3.5 p-0.5 rounded-xs flex items-center gap-0.5">
+                                  <span className="w-1 h-1 rounded-full bg-rose-400 inline-block" />
+                                  <span className="w-1 h-1 rounded-full bg-amber-400 inline-block" />
+                                  <span className="w-1 h-1 rounded-full bg-emerald-400 inline-block" />
+                                  <div className="w-4 h-0.5 bg-white/60 rounded ml-auto" />
+                                </div>
+                                <div className="grid grid-cols-2 gap-0.5 py-0.5">
+                                  <div style={{ backgroundColor: blockColor }} className="p-0.5 rounded">
+                                    <div style={{ backgroundColor: accentColor }} className="w-full h-0.5 rounded" />
+                                  </div>
+                                  <div style={{ backgroundColor: blockColor }} className="p-0.5 rounded">
+                                    <div style={{ backgroundColor: accentColor }} className="w-full h-0.5 rounded" />
+                                  </div>
+                                </div>
+                                <div className="w-full h-0.5 bg-stone-200 rounded mt-auto" />
+                              </div>
+                            ) : ['two-col-left', 'sidebar-dark'].includes(t.layout) ? (
                               <div className="flex h-full gap-0.5">
                                 <div style={{ backgroundColor: t.layout === 'sidebar-dark' ? primaryColor : blockColor }} className="w-4 h-full rounded-xs p-0.5 flex flex-col gap-0.5">
                                   <div style={{ backgroundColor: accentColor }} className="w-2 h-2 rounded-full" />
