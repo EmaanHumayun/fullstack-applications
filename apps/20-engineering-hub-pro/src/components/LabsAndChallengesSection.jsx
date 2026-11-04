@@ -219,3 +219,4 @@ export function LabsAndChallengesSection({ practiceLabs = [], assignments = [] }
     </section>
   );
 }
+
