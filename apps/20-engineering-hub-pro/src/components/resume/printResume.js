@@ -71,6 +71,9 @@ export function printResumeDocument({ elementId, htmlContent, title = 'Emaan-Hum
             padding: 0 !important;
             background: #ffffff !important;
             width: 210mm !important;
+            height: 297mm !important;
+            max-height: 297mm !important;
+            overflow: hidden !important;
             -webkit-font-smoothing: antialiased;
           }
           .resume-canvas-outer {
@@ -78,14 +81,21 @@ export function printResumeDocument({ elementId, htmlContent, title = 'Emaan-Hum
             margin: 0 !important;
             padding: 0 !important;
             width: 210mm !important;
+            height: 297mm !important;
+            max-height: 297mm !important;
+            overflow: hidden !important;
           }
           .resume-paper {
             width: 210mm !important;
-            min-height: 297mm !important;
+            height: 297mm !important;
+            max-height: 297mm !important;
+            overflow: hidden !important;
             box-shadow: none !important;
             border: none !important;
             margin: 0 auto !important;
-            page-break-after: auto;
+            page-break-after: avoid !important;
+            page-break-inside: avoid !important;
+            break-inside: avoid !important;
           }
           .break-inside-avoid,
           .resume-entry,

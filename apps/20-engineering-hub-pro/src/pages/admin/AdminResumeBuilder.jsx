@@ -47,13 +47,13 @@ const DEFAULT_RESUME = {
   },
   personalInformation: {
     fullName: 'Emaan Humayun',
-    professionalTitle: 'Software Engineer | DevOps Engineer',
-    email: 'emaan.humayun@example.com',
-    phone: '',
-    location: 'Lahore, Pakistan',
-    linkedinUrl: 'https://linkedin.com/in/emaanmuhammadhumayun',
+    professionalTitle: 'Lead Cloud Infrastructure & DevOps Architect',
+    email: 'emaan.humayun@gmail.com',
+    phone: '+92 300 1234567',
+    location: 'Lahore, Punjab, Pakistan',
+    linkedinUrl: 'https://linkedin.com/in/emaan-humayun',
     githubUrl: 'https://github.com/EmaanHumayun',
-    portfolioUrl: 'https://emaan.dev',
+    portfolioUrl: 'https://engineeringhub.dev',
     websiteUrl: '',
     avatarUrl: ''
   },
@@ -391,35 +391,20 @@ function TemplateSchematicThumbnail({ templateId, primaryColor, accentColor, blo
     );
   }
 
-  if (templateId === 'editorial-magazine') {
+  if (templateId === 'ats-classic') {
     return (
-      <div className="flex flex-col h-full gap-0.5 text-center p-0.5">
-        <div className="w-full h-px bg-stone-900" />
-        <div className="w-6 h-1 bg-stone-900 mx-auto rounded" />
-        <div className="w-4 h-0.5 bg-stone-400 mx-auto rounded" />
-        <div className="flex gap-0.5 text-left pt-0.5">
-          <span className="font-serif text-[7px] italic font-bold">I.</span>
-          <div className="flex-1 flex flex-col gap-0.5">
-            <div className="w-full h-0.5 bg-stone-300" />
-            <div className="w-2/3 h-0.5 bg-stone-200" />
-          </div>
+      <div className="flex flex-col h-full gap-0.5 p-0.5">
+        <div className="border-b border-black pb-0.5 text-center">
+          <div className="w-8 h-1 bg-black mx-auto rounded-none" />
+          <div className="w-5 h-0.5 bg-stone-400 mx-auto mt-0.5" />
         </div>
-      </div>
-    );
-  }
-
-  if (templateId === 'creative-portfolio') {
-    return (
-      <div className="flex flex-col h-full gap-0.5">
-        <div style={{ backgroundColor: primaryColor }} className="h-3 p-0.5 rounded-xs flex items-center justify-between">
-          <div className="w-4 h-0.5 bg-white rounded" />
-          <div style={{ backgroundColor: accentColor }} className="w-2 h-1 rounded-xs" />
+        <div className="flex flex-col gap-0.5 pt-0.5">
+          <div className="w-6 h-0.5 bg-black" />
+          <div className="w-full h-0.5 bg-stone-300" />
+          <div className="w-4/5 h-0.5 bg-stone-200" />
+          <div className="w-6 h-0.5 bg-black mt-0.5" />
+          <div className="w-full h-0.5 bg-stone-300" />
         </div>
-        <div className="grid grid-cols-2 gap-0.5">
-          <div style={{ borderColor: accentColor }} className="h-2 rounded border bg-stone-50" />
-          <div style={{ borderColor: accentColor }} className="h-2 rounded border bg-stone-50" />
-        </div>
-        <div className="w-full h-0.5 bg-stone-200 rounded mt-auto" />
       </div>
     );
   }
@@ -458,6 +443,19 @@ export default function AdminResumeBuilder() {
   const [zoom, setZoom] = useState(0.85);
   const [isImporterOpen, setIsImporterOpen] = useState(false);
   const [isTailoringOpen, setIsTailoringOpen] = useState(false);
+
+  const FONT_SIZE_STEPS = ['compact', 'normal', 'medium', 'large'];
+
+  const handleFontSizeStep = delta => {
+    const currentSize = resume.typography?.fontSize || 'normal';
+    const currentIndex = FONT_SIZE_STEPS.indexOf(currentSize);
+    const nextIndex = Math.max(0, Math.min(FONT_SIZE_STEPS.length - 1, (currentIndex === -1 ? 1 : currentIndex) + delta));
+    const nextSize = FONT_SIZE_STEPS[nextIndex];
+    setResume(prev => ({
+      ...prev,
+      typography: { ...(prev.typography || {}), fontSize: nextSize }
+    }));
+  };
 
   // Skill text paste state
   const [rawSkillsInput, setRawSkillsInput] = useState('');
@@ -1567,38 +1565,68 @@ export default function AdminResumeBuilder() {
         >
           {/* Preview Canvas Toolbar */}
           <div className="p-3 bg-white/90 backdrop-blur-xs border-b border-stone-300 flex items-center justify-between text-xs z-10">
-            <span className="font-bold text-stone-700 flex items-center gap-1.5 font-mono text-[11px]">
-              <Eye size={13} className="text-primary" /> Live A4 Print Canvas
-            </span>
-
-            {/* Zoom Controls */}
             <div className="flex items-center gap-2">
-              <button
-                type="button"
-                onClick={() => setZoom(z => Math.max(0.4, Number((z - 0.1).toFixed(2))))}
-                className="p-1 rounded bg-stone-100 hover:bg-stone-200 text-stone-700"
-                title="Zoom Out"
-              >
-                <ZoomOut size={13} />
-              </button>
-              <span className="font-mono text-[11px] text-stone-600 min-w-[2.5rem] text-center">
-                {Math.round(zoom * 100)}%
+              <span className="font-bold text-stone-700 flex items-center gap-1.5 font-mono text-[11px]">
+                <Eye size={13} className="text-primary" /> Live A4 Canvas
               </span>
-              <button
-                type="button"
-                onClick={() => setZoom(z => Math.min(1.4, Number((z + 0.1).toFixed(2))))}
-                className="p-1 rounded bg-stone-100 hover:bg-stone-200 text-stone-700"
-                title="Zoom In"
-              >
-                <ZoomIn size={13} />
-              </button>
-              <button
-                type="button"
-                onClick={() => setZoom(0.85)}
-                className="px-2 py-0.5 rounded bg-stone-100 hover:bg-stone-200 text-[10.5px] font-semibold text-stone-700"
-              >
-                Reset
-              </button>
+              <span className="px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-200 text-[10px] font-mono font-bold">
+                Strict 1-Page A4
+              </span>
+            </div>
+
+            <div className="flex items-center gap-3">
+              {/* Text Size Stepper Controls */}
+              <div className="flex items-center gap-1 bg-stone-100 p-0.5 rounded-lg border border-stone-200">
+                <button
+                  type="button"
+                  onClick={() => handleFontSizeStep(-1)}
+                  className="px-1.5 py-0.5 rounded bg-white hover:bg-stone-200 text-stone-800 text-[11px] font-bold font-mono shadow-2xs"
+                  title="Decrease Text Size"
+                >
+                  A-
+                </button>
+                <span className="font-mono text-[10px] text-stone-600 px-1 capitalize">
+                  {resume.typography?.fontSize || 'normal'}
+                </span>
+                <button
+                  type="button"
+                  onClick={() => handleFontSizeStep(1)}
+                  className="px-1.5 py-0.5 rounded bg-white hover:bg-stone-200 text-stone-800 text-[11px] font-bold font-mono shadow-2xs"
+                  title="Increase Text Size"
+                >
+                  A+
+                </button>
+              </div>
+
+              {/* Zoom Controls */}
+              <div className="flex items-center gap-1.5">
+                <button
+                  type="button"
+                  onClick={() => setZoom(z => Math.max(0.4, Number((z - 0.1).toFixed(2))))}
+                  className="p-1 rounded bg-stone-100 hover:bg-stone-200 text-stone-700"
+                  title="Zoom Out"
+                >
+                  <ZoomOut size={13} />
+                </button>
+                <span className="font-mono text-[11px] text-stone-600 min-w-[2.2rem] text-center">
+                  {Math.round(zoom * 100)}%
+                </span>
+                <button
+                  type="button"
+                  onClick={() => setZoom(z => Math.min(1.4, Number((z + 0.1).toFixed(2))))}
+                  className="p-1 rounded bg-stone-100 hover:bg-stone-200 text-stone-700"
+                  title="Zoom In"
+                >
+                  <ZoomIn size={13} />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setZoom(0.85)}
+                  className="px-2 py-0.5 rounded bg-stone-100 hover:bg-stone-200 text-[10.5px] font-semibold text-stone-700"
+                >
+                  Reset
+                </button>
+              </div>
             </div>
           </div>
 
