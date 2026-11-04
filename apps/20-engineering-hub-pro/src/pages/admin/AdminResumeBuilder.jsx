@@ -66,6 +66,8 @@ const DEFAULT_RESUME = {
       title: 'Professional Summary',
       visible: true,
       order: 0,
+      customContent:
+        'Software Engineer with an emphasis on backend architectures, automation pipelines, and scalable cloud systems. Experienced in designing deterministic REST APIs, containerized deployments, and agentic workflows built on first-principles computing.',
       entries: []
     },
     {
@@ -82,7 +84,53 @@ const DEFAULT_RESUME = {
       title: 'Key Technical Projects',
       visible: true,
       order: 2,
-      entries: []
+      entries: [
+        {
+          title: 'Kubernetes Workload Platform & Cloud IaC',
+          subtitle: 'Cloud Native & SRE Platform',
+          startDate: '2025',
+          endDate: '2026',
+          description:
+            'Production-grade cloud platform featuring automated GitOps delivery, container orchestration, and continuous observability.',
+          technologies: ['Kubernetes', 'Docker', 'Terraform', 'Helm', 'AWS', 'GitHub Actions'],
+          githubUrl: 'https://github.com/EmaanHumayun/k8s-cloud-platform',
+          liveUrl: 'https://k8s.engineeringhub.dev',
+          bullets: [
+            'Configured ingress controllers, automated cert-manager TLS, and automated canary deployments.',
+            'Maintained 99.99% service availability across multi-zone cluster deployments.'
+          ]
+        },
+        {
+          title: 'High-Throughput REST API & Event Engine',
+          subtitle: 'Distributed Systems & Persistence',
+          startDate: '2025',
+          endDate: '2026',
+          description:
+            'Scalable backend system with distributed caching, cryptographic HMAC signature verification, and transactional SQL data models.',
+          technologies: ['Node.js', 'Express', 'Redis', 'PostgreSQL', 'Docker', 'JWT'],
+          githubUrl: 'https://github.com/EmaanHumayun/high-throughput-api',
+          liveUrl: 'https://api.engineeringhub.dev',
+          bullets: [
+            'Handled 10,000+ requests per minute with Redis cache-aside patterns and rate limiting.',
+            'Implemented database migrations, comprehensive test coverage, and automated health telemetry.'
+          ]
+        },
+        {
+          title: 'Autonomous Multi-Agent Orchestration Framework',
+          subtitle: 'AI Systems & RAG Pipelines',
+          startDate: '2026',
+          endDate: '2026',
+          description:
+            'Directed Acyclic Graph (DAG) multi-agent workflow framework featuring hybrid vector search and structured tool execution.',
+          technologies: ['Python', 'FastAPI', 'LangGraph', 'PyTorch', 'Vector DB', 'Pydantic'],
+          githubUrl: 'https://github.com/EmaanHumayun/multi-agent-orchestrator',
+          liveUrl: 'https://agents.engineeringhub.dev',
+          bullets: [
+            'Designed dual-tier memory system with short-term sliding context and persistent vector storage.',
+            'Achieved 35% improvement in multi-hop question answering through reciprocal rank fusion retrieval.'
+          ]
+        }
+      ]
     },
     {
       id: 'sec-experience',
@@ -90,7 +138,38 @@ const DEFAULT_RESUME = {
       title: 'Engineering Experience',
       visible: true,
       order: 3,
-      entries: []
+      entries: [
+        {
+          title: 'Senior Software Engineer / DevOps Lead',
+          organization: 'Engineering Workspace Lab',
+          location: 'Remote',
+          startDate: '2024',
+          endDate: 'Present',
+          current: true,
+          description:
+            'Designing high-reliability backend services, cloud infrastructures, and automated systems.',
+          bullets: [
+            'Constructed 20+ progressive production backend systems covering microservices, caching, and rate limiting.',
+            'Engineered containerized deployment pipelines using Docker, Kubernetes, and GitHub Actions CI/CD with zero downtime.',
+            'Implemented Role-Based Access Control (RBAC) and immutable audit logging for enterprise security compliance.'
+          ]
+        },
+        {
+          title: 'Cloud Systems Developer',
+          organization: 'Cloud Native Solutions',
+          location: 'Hybrid',
+          startDate: '2022',
+          endDate: '2024',
+          current: false,
+          description:
+            'Engineered distributed API gateways, PostgreSQL persistence layers, and automated telemetry.',
+          bullets: [
+            'Designed REST and GraphQL APIs serving high-throughput workloads with sub-25ms response latency.',
+            'Automated multi-cloud infrastructure provisioning using modular Terraform and AWS ECS/EKS clusters.',
+            'Developed asynchronous event-driven webhook listeners with Redis dead-letter queues.'
+          ]
+        }
+      ]
     },
     {
       id: 'sec-education',
@@ -98,7 +177,17 @@ const DEFAULT_RESUME = {
       title: 'Education & Academic Background',
       visible: true,
       order: 4,
-      entries: []
+      entries: [
+        {
+          title: 'Bachelor of Science in Computer Science',
+          organization: 'FAST National University of Computer & Emerging Sciences',
+          subtitle: 'Software Systems & Distributed Computing',
+          startDate: '2022',
+          endDate: '2026',
+          description:
+            'Focus in Distributed Systems, Operating Systems, Database Architecture, and Computer Networks. Graduated with Dean’s Honors.'
+        }
+      ]
     },
     {
       id: 'sec-certifications',
@@ -106,7 +195,26 @@ const DEFAULT_RESUME = {
       title: 'Certifications & Credentials',
       visible: true,
       order: 5,
-      entries: []
+      entries: [
+        {
+          title: 'Certified Kubernetes Administrator (CKA)',
+          organization: 'The Linux Foundation',
+          startDate: '2025',
+          description: 'Credential ID: LF-CKA-99201'
+        },
+        {
+          title: 'AWS Certified Solutions Architect - Associate',
+          organization: 'Amazon Web Services',
+          startDate: '2025',
+          description: 'Credential ID: AWS-SAA-40912'
+        },
+        {
+          title: 'HashiCorp Certified: Terraform Associate',
+          organization: 'HashiCorp',
+          startDate: '2024',
+          description: 'Credential ID: HC-TA-18304'
+        }
+      ]
     }
   ],
   skillsData: {
